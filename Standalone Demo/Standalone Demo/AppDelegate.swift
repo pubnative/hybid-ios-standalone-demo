@@ -1,12 +1,37 @@
 import UIKit
+// Step 1: Import HyBid iOS SDK into your class
+import HyBid
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-
-
+    let appToken = "543027b8e954474cbcd9a98481622a3b"
+    let appStoreID = "1530210244"
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+// Step 2: Setup & Initialize HyBid SDK
+                HyBid.initWithAppToken(appToken) { (success) in
+                    if (success) {
+                        HyBidLogger.setLogLevel(HyBidLogLevelDebug)
+                        print("HyBid iOS SDK is successfully initialized")
+                    }
+                }
+// Step 3: Set COPPA (Optional)
+                HyBid.setCoppa(false)
+// Step 4: Set Test Mode (Optional)
+                HyBid.setTestMode(true)
+// Step 5: Set Location Tracking (Optional)
+                HyBid.setLocationTracking(true)
+// Step 6: Set Interstitial skipOffet (Optional)
+                HyBid.setInterstitialSkipOffset(2)
+// Step 7: Set Targetting (Optional)
+                let targeting = HyBidTargetingModel()
+                targeting.age = 28
+                targeting.interests = ["music"]
+                targeting.gender = "f"     // "f" for female, "m" for male
+                HyBid.setTargeting(targeting)
+// Step 8: Set AppStore App ID (iOS14 +)
+                HyBid.setAppStoreAppID(appStoreID)
         return true
     }
 
