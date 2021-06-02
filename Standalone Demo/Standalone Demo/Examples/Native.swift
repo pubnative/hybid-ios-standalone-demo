@@ -37,7 +37,6 @@ class Native: UIViewController {
 // Step 4: Initialize the HyBidNativeAdLoader property
         nativeAdLoader.loadNativeAd(with: self, withZoneID: "7")
     }
-
 }
 
 // Step 5: Implement the HyBidNativeAdLoaderDelegate methods
