@@ -130,7 +130,7 @@
                                     <segue destination="br9-cj-Qh1" kind="show" id="mxf-5H-gX6"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GFu-Cj-FhR" userLabel="Banner Button">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GFu-Cj-FhR" userLabel="MRect Button">
                                 <rect key="frame" x="16" y="163" width="382" height="33"/>
                                 <color key="backgroundColor" red="0.85098618270000004" green="0.85097014900000001" blue="0.85098105670000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <accessibility key="accessibilityConfiguration" identifier="mRectButton" label="MRect Button"/>
@@ -591,7 +591,7 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5eL-70-YWD">
                                 <rect key="frame" x="57" y="49" width="300" height="250"/>
-                                <accessibility key="accessibilityConfiguration" identifier="bannerContainerView" label="Banner Container View">
+                                <accessibility key="accessibilityConfiguration" identifier="mRectContainerView" label="MRect Container View">
                                     <bool key="isElement" value="YES"/>
                                 </accessibility>
                                 <constraints>
@@ -627,9 +627,4 @@
             <point key="canvasLocation" x="-3999" y="402"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="itl-L8-5lY">
-            <size key="intrinsicContentSize" width="240" height="44"/>
-        </designable>
-    </designables>
 </document>
