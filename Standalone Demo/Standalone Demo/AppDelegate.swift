@@ -27,6 +27,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         HyBid.setTargeting(targeting)
 // Step 8: Set AppStore App ID (iOS14 +)
         HyBid.setAppStoreAppID(appStoreID)
+// Step 9: Set HyBid log level (Optional)
+        HyBidLogger.setLogLevel(HyBidLogLevelDebug)
         return true
     }
     

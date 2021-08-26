@@ -28,8 +28,11 @@
 #import "HyBidRemoteConfigModel.h"
 #import "HyBidAuction.h"
 #import "HyBidVastTagAdSource.h"
+#import "HyBidSignalDataProcessor.h"
+#import "HyBid.h"
+#import "HyBidError.h"
 
-@interface HyBidAdView()
+@interface HyBidAdView() <HyBidSignalDataProcessorDelegate>
 
 @property (nonatomic, strong) HyBidAdPresenter *adPresenter;
 @property (nonatomic, strong) NSString *zoneID;
@@ -61,8 +64,11 @@
 - (instancetype)initWithSize:(HyBidAdSize *)adSize {
     self = [super initWithFrame:CGRectMake(0, 0, adSize.width, adSize.height)];
     if (self) {
+        if (![HyBid isInitialized]) {
+            [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"HyBid SDK was not initialized. Please initialize it before creating a HyBidAdView. Check out https://github.com/pubnative/pubnative-hybid-ios-sdk/wiki/Setup-HyBid for the setup process."];
+        }
         self.adRequest = [[HyBidAdRequest alloc] init];
-        self.adRequest.openRTBAdType = BANNER;
+        self.adRequest.openRTBAdType = HyBidOpenRTBAdBanner;
         self.auctionResponses = [[NSMutableArray alloc]init];
         self.adSize = adSize;
         self.autoShowOnLoad = true;
@@ -84,7 +90,7 @@
     }
 }
 
-- (void)loadWithZoneID:(NSString *)zoneID withPosition:(BannerPosition)bannerPosition andWithDelegate:(NSObject<HyBidAdViewDelegate> *)delegate
+- (void)loadWithZoneID:(NSString *)zoneID withPosition:(HyBidBannerPosition)bannerPosition andWithDelegate:(NSObject<HyBidAdViewDelegate> *)delegate
 {
     self.bannerPosition = bannerPosition;
     [self loadWithZoneID:zoneID andWithDelegate:delegate];
@@ -96,7 +102,7 @@
     self.zoneID = zoneID;
     if (!self.zoneID || self.zoneID.length == 0) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(adView:didFailWithError:)]) {
-            [self.delegate adView:self didFailWithError:[NSError errorWithDomain:@"Invalid Zone ID provided." code:0 userInfo:nil]];
+            [self.delegate adView:self didFailWithError: [NSError hyBidInvalidZoneId]];
         }
     } else {
         HyBidRemoteConfigModel* configModel = HyBidRemoteConfigManager.sharedInstance.remoteConfigModel;
@@ -166,7 +172,7 @@
     [self renderAd];
 }
 
-- (void)show:(UIView *)adView withPosition:(BannerPosition)position
+- (void)show:(UIView *)adView withPosition:(HyBidBannerPosition)position
 {
     if (self.container == nil) {
         self.container = [[UIView alloc] init];
@@ -176,13 +182,13 @@
     [[self containerViewController].view addSubview:self.container];
     
     switch (position) {
-        case UNKNOWN:
+        case BANNER_POSITION_UNKNOWN:
             break;
-        case TOP:
-            [self setStickyBannerConstraintsAtPosition:TOP forView:self.container];
+        case BANNER_POSITION_TOP:
+            [self setStickyBannerConstraintsAtPosition:BANNER_POSITION_TOP forView:self.container];
             break;
-        case BOTTOM:
-            [self setStickyBannerConstraintsAtPosition:BOTTOM forView:self.container];
+        case BANNER_POSITION_BOTTOM:
+            [self setStickyBannerConstraintsAtPosition:BANNER_POSITION_BOTTOM forView:self.container];
             break;
     }
 }
@@ -192,24 +198,23 @@
     return [[[UIApplication sharedApplication].delegate.window.rootViewController childViewControllers] lastObject];
 }
 
-- (void)setStickyBannerConstraintsAtPosition:(BannerPosition)position forView:(UIView *)adView
+- (void)setStickyBannerConstraintsAtPosition:(HyBidBannerPosition)position forView:(UIView *)adView
 {
     adView.translatesAutoresizingMaskIntoConstraints = NO;
     [adView.widthAnchor constraintEqualToConstant:self.adSize.width].active = YES;
     [adView.heightAnchor constraintEqualToConstant:self.adSize.height].active = YES;
     [adView.centerXAnchor constraintEqualToAnchor:[self containerViewController].view.centerXAnchor].active = YES;
     if (@available(iOS 11.0, *)) {
-        [position == TOP ? adView.topAnchor : adView.bottomAnchor
-        constraintEqualToAnchor:
-        position == TOP ? [self containerViewController].view.safeAreaLayoutGuide.topAnchor : [self containerViewController].view.safeAreaLayoutGuide.bottomAnchor
-        constant:8.0].active = YES;
+        [position == BANNER_POSITION_TOP ? adView.topAnchor : adView.bottomAnchor
+                                     constraintEqualToAnchor:
+         position == BANNER_POSITION_TOP ? [self containerViewController].view.safeAreaLayoutGuide.topAnchor : [self containerViewController].view.safeAreaLayoutGuide.bottomAnchor constant:position == BANNER_POSITION_TOP ? 8.0 : -8.0].active = YES;
     } else {
         // Fallback on earlier versions
     }
 }
 
 - (void)setupAdView:(UIView *)adView {
-    if (self.bannerPosition == UNKNOWN) {
+    if (self.bannerPosition == BANNER_POSITION_UNKNOWN) {
         [self addSubview:adView];
     } else {
         [self show:adView withPosition:self.bannerPosition];
@@ -227,7 +232,7 @@
     self.adPresenter = [self createAdPresenter];
     if (!self.adPresenter) {
         [HyBidLogger errorLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"Could not create valid ad presenter."];
-        [self.delegate adView:self didFailWithError:[NSError errorWithDomain:@"The server has returned an unsupported ad asset." code:0 userInfo:nil]];
+        [self.delegate adView:self didFailWithError:[NSError hyBidUnsupportedAsset]];
         return;
     } else {
         [self.adPresenter load];
@@ -241,14 +246,14 @@
     if (adContent && [adContent length] != 0) {
         [self processAdContent:adContent];
     } else {
-        [self.delegate adView:self didFailWithError:[NSError errorWithDomain:@"The server has returned an invalid ad asset." code:0 userInfo:nil]];
+        [self.delegate adView:self didFailWithError:[NSError hyBidInvalidAsset]];
     }
 }
 
 - (void)processAdContent:(NSString *)adContent {
     HyBidSignalDataProcessor *signalDataProcessor = [[HyBidSignalDataProcessor alloc] init];
     signalDataProcessor.delegate = self;
-    [signalDataProcessor processSignalData:adContent withZoneID:self.zoneID];
+    [signalDataProcessor processSignalData:adContent];
 }
 
 - (void)startTracking {
@@ -280,7 +285,7 @@
     [HyBidLogger debugLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:[NSString stringWithFormat:@"Ad Request %@ loaded with ad: %@",request, ad]];
     if (!ad) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(adView:didFailWithError:)]) {
-            [self.delegate adView:self didFailWithError:[NSError errorWithDomain:@"Server returned nil ad." code:0 userInfo:nil]];
+            [self.delegate adView:self didFailWithError:[NSError hyBidNullAd]];
         }
     } else {
         self.ad = ad;
@@ -311,7 +316,7 @@
 - (void)adPresenter:(HyBidAdPresenter *)adPresenter didLoadWithAd:(UIView *)adView {
     if (!adView) {
         if (self.delegate && [self.delegate respondsToSelector:@selector(adView:didFailWithError:)]) {
-            [self.delegate adView:self didFailWithError:[NSError errorWithDomain:@"An error has occurred while rendering the ad." code:0 userInfo:nil]];
+            [self.delegate adView:self didFailWithError:[NSError hyBidRenderingBanner]];
         }
     } else {
         [self setupAdView:adView];

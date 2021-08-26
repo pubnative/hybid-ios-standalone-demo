@@ -111,11 +111,12 @@ FOUNDATION_EXPORT const unsigned char HyBidVersionString[];
 #import <HyBid/HyBidLogger.h>
 #import <HyBid/HyBidIntegrationType.h>
 #import <HyBid/HyBidAdSize.h>
-#import <HyBid/HyBidSignalDataProcessor.h>
 #import <HyBid/HyBidOpenRTBDataModel.h>
 #import <HyBid/HyBidReportingManager.h>
 #import <HyBid/HyBidReporting.h>
 #import <HyBid/HyBidReportingEvent.h>
+#import <HyBid/HyBidDiagnosticsManager.h>
+#import <HyBid/HyBidError.h>
 
 typedef void (^HyBidCompletionBlock)(BOOL);
 
@@ -129,9 +130,12 @@ typedef void (^HyBidCompletionBlock)(BOOL);
 + (void)setLocationTracking:(BOOL)enabled;
 + (void)setAppStoreAppID:(NSString *)appID;
 + (NSString *)sdkVersion;
++ (BOOL)isInitialized;
 + (void)setInterstitialSkipOffset:(NSInteger)seconds;
 + (void)setInterstitialCloseOnFinish:(BOOL)closeOnFinish;
 + (HyBidReportingManager *)reportingManager;
 + (void)setVideoAudioStatus:(HyBidAudioStatus)audioStatus;
++ (NSString*)getSDKVersionInfo;
++ (NSString*)getCustomRequestSignalData;
 
 @end

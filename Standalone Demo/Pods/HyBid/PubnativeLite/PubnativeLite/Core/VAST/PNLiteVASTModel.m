@@ -24,7 +24,7 @@
 #import "PNLiteVASTMediaFile.h"
 #import "PNLiteVASTXMLUtil.h"
 #import "HyBidLogger.h"
-#import <OMSDK_Pubnativenet/OMIDVerificationScriptResource.h>
+#import "OMIDVerificationScriptResource.h"
 
 @interface PNLiteVASTModel ()
 
@@ -241,7 +241,9 @@
                                               apiFramework:apiFramework
                                               url:urlString];
             
-            [mediaFileArray addObject:mediaFile];
+            if (mediaFile) {
+                [mediaFileArray addObject:mediaFile];
+            }
         }
     }
     
@@ -292,7 +294,9 @@
                 OMIDPubnativenetVerificationScriptResource *scriptResource = [[OMIDPubnativenetVerificationScriptResource alloc] initWithURL:[NSURL URLWithString:[url stringByReplacingOccurrencesOfString:@" " withString:@""]]
                                                                                                                                    vendorKey:vendor
                                                                                                                                   parameters:[params stringByReplacingOccurrencesOfString:@" " withString:@""]];
-                [scriptResourcesArray addObject:scriptResource];
+                if (scriptResource) {
+                    [scriptResourcesArray addObject:scriptResource];
+                }
             }
            
         }

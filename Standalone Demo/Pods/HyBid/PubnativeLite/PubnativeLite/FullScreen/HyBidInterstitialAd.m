@@ -27,8 +27,11 @@
 #import "HyBidLogger.h"
 #import "HyBidIntegrationType.h"
 #import "HyBidSettings.h"
+#import "HyBidSignalDataProcessor.h"
+#import "HyBid.h"
+#import "HyBidError.h"
 
-@interface HyBidInterstitialAd() <HyBidInterstitialPresenterDelegate, HyBidAdRequestDelegate>
+@interface HyBidInterstitialAd() <HyBidInterstitialPresenterDelegate, HyBidAdRequestDelegate, HyBidSignalDataProcessorDelegate>
 
 @property (nonatomic, strong) NSString *zoneID;
 @property (nonatomic, weak) NSObject<HyBidInterstitialAdDelegate> *delegate;
@@ -56,11 +59,14 @@
 - (instancetype)initWithZoneID:(NSString *)zoneID andWithDelegate:(NSObject<HyBidInterstitialAdDelegate> *)delegate {
     self = [super init];
     if (self) {
+        if (![HyBid isInitialized]) {
+            [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"HyBid SDK was not initialized. Please initialize it before creating a HyBidInterstitialAd. Check out https://github.com/pubnative/pubnative-hybid-ios-sdk/wiki/Setup-HyBid for the setup process."];
+        }
         self.interstitialAdRequest = [[HyBidInterstitialAdRequest alloc] init];
-        self.interstitialAdRequest.openRTBAdType = VIDEO;
+        self.interstitialAdRequest.openRTBAdType = HyBidOpenRTBAdVideo;
         self.zoneID = zoneID;
         self.delegate = delegate;
-        // Globack skipOffset will be used as placement offset if this one is not set previously.
+        // Global skipOffset will be used as placement offset if this one is not set previously.
         if ([HyBidSettings sharedInstance].skipOffset > 0 && _skipOffset <= 0 ) {
             [self setSkipOffset:[HyBidSettings sharedInstance].skipOffset];
         }
@@ -75,7 +81,7 @@
 - (void)load {
     [self cleanUp];
     if (!self.zoneID || self.zoneID.length == 0) {
-        [self invokeDidFailWithError:[NSError errorWithDomain:@"Invalid Zone ID provided." code:0 userInfo:nil]];
+        [self invokeDidFailWithError:[NSError hyBidInvalidZoneId]];
     } else {
         self.isReady = NO;
         [self.interstitialAdRequest setIntegrationType: self.isMediation ? MEDIATION : STANDALONE withZoneID: self.zoneID];
@@ -99,7 +105,7 @@
     if (adContent && [adContent length] != 0) {
         [self processAdContent:adContent];
     } else {
-        [self invokeDidFailWithError:[NSError errorWithDomain:@"The server has returned an invalid ad asset" code:0 userInfo:nil]];
+        [self invokeDidFailWithError:[NSError hyBidInvalidAsset]];
     }
 }
 
@@ -111,7 +117,7 @@
 - (void)processAdContent:(NSString *)adContent {
     HyBidSignalDataProcessor *signalDataProcessor = [[HyBidSignalDataProcessor alloc] init];
     signalDataProcessor.delegate = self;
-    [signalDataProcessor processSignalData:adContent withZoneID:self.zoneID];
+    [signalDataProcessor processSignalData:adContent];
 }
 
 - (void)show {
@@ -139,7 +145,7 @@
     self.interstitialPresenter = [interstitalPresenterFactory createInterstitalPresenterWithAd:ad withSkipOffset:self.skipOffset withCloseOnFinish:self.closeOnFinish withDelegate:self];
     if (!self.interstitialPresenter) {
         [HyBidLogger errorLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"Could not create valid interstitial presenter."];
-        [self invokeDidFailWithError:[NSError errorWithDomain:@"The server has returned an unsupported ad asset." code:0 userInfo:nil]];
+        [self invokeDidFailWithError:[NSError hyBidUnsupportedAsset]];
         return;
     } else {
         [self.interstitialPresenter load];
@@ -194,7 +200,7 @@
 - (void)request:(HyBidAdRequest *)request didLoadWithAd:(HyBidAd *)ad {
     [HyBidLogger debugLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:[NSString stringWithFormat:@"Ad Request %@ loaded with ad: %@",request, ad]];
     if (!ad) {
-        [self invokeDidFailWithError:[NSError errorWithDomain:@"Server returned nil ad." code:0 userInfo:nil]];
+        [self invokeDidFailWithError:[NSError hyBidNullAd]];
     } else {
         self.ad = ad;
         [self renderAd:ad];

@@ -24,16 +24,24 @@
 #import "PNLiteResponseModel.h"
 #import "HyBidLogger.h"
 #import "HyBidAd.h"
+#import "HyBidAdCache.h"
 #import "PNLiteAssetGroupType.h"
 #import "HyBidVideoAdProcessor.h"
 #import "HyBidVideoAdCacheItem.h"
 #import "HyBidVideoAdCache.h"
+#import "HyBidSignalDataModel.h"
+#import "PNLiteHttpRequest.h"
+#import "HyBidError.h"
 
 NSString *const HyBidSignalDataResponseOK = @"ok";
+NSString *const HyBidSignalDataResponseError = @"error";
+NSInteger const HyBidSignalDataResponseStatusOK = 200;
+NSInteger const HyBidSignalDataResponseStatusRequestMalformed = 422;
 
-@interface HyBidSignalDataProcessor()
+@interface HyBidSignalDataProcessor() <PNLiteHttpRequestDelegate>
 
 @property (nonatomic, strong) HyBidAd *ad;
+@property (nonatomic, strong) HyBidSignalDataModel *signalDataModel;
 
 @end
 
@@ -41,6 +49,7 @@ NSString *const HyBidSignalDataResponseOK = @"ok";
 
 - (void)dealloc {
     self.ad = nil;
+    self.signalDataModel = nil;
     self.delegate = nil;
 }
 
@@ -57,75 +66,21 @@ NSString *const HyBidSignalDataResponseOK = @"ok";
     }
 }
 
-- (void)processSignalData:(NSString *)signalDataString withZoneID:(NSString *)zoneID {
+- (void)processSignalData:(NSString *)signalDataString {
     NSData *signalData = [signalDataString dataUsingEncoding:NSUTF8StringEncoding];
     NSDictionary *jsonDictonary = [self createDictionaryFromData:signalData];
     if (jsonDictonary) {
-        PNLiteResponseModel *response = [[PNLiteResponseModel alloc] initWithDictionary:jsonDictonary];
-        if(!response) {
-            NSError *error = [NSError errorWithDomain:@"Can't parse JSON from server"
-                                                 code:0
-                                             userInfo:nil];
-            [self invokeDidFail:error];
-        } else if ([HyBidSignalDataResponseOK isEqualToString:response.status]) {
-            NSMutableArray *responseAdArray = [[NSArray array] mutableCopy];
-            for (HyBidAdModel *adModel in response.ads) {
-                HyBidAd *ad = [[HyBidAd alloc] initWithData:adModel withZoneID:zoneID];
-                [responseAdArray addObject:ad];
-                switch (ad.assetGroupID.integerValue) {
-                    case VAST_INTERSTITIAL:
-                    case VAST_MRECT: {
-                        HyBidVideoAdProcessor *videoAdProcessor = [[HyBidVideoAdProcessor alloc] init];
-                        [videoAdProcessor processVASTString:ad.vast completion:^(PNLiteVASTModel *vastModel, NSError *error) {
-                            if (!vastModel) {
-                                [self invokeDidFail:error];
-                            } else {
-                                HyBidVideoAdCacheItem *videoAdCacheItem = [[HyBidVideoAdCacheItem alloc] init];
-                                videoAdCacheItem.vastModel = vastModel;
-                                [[HyBidVideoAdCache sharedInstance] putVideoAdCacheItemToCache:videoAdCacheItem withZoneID:zoneID];
-                                self.ad = [[HyBidAd alloc] initWithAssetGroup:ad.assetGroupID.integerValue withAdContent:signalDataString withAdType:kHyBidAdTypeVideo];
-                                [self invokeDidLoad:self.ad];
-                            }
-                        }];
-                        break;
-                    }
-                    case MRAID_320x480: {
-                        if (responseAdArray.count > 0) {
-                            self.ad = [[HyBidAd alloc] initWithAssetGroup:ad.assetGroupID.integerValue withAdContent:signalDataString withAdType:kHyBidAdTypeHTML];
-                            [self invokeDidLoad:self.ad];
-                        } else {
-                            NSError *error = [NSError errorWithDomain:@"No fill"
-                                                                 code:0
-                                                             userInfo:nil];
-                            [self invokeDidFail:error];
-                        }
-                        break;
-                    }
-                    default:
-                        if (responseAdArray.count > 0) {
-                            [self invokeDidLoad:responseAdArray.firstObject];
-                        } else {
-                            NSError *error = [NSError errorWithDomain:@"No fill"
-                                                                 code:0
-                                                             userInfo:nil];
-                            [self invokeDidFail:error];
-                        }
-                        break;
-                }
+        self.signalDataModel = [[HyBidSignalDataModel alloc] initWithDictionary:jsonDictonary];
+        if(!self.signalDataModel) {
+            [self invokeDidFail:[NSError hyBidParseError]];
+        } else if ([HyBidSignalDataResponseOK isEqualToString: self.signalDataModel.status]) {
+            if (self.signalDataModel.admurl && self.signalDataModel.admurl.length != 0) {
+                [[PNLiteHttpRequest alloc] startWithUrlString:self.signalDataModel.admurl withMethod:@"GET" delegate:self];
+            } else {
+                [self invokeDidFail:[NSError hyBidInvalidUrl]];
             }
-            
-            if (responseAdArray.count <= 0) {
-                NSError *error = [NSError errorWithDomain:@"No fill"
-                                                     code:0
-                                                 userInfo:nil];
-                [self invokeDidFail:error];
-            }
-            
         } else {
-            NSString *errorMessage = [NSString stringWithFormat:@"HyBidSignalDataProcessor - %@", response.errorMessage];
-            NSError *responseError = [NSError errorWithDomain:errorMessage
-                                                         code:0
-                                                     userInfo:nil];
+            NSError *responseError = [NSError hyBidInvalidSignalData];
             [self invokeDidFail:responseError];
         }
     }
@@ -144,6 +99,82 @@ NSString *const HyBidSignalDataResponseOK = @"ok";
         [self.delegate signalDataDidFinishWithAd:ad];
     }
     self.delegate = nil;
+}
+
+- (void)processResponseWithData:(NSData *)data {
+    NSDictionary *jsonDictonary = [self createDictionaryFromData:data];
+    if (jsonDictonary) {
+        PNLiteResponseModel *response = [[PNLiteResponseModel alloc] initWithDictionary:jsonDictonary];
+        
+        if(!response) {
+            NSError *error = [NSError hyBidParseError];
+            [self invokeDidFail:error];
+        } else if ([HyBidSignalDataResponseOK isEqualToString:response.status]) {
+            NSMutableArray *responseAdArray = [[NSArray array] mutableCopy];
+            for (HyBidAdModel *adModel in response.ads) {
+                HyBidAd *ad = [[HyBidAd alloc] initWithData:adModel withZoneID: self.signalDataModel.tagid];
+                
+                [[HyBidAdCache sharedInstance] putAdToCache:ad withZoneID: self.signalDataModel.tagid];
+                [responseAdArray addObject:ad];
+                switch (ad.assetGroupID.integerValue) {
+                    case VAST_INTERSTITIAL:
+                    case VAST_MRECT: {
+                        HyBidVideoAdProcessor *videoAdProcessor = [[HyBidVideoAdProcessor alloc] init];
+                        [videoAdProcessor processVASTString:ad.vast completion:^(PNLiteVASTModel *vastModel, NSError *error) {
+                            if (!vastModel) {
+                                [self invokeDidFail:error];
+                            } else {
+                                HyBidVideoAdCacheItem *videoAdCacheItem = [[HyBidVideoAdCacheItem alloc] init];
+                                videoAdCacheItem.vastModel = vastModel;
+                                [[HyBidVideoAdCache sharedInstance] putVideoAdCacheItemToCache:videoAdCacheItem withZoneID: self.signalDataModel.tagid];
+                                [self invokeDidLoad:ad];
+                            }
+                        }];
+                        break;
+                    }
+                    default:
+                        if (responseAdArray.count > 0) {
+                            [self invokeDidLoad:responseAdArray.firstObject];
+                        } else {
+                            NSError *error = [NSError hyBidNoFill];
+                            [self invokeDidFail:error];
+                        }
+                        break;
+                }
+            }
+            
+            if (responseAdArray.count <= 0) {
+                NSError *error = [NSError hyBidNoFill];
+                [self invokeDidFail:error];
+            }
+            
+        } else {
+            NSError *responseError = [NSError hyBidServerErrorWithMessage: response.errorMessage];
+            [self invokeDidFail:responseError];
+        }
+    }
+}
+
+#pragma mark PNLiteHttpRequestDelegate
+
+- (void)request:(PNLiteHttpRequest *)request didFinishWithData:(NSData *)data statusCode:(NSInteger)statusCode {
+    if(HyBidSignalDataResponseStatusOK == statusCode ||
+       HyBidSignalDataResponseStatusRequestMalformed == statusCode) {
+        
+        NSString *responseString;
+        if ([self createDictionaryFromData:data]) {
+                responseString = [NSString stringWithFormat:@"%@", [self createDictionaryFromData:data]];
+        } else {
+                responseString = [NSString stringWithFormat:@"Error while creating a JSON Object with the response. Here is the raw data: \r\r%@", [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
+        }
+        [self processResponseWithData:data];
+    } else {
+        [self invokeDidFail:[NSError hyBidServerError]];
+    }
+}
+
+- (void)request:(PNLiteHttpRequest *)request didFailWithError:(NSError *)error {
+    [self invokeDidFail:error];
 }
 
 @end
