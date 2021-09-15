@@ -10,11 +10,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 // Step 2: Setup & Initialize HyBid SDK
-        HyBid.initWithAppToken(appToken) { success in
-            if (success) {
-                print("HyBid iOS SDK successfully initialized!")
-            }
-        }
+        HyBid.initWithAppToken(appToken, completion: nil)
 // Step 3: Set COPPA (Optional)
         HyBid.setCoppa(false)
 // Step 4: Set Test Mode (Optional)
