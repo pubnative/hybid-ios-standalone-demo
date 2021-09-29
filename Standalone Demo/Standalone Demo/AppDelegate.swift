@@ -25,9 +25,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         targeting.interests = ["music"]
         targeting.gender = "f"     // "f" for female, "m" for male
         HyBid.setTargeting(targeting)
-// Step 8: Set AppStore App ID (iOS14 +)
-        HyBid.setAppStoreAppID(appStoreID)
-// Step 9: Set HyBid log level (Optional)
+// Step 8: Set HyBid log level (Optional)
         HyBidLogger.setLogLevel(HyBidLogLevelDebug)
         return true
     }
