@@ -21,6 +21,8 @@ class Interstitial: UIViewController {
         showAdButton.isHidden = true
 // Step 4: Set an optional skipOffset value
         interstitialAd.setSkipOffset(5)
+// Step 3.1: Enable auto caching of ad on load (Optional)
+        interstitialAd.isAutoCacheOnLoad = true
 // Step 5: Request a HyBidAd
         interstitialAd.load()
     }

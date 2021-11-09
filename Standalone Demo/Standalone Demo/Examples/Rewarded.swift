@@ -18,6 +18,8 @@ class Rewarded: UIViewController {
     @IBAction func loadAdTouchUpInside(_ sender: UIButton) {
         activityIndicator.startAnimating()
         showAdButton.isHidden = true
+// Step 3.1: Enable auto caching of ad on load (Optional)
+        rewardedAd.isAutoCacheOnLoad = true
 // Step 4: Request a HyBidAd
         rewardedAd.load()
     }

@@ -20,6 +20,8 @@ class Banner: UIViewController {
     @IBAction func loadAdTouchUpInside(_ sender: UIButton) {
         activityIndicator.startAnimating()
         bannerAdContainer.isHidden = true
+// Step 3.1: Enable auto caching of ad on load (Optional)
+        bannerAdView.isAutoCacheOnLoad = true
 // Step 4: Request a HyBidAd
         bannerAdView.load(withZoneID: "2", andWith: self)
     }
