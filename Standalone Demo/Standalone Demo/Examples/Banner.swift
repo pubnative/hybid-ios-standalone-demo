@@ -20,14 +20,14 @@ class Banner: UIViewController {
     @IBAction func loadAdTouchUpInside(_ sender: UIButton) {
         activityIndicator.startAnimating()
         bannerAdContainer.isHidden = true
-// Step 3.1: Enable auto caching of ad on load (Optional)
+// Step 4: Enable auto caching of ad on load (Optional)
         bannerAdView.isAutoCacheOnLoad = true
-// Step 4: Request a HyBidAd
+// Step 5: Request a HyBidAd
         bannerAdView.load(withZoneID: "2", andWith: self)
     }
 }
 
-// Step 5: Implement the HyBidAdViewDelegate methods
+// Step 6: Implement the HyBidAdViewDelegate methods
 extension Banner : HyBidAdViewDelegate {
     func adViewDidLoad(_ adView: HyBidAdView!) {
         print("Banner Ad View did load:")

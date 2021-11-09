@@ -18,21 +18,21 @@ class Rewarded: UIViewController {
     @IBAction func loadAdTouchUpInside(_ sender: UIButton) {
         activityIndicator.startAnimating()
         showAdButton.isHidden = true
-// Step 3.1: Enable auto caching of ad on load (Optional)
+// Step 4: Enable auto caching of ad on load (Optional)
         rewardedAd.isAutoCacheOnLoad = true
-// Step 4: Request a HyBidAd
+// Step 5: Request a HyBidAd
         rewardedAd.load()
     }
     
     @IBAction func showAdTouchUpInside(_ sender: UIButton) {
-// Step 6: Check isReady property whether the ad has been loaded and is ready to be displayed
+// Step 7: Check isReady property whether the ad has been loaded and is ready to be displayed
         if rewardedAd.isReady {
             rewardedAd.show()
         }
     }
 }
 
-// Step 5: Implement the HyBidRewardedAdDelegate methods
+// Step 6: Implement the HyBidRewardedAdDelegate methods
 extension Rewarded : HyBidRewardedAdDelegate {
     func rewardedDidLoad() {
         print("Rewarded Ad did load:")
