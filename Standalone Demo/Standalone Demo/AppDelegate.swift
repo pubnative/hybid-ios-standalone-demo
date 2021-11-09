@@ -21,13 +21,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         HyBid.setHTMLInterstitialSkipOffset(2)
 // Step 7: Set Video Interstitial skipOffet (Optional)
         HyBid.setVideoInterstitialSkipOffset(5)
-// Step 8: Set Targetting (Optional)
+// Step 8: Set Custom Click Behaviour (Optional)
+        HyBid.setInterstitialActionBehaviour(HB_CREATIVE)
+// Step 9: Set Targetting (Optional)
         let targeting = HyBidTargetingModel()
         targeting.age = 28
         targeting.interests = ["music"]
         targeting.gender = "f"     // "f" for female, "m" for male
         HyBid.setTargeting(targeting)
-// Step 9: Set HyBid log level (Optional)
+// Step 10: Set HyBid log level (Optional)
         HyBidLogger.setLogLevel(HyBidLogLevelDebug)
         return true
     }
