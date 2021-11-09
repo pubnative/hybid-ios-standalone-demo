@@ -22,7 +22,7 @@ class Native: UIViewController {
     var nativeAd = HyBidNativeAd()
     
     deinit {
-// Step 12: Stop tracking the nativeAd
+// Step 13: Stop tracking the nativeAd
         nativeAd.stopTracking()
     }
     
@@ -56,7 +56,7 @@ extension Native : HyBidNativeAdLoaderDelegate {
 // Step 8: Implement the HyBidNativeAdFetchDelegate methods
 extension Native : HyBidNativeAdFetchDelegate {
     func nativeAdDidFinishFetching(_ nativeAd: HyBidNativeAd!) {
-        // Step 9: Create a HyBidNativeAdRenderer property and bind all view elements
+        // Step 10: Create a HyBidNativeAdRenderer property and bind all view elements
         let renderer = HyBidNativeAdRenderer()
         renderer.contentInfoView = self.nativeAdContentInfo;
         renderer.iconView = self.nativeAdIcon;
@@ -69,7 +69,7 @@ extension Native : HyBidNativeAdFetchDelegate {
         self.nativeAd.renderAd(renderer)
         
         nativeAdContainer.isHidden = false
-        // Step 10: Start tracking the nativeAd
+        // Step 11: Start tracking the nativeAd
         self.nativeAd.startTrackingView(self.nativeAdContainer, with: self)
         
         activityIndicator.stopAnimating()
@@ -81,7 +81,7 @@ extension Native : HyBidNativeAdFetchDelegate {
     }
 }
 
-// Step 11: Implement the HyBidNativeAdDelegate methods
+// Step 12: Implement the HyBidNativeAdDelegate methods
 extension Native : HyBidNativeAdDelegate {
     func nativeAd(_ nativeAd: HyBidNativeAd!, impressionConfirmedWith view: UIView!) {
         print("Native Ad did track impression:")
