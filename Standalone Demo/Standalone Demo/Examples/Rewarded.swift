@@ -38,6 +38,9 @@ extension Rewarded : HyBidRewardedAdDelegate {
         print("Rewarded Ad did load:")
         activityIndicator.stopAnimating()
         showAdButton.isHidden = false
+        
+// Step 4.1: Call `prepare` method if `rewardedAd.isAutoCacheOnLoad` set to `false`, to force a creative cache (Optional)
+        // rewardedAd.prepare()
     }
     
     func rewardedDidFailWithError(_ error: Error!) {

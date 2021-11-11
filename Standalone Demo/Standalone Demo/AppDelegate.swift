@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         HyBid.setVideoInterstitialSkipOffset(5)
 // Step 8: Set Custom Click Behaviour (Optional)
         HyBid.setInterstitialActionBehaviour(HB_CREATIVE)
-// Step 9: Set Targetting (Optional)
+// Step 9: Set Targeting (Optional)
         let targeting = HyBidTargetingModel()
         targeting.age = 28
         targeting.interests = ["music"]

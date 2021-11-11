@@ -33,6 +33,9 @@ extension Banner : HyBidAdViewDelegate {
         print("Banner Ad View did load:")
         bannerAdContainer.isHidden = false
         activityIndicator.stopAnimating()
+        
+// Step 4.1: Call `prepare` method if `bannerAdView.isAutoCacheOnLoad` set to `false`, to force a creative cache (Optional)
+        // bannerAdView.prepare()
     }
     
     func adView(_ adView: HyBidAdView!, didFailWithError error: Error!) {

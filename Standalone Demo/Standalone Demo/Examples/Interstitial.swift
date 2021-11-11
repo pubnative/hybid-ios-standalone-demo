@@ -20,9 +20,9 @@ class Interstitial: UIViewController {
         activityIndicator.startAnimating()
         showAdButton.isHidden = true
 // Step 4: Set HTML Interstitial skipOffet (Optional)
-        HyBid.setHTMLInterstitialSkipOffset(2)
+        interstitialAd.setHTMLSkipOffset(2)
 // Step 5: Set Video Interstitial skipOffet (Optional)
-        HyBid.setVideoInterstitialSkipOffset(5)
+        interstitialAd.setVideoSkipOffset(5)
 // Step 6: Enable auto caching of ad on load (Optional)
         interstitialAd.isAutoCacheOnLoad = true
 // Step 7: Request a HyBidAd
@@ -43,6 +43,8 @@ extension Interstitial : HyBidInterstitialAdDelegate {
         print("Interstitial did load:")
         activityIndicator.stopAnimating()
         showAdButton.isHidden = false
+// Step 6.1: Call `prepare` method if `interstitialAd.isAutoCacheOnLoad` set to `false`, to force a creative cache (Optional)
+        // interstitialAd.prepare()
     }
     
     func interstitialDidFailWithError(_ error: Error!) {
