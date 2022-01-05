@@ -1,3 +1,3 @@
 ${PODS_ROOT}/Target Support Files/Pods-Standalone Demo/Pods-Standalone Demo-frameworks.sh
 ${BUILT_PRODUCTS_DIR}/HyBid/HyBid.framework
-${PODS_XCFRAMEWORKS_BUILD_DIR}/OMSDK_Pubnativenet/OMSDK_Pubnativenet.framework/OMSDK_Pubnativenet
+${PODS_XCFRAMEWORKS_BUILD_DIR}/HyBid/Core/OMSDK_Pubnativenet.framework/OMSDK_Pubnativenet
