@@ -1,0 +1,30 @@
+PODS:
+  - HyBid (2.12.1):
+    - HyBid/Banner (= 2.12.1)
+    - HyBid/Core (= 2.12.1)
+    - HyBid/FullScreen (= 2.12.1)
+    - HyBid/Native (= 2.12.1)
+    - HyBid/RewardedVideo (= 2.12.1)
+  - HyBid/Banner (2.12.1):
+    - HyBid/Core
+  - HyBid/Core (2.12.1)
+  - HyBid/FullScreen (2.12.1):
+    - HyBid/Core
+  - HyBid/Native (2.12.1):
+    - HyBid/Core
+  - HyBid/RewardedVideo (2.12.1):
+    - HyBid/Core
+
+DEPENDENCIES:
+  - HyBid (= 2.12.1)
+
+SPEC REPOS:
+  trunk:
+    - HyBid
+
+SPEC CHECKSUMS:
+  HyBid: 92cba3dff0ae06a48c8476fb7cc3a16215dd3e21
+
+PODFILE CHECKSUM: 1a00271f0af104e8b29e71d4686f0a2b3af07056
+
+COCOAPODS: 1.11.2
