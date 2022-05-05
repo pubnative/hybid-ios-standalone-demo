@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		349A62962823E1F100ECC85B /* HyBid.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349A62922823E1AD00ECC85B /* HyBid.xcframework */; };
+		349A62972823E1F100ECC85B /* HyBid.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 349A62922823E1AD00ECC85B /* HyBid.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		349A62992823E1F200ECC85B /* OMSDK_Pubnativenet.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 349A62942823E1BA00ECC85B /* OMSDK_Pubnativenet.xcframework */; };
+		349A629A2823E1F200ECC85B /* OMSDK_Pubnativenet.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 349A62942823E1BA00ECC85B /* OMSDK_Pubnativenet.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		34E9446827FC79C40080C2B5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9446727FC79C40080C2B5 /* AppDelegate.m */; };
 		34E9446B27FC79C40080C2B5 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9446A27FC79C40080C2B5 /* SceneDelegate.m */; };
 		34E9447127FC79C40080C2B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34E9446F27FC79C40080C2B5 /* Main.storyboard */; };
@@ -22,8 +26,25 @@
 		3977846CC8AE859CBF015E07 /* Pods_Standalone_Demo___ObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9D90B92254FD51B6C29E05 /* Pods_Standalone_Demo___ObjC.framework */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		349A62982823E1F100ECC85B /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				349A62972823E1F100ECC85B /* HyBid.xcframework in Embed Frameworks */,
+				349A629A2823E1F200ECC85B /* OMSDK_Pubnativenet.xcframework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		0FE1BFF645C35F9370A030FF /* Pods-Standalone Demo - ObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Standalone Demo - ObjC.debug.xcconfig"; path = "Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC.debug.xcconfig"; sourceTree = "<group>"; };
+		349A62922823E1AD00ECC85B /* HyBid.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = HyBid.xcframework; path = "../../../../../../../../../Downloads/HyBid 2.12.1-beta2/HyBid.xcframework"; sourceTree = "<group>"; };
+		349A62942823E1BA00ECC85B /* OMSDK_Pubnativenet.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = OMSDK_Pubnativenet.xcframework; path = "../../../../../../../../../Downloads/HyBid 2.12.1-beta2/OMSDK_Pubnativenet/OMSDK_Pubnativenet.xcframework"; sourceTree = "<group>"; };
 		34E9446327FC79C40080C2B5 /* Standalone Demo - ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Standalone Demo - ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34E9446627FC79C40080C2B5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34E9446727FC79C40080C2B5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -54,6 +75,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				349A62962823E1F100ECC85B /* HyBid.xcframework in Frameworks */,
+				349A62992823E1F200ECC85B /* OMSDK_Pubnativenet.xcframework in Frameworks */,
 				3977846CC8AE859CBF015E07 /* Pods_Standalone_Demo___ObjC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -86,6 +109,8 @@
 				34E9446727FC79C40080C2B5 /* AppDelegate.m */,
 				34E9446927FC79C40080C2B5 /* SceneDelegate.h */,
 				34E9446A27FC79C40080C2B5 /* SceneDelegate.m */,
+				349A62922823E1AD00ECC85B /* HyBid.xcframework */,
+				349A62942823E1BA00ECC85B /* OMSDK_Pubnativenet.xcframework */,
 				34E9448527FC7C860080C2B5 /* Examples */,
 				34E9447F27FC7A880080C2B5 /* Storyboards */,
 				34E9447227FC79C50080C2B5 /* Assets.xcassets */,
@@ -150,7 +175,7 @@
 				34E9445F27FC79C40080C2B5 /* Sources */,
 				34E9446027FC79C40080C2B5 /* Frameworks */,
 				34E9446127FC79C40080C2B5 /* Resources */,
-				C1F30A44B7F4373E6C7E6F50 /* [CP] Embed Pods Frameworks */,
+				349A62982823E1F100ECC85B /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -208,23 +233,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		C1F30A44B7F4373E6C7E6F50 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		D434F188E8E74B519B3AAB21 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
