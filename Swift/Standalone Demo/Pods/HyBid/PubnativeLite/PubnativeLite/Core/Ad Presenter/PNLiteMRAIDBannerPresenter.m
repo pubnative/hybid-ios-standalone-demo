@@ -25,12 +25,19 @@
 #import "HyBidMRAIDServiceDelegate.h"
 #import "HyBidMRAIDServiceProvider.h"
 #import "UIApplication+PNLiteTopViewController.h"
-#import "HyBidLogger.h"
 #import "HyBidSKAdNetworkViewController.h"
 #import "HyBidURLDriller.h"
 #import "HyBidError.h"
 
-@interface PNLiteMRAIDBannerPresenter () <HyBidMRAIDViewDelegate, HyBidMRAIDServiceDelegate, HyBidURLDrillerDelegate>
+#if __has_include(<HyBid/HyBid-Swift.h>)
+    #import <UIKit/UIKit.h>
+    #import <HyBid/HyBid-Swift.h>
+#else
+    #import <UIKit/UIKit.h>
+    #import "HyBid-Swift.h"
+#endif
+
+@interface PNLiteMRAIDBannerPresenter () <HyBidMRAIDViewDelegate, HyBidMRAIDServiceDelegate, HyBidURLDrillerDelegate, SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, strong) HyBidMRAIDServiceProvider *serviceProvider;
 @property (nonatomic, retain) HyBidMRAIDView *mraidView;
@@ -126,8 +133,9 @@
             [[HyBidURLDriller alloc] startDrillWithURLString:url.absoluteString delegate:self];
             dispatch_async(dispatch_get_main_queue(), ^{
                 HyBidSKAdNetworkViewController *skAdnetworkViewController = [[HyBidSKAdNetworkViewController alloc] initWithProductParameters:productParams];
-
+                skAdnetworkViewController.delegate = self;
                 [[UIApplication sharedApplication].topViewController presentViewController:skAdnetworkViewController animated:true completion:nil];
+                [self.delegate adPresenterDidDisappear:self];
             });
         } else {
             [self.serviceProvider openBrowser:url.absoluteString];
@@ -162,8 +170,9 @@
             [[HyBidURLDriller alloc] startDrillWithURLString:urlString delegate:self];
             dispatch_async(dispatch_get_main_queue(), ^{
                 HyBidSKAdNetworkViewController *skAdnetworkViewController = [[HyBidSKAdNetworkViewController alloc] initWithProductParameters:productParams];
-
+                skAdnetworkViewController.delegate = self;
                 [[UIApplication sharedApplication].topViewController presentViewController:skAdnetworkViewController animated:true completion:nil];
+                [self.delegate adPresenterDidDisappear:self];
             });
         } else {
             [self.serviceProvider openBrowser:urlString];
@@ -179,6 +188,12 @@
 
 - (void)mraidServiceStorePictureWithUrlString:(NSString *)urlString {
     [self.serviceProvider storePicture:urlString];
+}
+
+#pragma mark SKStoreProductViewControllerDelegate
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self.delegate adPresenterDidAppear:self];
 }
 
 @end

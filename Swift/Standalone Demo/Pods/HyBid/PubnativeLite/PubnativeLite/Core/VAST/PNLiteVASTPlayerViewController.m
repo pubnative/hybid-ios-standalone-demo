@@ -27,16 +27,22 @@
 #import "HyBidVASTMediaFilePicker.h"
 #import "PNLiteProgressLabel.h"
 #import "UIApplication+PNLiteTopViewController.h"
-#import "HyBidLogger.h"
 #import "HyBidViewabilityNativeVideoAdSession.h"
 #import <OMSDK_Pubnativenet/OMIDAdSession.h>
 #import "HyBidAd.h"
 #import "HyBidSKAdNetworkViewController.h"
-#import "HyBidSettings.h"
 #import "HyBidURLDriller.h"
 #import "HyBidError.h"
 #import "HyBid.h"
 #import "HyBidVASTIconUtils.h"
+
+#if __has_include(<HyBid/HyBid-Swift.h>)
+    #import <UIKit/UIKit.h>
+    #import <HyBid/HyBid-Swift.h>
+#else
+    #import <UIKit/UIKit.h>
+    #import "HyBid-Swift.h"
+#endif
 
 NSString * const PNLiteVASTPlayerStatusKeyPath         = @"status";
 NSString * const PNLiteVASTPlayerBundleName            = @"player.resources";
@@ -70,7 +76,7 @@ typedef enum : NSUInteger {
     PNLiteVASTPlaybackState_FourthQuartile = 1 << 3
 }PNLiteVASTPlaybackState;
 
-@interface PNLiteVASTPlayerViewController ()<HyBidVASTEventProcessorDelegate, HyBidContentInfoViewDelegate, HyBidURLDrillerDelegate>
+@interface PNLiteVASTPlayerViewController ()<HyBidVASTEventProcessorDelegate, HyBidContentInfoViewDelegate, HyBidURLDrillerDelegate, SKStoreProductViewControllerDelegate>
 
 @property (nonatomic, assign) BOOL shown;
 @property (nonatomic, assign) BOOL wantsToPlay;
@@ -630,7 +636,7 @@ typedef enum : NSUInteger {
                         
             dispatch_async(dispatch_get_main_queue(), ^{
                 HyBidSKAdNetworkViewController *skAdnetworkViewController = [[HyBidSKAdNetworkViewController alloc] initWithProductParameters:productParams];
-
+                skAdnetworkViewController.delegate = self;
                 [[UIApplication sharedApplication].topViewController presentViewController:skAdnetworkViewController animated:true completion:nil];
             });
         } else {
@@ -1053,6 +1059,12 @@ typedef enum : NSUInteger {
     self.contentInfoViewWidthConstraint.constant = [width floatValue];
     [self setConstraintsForPlayerElementsInFullscreen:self.fullScreen];
     [self.view layoutIfNeeded];
+}
+
+#pragma mark SKStoreProductViewControllerDelegate
+
+- (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
+    [self.delegate vastPlayerDidCloseOffer:self];
 }
 
 #pragma mark - Utils: check for bundle resource existance.
