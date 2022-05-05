@@ -23,16 +23,30 @@
 #import "PNLiteAdPresenterDecorator.h"
 #import "HyBidViewabilityAdSession.h"
 #import "HyBid.h"
-#import "PNLiteAssetGroupType.h"
+#import <StoreKit/SKOverlay.h>
+#import <StoreKit/SKOverlayConfiguration.h>
+#import "UIApplication+PNLiteTopViewController.h"
 
-@interface PNLiteAdPresenterDecorator ()
+#if __has_include(<HyBid/HyBid-Swift.h>)
+    #import <UIKit/UIKit.h>
+    #import <HyBid/HyBid-Swift.h>
+#else
+    #import <UIKit/UIKit.h>
+    #import "HyBid-Swift.h"
+#endif
+
+@interface PNLiteAdPresenterDecorator () <SKOverlayDelegate>
 
 @property (nonatomic, strong) HyBidAdPresenter *adPresenter;
 @property (nonatomic, strong) HyBidAdTracker *adTracker;
 @property (nonatomic, weak) NSObject<HyBidAdPresenterDelegate> *adPresenterDelegate;
 @property (nonatomic, strong) NSMutableDictionary *errorReportingProperties;
+@property (nonatomic, strong) SKOverlay *overlay API_AVAILABLE(ios(14.0));
+@property (nonatomic, assign) BOOL isOverlayShown;
 
 @end
+
+NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserDefaultsHyBidCurrentBannerPresenterDecorator";
 
 @implementation PNLiteAdPresenterDecorator
 
@@ -42,7 +56,13 @@
     self.adTracker = nil;
     self.adPresenterDelegate = nil;
     self.errorReportingProperties = nil;
-}
+    if (@available(iOS 14.0, *)) {
+        if (self.overlay) {
+            self.overlay = nil;
+        }
+    } else {
+        [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"SKOverlay is available from iOS 14.0"];
+    }}
 
 - (void)load {
     [self.adPresenter load];
@@ -50,10 +70,12 @@
 
 - (void)startTracking {
     [self.adPresenter startTracking];
+    [self presentSKOverlay];
 }
 
 - (void)stopTracking {
     [self.adPresenter stopTracking];
+    [self dismissSKOverlay];
 }
 
 - (instancetype)initWithAdPresenter:(HyBidAdPresenter *)adPresenter
@@ -62,6 +84,7 @@
     self = [super init];
     if (self) {
         self.adPresenter = adPresenter;
+        [NSUserDefaults.standardUserDefaults setValue:self.description forKeyPath:kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey];
         self.adTracker = adTracker;
         self.adPresenterDelegate = delegate;
         self.errorReportingProperties = [NSMutableDictionary new];
@@ -92,6 +115,35 @@
     }
 }
 
+- (void)presentSKOverlay {
+    if ([HyBidSettings sharedInstance].bannerSKOverlay) {
+        if (@available(iOS 14.0, *)) {
+            if (self.overlay) {
+                if (!self.isOverlayShown) {
+                    [self.overlay presentInScene:[UIApplication sharedApplication].topViewController.view.window.windowScene];
+                }
+            }
+        } else {
+            [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"SKOverlay is available from iOS 14.0"];
+        }
+    }
+}
+
+- (void)dismissSKOverlay {
+    NSString *currentBannerPresenterDecoratorDescription = [NSUserDefaults.standardUserDefaults stringForKey:kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey];
+    if ([HyBidSettings sharedInstance].bannerSKOverlay) {
+        if (@available(iOS 14.0, *)) {
+            if ([currentBannerPresenterDecoratorDescription isEqualToString:self.description]) {
+                if (self.overlay) {
+                    [SKOverlay dismissOverlayInScene:[UIApplication sharedApplication].topViewController.view.window.windowScene];
+                }
+            }
+        } else {
+            [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"SKOverlay is available from iOS 14.0"];
+        }
+    }
+}
+
 #pragma mark HyBidAdPresenterDelegate
 
 - (void)adPresenter:(HyBidAdPresenter *)adPresenter didLoadWithAd:(UIView *)adView {
@@ -100,6 +152,22 @@
             [self.adTracker trackImpressionWithAdFormat:HyBidReportingAdFormat.BANNER];
         }
         [self.adPresenterDelegate adPresenter:adPresenter didLoadWithAd:adView];
+        if ([HyBidSettings sharedInstance].bannerSKOverlay) {
+            if (@available(iOS 14.0, *)) {
+                HyBidSkAdNetworkModel* skAdNetworkModel = adPresenter.ad.isUsingOpenRTB ? [adPresenter.ad getOpenRTBSkAdNetworkModel] : [adPresenter.ad getSkAdNetworkModel];
+                NSString *appIdentifier = [skAdNetworkModel.productParameters objectForKey:@"itunesitem"];
+                if (appIdentifier && appIdentifier.length > 0) {
+                    SKOverlayAppConfiguration *configuration = [[SKOverlayAppConfiguration alloc]
+                                                                initWithAppIdentifier:appIdentifier
+                                                                position:SKOverlayPositionBottom];
+                    configuration.userDismissible = YES;
+                    self.overlay = [[SKOverlay alloc] initWithConfiguration:configuration];
+                    self.overlay.delegate = self;
+                }
+            } else {
+                [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"SKOverlay is available from iOS 14.0"];
+            }
+        }
     }
 }
 
@@ -131,5 +199,28 @@
     }
 }
 
+- (void)adPresenterDidAppear:(HyBidAdPresenter *)adPresenter {
+    [self presentSKOverlay];
+}
+
+- (void)adPresenterDidDisappear:(HyBidAdPresenter *)adPresenter {
+    [self dismissSKOverlay];
+}
+
+#pragma mark SKOverlayDelegate
+
+- (void)storeOverlay:(SKOverlay *)overlay willStartPresentation:(SKOverlayTransitionContext *)transitionContext  API_AVAILABLE(ios(14.0)){}
+- (void)storeOverlay:(SKOverlay *)overlay didFinishPresentation:(SKOverlayTransitionContext *)transitionContext  API_AVAILABLE(ios(14.0)){
+    if ([overlay isEqual:self.overlay]) {
+        self.isOverlayShown = YES;
+    }
+}
+- (void)storeOverlay:(SKOverlay *)overlay willStartDismissal:(SKOverlayTransitionContext *)transitionContext  API_AVAILABLE(ios(14.0)){}
+- (void)storeOverlay:(SKOverlay *)overlay didFinishDismissal:(SKOverlayTransitionContext *)transitionContext  API_AVAILABLE(ios(14.0)){
+    if ([overlay isEqual:self.overlay]) {
+        self.isOverlayShown = NO;
+    }
+}
+- (void)storeOverlay:(SKOverlay *)overlay didFailToLoadWithError:(NSError *)error  API_AVAILABLE(ios(14.0)){}
 
 @end
