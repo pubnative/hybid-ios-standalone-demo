@@ -1,0 +1,278 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.6.1 (swiftlang-5.6.0.323.66 clang-1316.0.20.12)
+// swift-module-flags: -target i386-apple-ios9.0-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name HyBid
+import AVFoundation
+import AdSupport
+import AppTrackingTransparency
+import CoreLocation
+import Foundation
+@_exported import HyBid
+import Swift
+import UIKit
+import _Concurrency
+@_inheritsConvenienceInitializers @objc public class HyBidTargetingModel : ObjectiveC.NSObject {
+  @objc public var age: Foundation.NSNumber?
+  @objc public var interests: [Swift.String]
+  @objc public var gender: Swift.String?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class HyBidSettings : ObjectiveC.NSObject {
+  @objc public static let sharedInstance: HyBid.HyBidSettings
+  @objc public var test: Swift.Bool
+  @objc public var coppa: Swift.Bool
+  @objc public var targeting: HyBid.HyBidTargetingModel?
+  @objc public var appToken: Swift.String?
+  @objc public var apiURL: Swift.String?
+  @objc public var openRtbApiURL: Swift.String?
+  @objc public var appID: Swift.String?
+  @objc public var videoSkipOffset: Foundation.NSNumber?
+  @objc public var htmlSkipOffset: Foundation.NSNumber?
+  @objc public var endCardCloseOffset: Foundation.NSNumber? {
+    @objc get
+    @objc set
+  }
+  @objc public var showEndCard: Swift.Bool
+  @objc public var interstitialActionBehaviour: HyBid.HyBidInterstitialActionBehaviour
+  @objc public var closeOnFinish: Swift.Bool
+  @objc public var isCloseOnFinishSet: Swift.Bool
+  @objc public var audioStatus: HyBid.HyBidAudioStatus
+  @objc public var mraidExpand: Swift.Bool
+  @objc public var interstitialSKOverlay: Swift.Bool
+  @objc public var rewardedSKOverlay: Swift.Bool
+  @objc public var advertisingId: Swift.String? {
+    @objc get
+  }
+  @objc public var os: Swift.String {
+    @objc get
+  }
+  @objc public var osVersion: Swift.String {
+    @objc get
+  }
+  @objc public var deviceName: Swift.String {
+    @objc get
+  }
+  @objc public var deviceWidth: Swift.String {
+    @objc get
+  }
+  @objc public var deviceHeight: Swift.String {
+    @objc get
+  }
+  @objc public var orientation: Swift.String {
+    @objc get
+  }
+  @objc public var deviceSound: Swift.String {
+    @objc get
+  }
+  @objc public var audioVolumePercentage: Foundation.NSNumber {
+    @objc get
+  }
+  @objc public var locale: Swift.String? {
+    @objc get
+  }
+  @objc public var sdkVersion: Swift.String?
+  @objc public var appBundleID: Swift.String? {
+    @objc get
+  }
+  @objc public var appVersion: Swift.String? {
+    @objc get
+  }
+  @objc public var locationTrackingEnabled: Swift.Bool {
+    @objc get
+  }
+  @objc public var locationUpdatesEnabled: Swift.Bool {
+    @objc get
+  }
+  @objc public var location: CoreLocation.CLLocation? {
+    @objc get
+  }
+  @objc public var identifierForVendor: Swift.String? {
+    @objc get
+  }
+  @objc public var ip: Swift.String? {
+    @objc get
+  }
+  @objc public var bannerSKOverlay: Swift.Bool {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+public typealias ReportingKey = Swift.String
+@objc public class HyBidReportingEvent : ObjectiveC.NSObject {
+  @objc public var properties: [HyBid.ReportingKey : Swift.String]
+  @objc public var eventType: Swift.String
+  @objc public init(with eventType: Swift.String, adFormat: Swift.String? = nil, properties: [HyBid.ReportingKey : Swift.String]? = nil)
+  @objc public func toJSON() -> Swift.String
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class HyBidReportingProperties : ObjectiveC.NSObject {
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(HyBidReportingCommon) public class Common : HyBid.HyBidReportingProperties {
+  @objc public static let AD_FORMAT: Swift.String
+  @objc public static let AD_SIZE: Swift.String
+  @objc public static let CATEGORY_ID: Swift.String
+  @objc public static let CAMPAIGN_ID: Swift.String
+  @objc public static let EVENT_TYPE: Swift.String
+  @objc public static let CREATIVE_TYPE: Swift.String
+  @objc public static let TIMESTAMP: Swift.String
+  @objc public static let APPTOKEN: Swift.String
+  @objc public static let ZONE_ID: Swift.String
+  @objc public static let INTEGRATION_TYPE: Swift.String
+  @objc public static let KEY_MEDIATION_VENDOR: Swift.String
+  @objc public static let TIME_TO_LOAD: Swift.String
+  @objc public static let AD_TYPE: Swift.String
+  @objc public static let CACHE_TIME: Swift.String
+  @objc public static let AD_REQUEST: Swift.String
+  @objc public static let AD_RESPONSE: Swift.String
+  @objc public static let RESPONSE_TIME: Swift.String
+  @objc public static let RENDER_TIME: Swift.String
+  @objc public static let AD_POSITION: Swift.String
+  @objc public static let ERROR_CODE: Swift.String
+  @objc public static let ERROR_MESSAGE: Swift.String
+  @objc public static let CREATIVE: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(HyBidReportingEventType) public class EventType : HyBid.HyBidReportingProperties {
+  @objc public static let REQUEST: Swift.String
+  @objc public static let IMPRESSION: Swift.String
+  @objc public static let OMID_IMPRESSION: Swift.String
+  @objc public static let CLICK: Swift.String
+  @objc public static let ERROR: Swift.String
+  @objc public static let INTERSTITIAL_CLOSED: Swift.String
+  @objc public static let VIDEO_STARTED: Swift.String
+  @objc public static let VIDEO_DISMISSED: Swift.String
+  @objc public static let VIDEO_FINISHED: Swift.String
+  @objc public static let VIDEO_MUTE: Swift.String
+  @objc public static let VIDEO_UNMUTE: Swift.String
+  @objc public static let AD_SESSION_INITIALIZED: Swift.String
+  @objc public static let AD_SESSION_LOADED: Swift.String
+  @objc public static let AD_SESSION_STARTED: Swift.String
+  @objc public static let AD_SESSION_STOPPED: Swift.String
+  @objc public static let VIDEO_AD_FIRST_QUARTILE: Swift.String
+  @objc public static let VIDEO_AD_MIDPOINT: Swift.String
+  @objc public static let VIDEO_AD_THIRD_QUARTILE: Swift.String
+  @objc public static let VIDEO_AD_COMPLETE: Swift.String
+  @objc public static let VIDEO_AD_PAUSE: Swift.String
+  @objc public static let VIDEO_AD_RESUME: Swift.String
+  @objc public static let VIDEO_AD_BUFFER_START: Swift.String
+  @objc public static let VIDEO_AD_BUFFER_FINISH: Swift.String
+  @objc public static let VIDEO_AD_VOLUME_CHANGE: Swift.String
+  @objc public static let VIDEO_AD_SKIPPED: Swift.String
+  @objc public static let VIDEO_AD_CLICKED: Swift.String
+  @objc public static let LOAD: Swift.String
+  @objc public static let LOAD_FAIL: Swift.String
+  @objc public static let CACHE: Swift.String
+  @objc public static let RESPONSE: Swift.String
+  @objc public static let RENDER: Swift.String
+  @objc public static let RENDER_ERROR: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(HyBidReportingCreativeType) public class CreativeType : HyBid.HyBidReportingProperties {
+  @objc public static let STANDARD: Swift.String
+  @objc public static let VIDEO: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(HyBidReportingAdFormat) public class AdFormat : HyBid.HyBidReportingProperties {
+  @objc public static let NATIVE: Swift.String
+  @objc public static let BANNER: Swift.String
+  @objc public static let FULLSCREEN: Swift.String
+  @objc public static let REWARDED: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public protocol HyBidRewardedAdDelegate {
+  @objc func rewardedDidLoad()
+  @objc func rewardedDidFailWithError(_ error: Swift.Error!)
+  @objc func rewardedDidTrackImpression()
+  @objc func rewardedDidTrackClick()
+  @objc func rewardedDidDismiss()
+  @objc func onReward()
+}
+@_inheritsConvenienceInitializers @objc public class HyBidRewardedAd : ObjectiveC.NSObject {
+  @objc public var ad: HyBid.HyBidAd?
+  @objc public var isReady: Swift.Bool
+  @objc public var isMediation: Swift.Bool
+  @objc public var isAutoCacheOnLoad: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc(initWithZoneID:andWithDelegate:) convenience public init(zoneID: Swift.String, andWith delegate: HyBid.HyBidRewardedAdDelegate)
+  @objc(initWithZoneID:withAppToken:andWithDelegate:) convenience public init(zoneID: Swift.String, withAppToken appToken: Swift.String?, andWith delegate: HyBid.HyBidRewardedAdDelegate)
+  @objc public func load()
+  @objc public func prepare()
+  @objc(setMediationVendor:) public func setMediationVendor(with mediationVendor: Swift.String)
+  @objc(prepareAdWithContent:) public func prepareAdWithContent(adContent: Swift.String)
+  @objc public func show()
+  @objc(showFromViewController:) public func showFromViewController(viewController: UIKit.UIViewController)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public protocol HyBidReportingDelegate {
+  @objc func onEvent(with event: HyBid.HyBidReportingEvent)
+}
+@_inheritsConvenienceInitializers @objc public class HyBidReportingManager : ObjectiveC.NSObject {
+  @objc public static let sharedInstance: HyBid.HyBidReportingManager
+  @objc public var events: [HyBid.HyBidReportingEvent]
+  @objc weak public var delegate: HyBid.HyBidReportingDelegate?
+  @objc public func reportEvent(for event: HyBid.HyBidReportingEvent)
+  @objc public func reportEvents(for events: [HyBid.HyBidReportingEvent])
+  @objc public func clearEvents()
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class HyBidConstants : ObjectiveC.NSObject {
+  @objc public static let HYBID_SDK_NAME: Swift.String
+  @objc public static let HYBID_SDK_VERSION: Swift.String
+  @objc public static let HYBID_OMSDK_VERSION: Swift.String
+  @objc public static let HYBID_OMSDK_IDENTIFIER: Swift.String
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc public protocol HyBidInterstitialAdDelegate {
+  @objc func interstitialDidLoad()
+  @objc func interstitialDidFailWithError(_ error: Swift.Error!)
+  @objc func interstitialDidTrackImpression()
+  @objc func interstitialDidTrackClick()
+  @objc func interstitialDidDismiss()
+}
+@_inheritsConvenienceInitializers @objc public class HyBidInterstitialAd : ObjectiveC.NSObject {
+  @objc public var ad: HyBid.HyBidAd?
+  @objc public var isReady: Swift.Bool
+  @objc public var isMediation: Swift.Bool
+  @objc public var isAutoCacheOnLoad: Swift.Bool {
+    @objc get
+    @objc set
+  }
+  @objc(initWithZoneID:andWithDelegate:) convenience public init(zoneID: Swift.String?, andWith delegate: HyBid.HyBidInterstitialAdDelegate)
+  @objc(initWithZoneID:withAppToken:andWithDelegate:) convenience public init(zoneID: Swift.String?, withAppToken appToken: Swift.String?, andWith delegate: HyBid.HyBidInterstitialAdDelegate)
+  @objc public func load()
+  @objc(setSkipOffset:) public func setSkipOffset(_ seconds: Swift.Int)
+  @objc(setVideoSkipOffset:) public func setVideoSkipOffset(_ seconds: Swift.Int)
+  @objc(setHTMLSkipOffset:) public func setHTMLSkipOffset(_ seconds: Swift.Int)
+  @objc(setCloseOnFinish:) public func setCloseOnFinish(_ closeOnFinish: Swift.Bool)
+  @objc public func prepare()
+  @objc(setMediationVendor:) public func setMediationVendor(with mediationVendor: Swift.String)
+  @objc(prepareAdWithContent:) public func prepareAdWithContent(adContent: Swift.String)
+  @objc(prepareVideoTagFrom:) public func prepareVideoTagFrom(url: Swift.String)
+  @objc(prepareCustomMarkupFrom:) public func prepareCustomMarkupFrom(_ markup: Swift.String)
+  @objc public func show()
+  @objc(showFromViewController:) public func showFromViewController(viewController: UIKit.UIViewController)
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc public class HyBidLogger : ObjectiveC.NSObject {
+  public static var logLevel: HyBid.HyBidLogLevel
+  @objc(setLogLevel:) public static func setLogLevel(_ logLevel: HyBid.HyBidLogLevel)
+  @objc public static func errorLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
+  @objc public static func warningLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
+  @objc public static func infoLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
+  @objc public static func debugLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
+  @objc override dynamic public init()
+  @objc deinit
+}
