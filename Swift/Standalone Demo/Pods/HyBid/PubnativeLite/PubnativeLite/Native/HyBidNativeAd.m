@@ -25,13 +25,20 @@
 #import "HyBidDataModel.h"
 #import "PNLiteTrackingManager.h"
 #import "PNLiteImpressionTracker.h"
-#import "HyBidLogger.h"
 #import "HyBidSkAdNetworkModel.h"
 #import "HyBidAdImpression.h"
 #import "UIApplication+PNLiteTopViewController.h"
 #import <WebKit/WebKit.h>
 #import "HyBidSKAdNetworkViewController.h"
 #import "HyBidURLDriller.h"
+
+#if __has_include(<HyBid/HyBid-Swift.h>)
+    #import <UIKit/UIKit.h>
+    #import <HyBid/HyBid-Swift.h>
+#else
+    #import <UIKit/UIKit.h>
+    #import "HyBid-Swift.h"
+#endif
 
 NSString * const PNLiteNativeAdBeaconImpression = @"impression";
 NSString * const PNLiteNativeAdBeaconClick = @"click";
@@ -298,9 +305,10 @@ NSString * const PNLiteNativeAdBeaconClick = @"click";
         if(!self.tapRecognizer) {
             self.tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
         }
-        for (UIView *clickableView in self.clickableViews) {
-            clickableView.userInteractionEnabled=YES;
-            [clickableView addGestureRecognizer:self.tapRecognizer];
+        for (int i = 0; i < [self.clickableViews count]; i++) {
+            UIView *clickableView = [self.clickableViews objectAtIndex: i];
+            clickableView.userInteractionEnabled = YES;
+            [clickableView addGestureRecognizer: self.tapRecognizer];
         }
     }
 }
@@ -320,8 +328,11 @@ NSString * const PNLiteNativeAdBeaconClick = @"click";
 }
 
 - (void)stopTrackingClicks {
-    for (UIView *view in self.clickableViews) {
-        [view removeGestureRecognizer:self.tapRecognizer];
+    if (self.clickableViews) {
+        for (int i = 0; i < [self.clickableViews count]; i++) {
+            UIView *view = [self.clickableViews objectAtIndex: i];
+            [view removeGestureRecognizer:self.tapRecognizer];
+        }
     }
 }
 

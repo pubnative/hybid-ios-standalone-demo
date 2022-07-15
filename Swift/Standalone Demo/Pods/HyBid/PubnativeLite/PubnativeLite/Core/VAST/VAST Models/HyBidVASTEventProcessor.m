@@ -21,23 +21,30 @@
 //
 
 #import "HyBidVASTEventProcessor.h"
-#import "HyBidLogger.h"
 #import "HyBidWebBrowserUserAgentInfo.h"
 #import "HyBidViewabilityNativeVideoAdSession.h"
 
+#if __has_include(<HyBid/HyBid-Swift.h>)
+    #import <UIKit/UIKit.h>
+    #import <HyBid/HyBid-Swift.h>
+#else
+    #import <UIKit/UIKit.h>
+    #import "HyBid-Swift.h"
+#endif
+
 @interface HyBidVASTEventProcessor()
 
-@property(nonatomic, strong) NSArray<HyBidVASTTrackingEvent *> *events;
+@property(nonatomic, strong) NSMutableArray<HyBidVASTTracking *> *events;
 @property(nonatomic, weak) NSObject<HyBidVASTEventProcessorDelegate> *delegate;
 
 @end
 
 @implementation HyBidVASTEventProcessor
 
-- (id)initWithEvents:(NSArray<HyBidVASTTrackingEvent *> *)events delegate:(id<HyBidVASTEventProcessorDelegate>)delegate {
+- (id)initWithEvents:(NSArray<HyBidVASTTracking *> *)events delegate:(id<HyBidVASTEventProcessorDelegate>)delegate {
     self = [super init];
     if (self) {
-        self.events = events;
+        self.events = [events mutableCopy];
         self.delegate = delegate;
     }
     return self;
@@ -65,6 +72,11 @@
     } else if (type == HyBidVASTAdTrackingEventType_complete) {
         eventString = HyBidVASTAdTrackingEventType_complete;
         [[HyBidViewabilityNativeVideoAdSession sharedInstance] fireOMIDCompleteEvent];
+    } else if (type == HyBidVASTAdTrackingEventType_skip) {
+        eventString = HyBidVASTAdTrackingEventType_skip;
+        [[HyBidViewabilityNativeVideoAdSession sharedInstance] fireOMIDSkippedEvent];
+    } else if (type == HyBidVASTAdTrackingEventType_creativeView) {
+        eventString = HyBidVASTAdTrackingEventType_creativeView;
     } else if (type == HyBidVASTAdTrackingEventType_close) {
         eventString = HyBidVASTAdTrackingEventType_close;
     } else if (type == HyBidVASTAdTrackingEventType_pause) {
@@ -82,7 +94,7 @@
     if(!eventString) {
         [self invokeDidTrackEvent:@"unknown"];
     } else {
-        for (HyBidVASTTrackingEvent *event in self.events) {
+        for (HyBidVASTTracking *event in self.events) {
             if ([[event event] isEqualToString:eventString]) {
                 [self sendTrackingRequest:[event url]];
                 [HyBidLogger debugLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:[NSString stringWithFormat:@"Sent event '%@' to url: %@", eventString, [event url]]];
@@ -112,6 +124,11 @@
         [self sendTrackingRequest:stringURL];
         [HyBidLogger debugLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:[NSString stringWithFormat:@"Sent http request to url: %@", stringURL]];
     }
+}
+
+- (void)setCustomEvents:(NSArray<HyBidVASTTracking *> *)events
+{
+    self.events = [events mutableCopy];
 }
 
 - (void)sendTrackingRequest:(NSString *)url {

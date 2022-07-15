@@ -24,6 +24,7 @@
 #import "PNLiteAdRequestModel.h"
 #import "HyBidIntegrationType.h"
 #import "HyBidAdSize.h"
+#import "HyBidRemoteConfigManager.h"
 
 @interface PNLiteAdFactory : NSObject
 
@@ -34,6 +35,7 @@
                                          withAdSize:(HyBidAdSize *)adSize
                          withSupportedAPIFrameworks:(NSArray<NSString *> *)supportedAPIFrameworks
                                 withIntegrationType:(IntegrationType)integrationType
-                                         isRewarded:(BOOL)isRewarded;
+                                         isRewarded:(BOOL)isRewarded
+                                mediationVendorName: (NSString*) mediationVendorName;
 
 @end
