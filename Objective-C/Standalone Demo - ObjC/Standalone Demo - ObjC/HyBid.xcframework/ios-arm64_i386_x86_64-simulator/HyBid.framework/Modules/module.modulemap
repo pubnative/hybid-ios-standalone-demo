@@ -1,0 +1,13 @@
+framework module HyBid {
+    umbrella header "HyBid.h"
+    private header "PNLiteLocationManager.h"
+    
+    export *
+    module * { export * }
+
+}
+
+module HyBid.Swift {
+    header "HyBid-Swift.h"
+    requires objc
+}
