@@ -1,5 +1,5 @@
 //
-//  Copyright © 2021 PubNative. All rights reserved.
+//  Copyright © 2020 PubNative. All rights reserved.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,14 +21,19 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HyBidVASTImpression.h"
+#import "HyBidAd.h"
 
-@interface HyBidVASTImpressions : NSObject
+@protocol HyBidSignalDataProcessorDelegate<NSObject>
 
-- (instancetype)init NS_UNAVAILABLE;
+- (void)signalDataDidFinishWithAd:(HyBidAd *)ad;
+- (void)signalDataDidFailWithError:(NSError *)error;
 
-- (instancetype)initWithDocumentArray:(NSArray *)array;
+@end
 
-- (NSArray<HyBidVASTImpression *> *)impressions;
+@interface HyBidSignalDataProcessor : NSObject
+
+@property (nonatomic, weak) NSObject <HyBidSignalDataProcessorDelegate> *delegate;
+
+- (void)processSignalData:(NSString *)signalDataString;
 
 @end

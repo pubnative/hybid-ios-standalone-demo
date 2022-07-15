@@ -20,41 +20,18 @@
 //  THE SOFTWARE.
 //
 
-#import "HyBidVASTIcons.h"
-#import "HyBidVASTXMLParserHelper.h"
+#import <Foundation/Foundation.h>
+#import "HyBidXMLElementEx.h"
 
-@interface HyBidVASTIcons ()
+@interface HyBidVASTIconViewTracking : NSObject
 
-@property (nonatomic, strong)NSMutableArray *vastDocumentArray;
+- (instancetype)init NS_UNAVAILABLE;
 
-@property (nonatomic, strong)HyBidVASTXMLParserHelper *parserHelper;
+- (instancetype)initWithIconViewTrackingXMLElement:(HyBidXMLElementEx *)iconViewTrackingXMLElement;
 
-@end
-
-@implementation HyBidVASTIcons
-
-- (instancetype)initWithDocumentArray:(NSArray *)array
-{
-    self = [super init];
-    if (self) {
-        self.vastDocumentArray = [array mutableCopy];
-        self.parserHelper = [[HyBidVASTXMLParserHelper alloc] initWithDocumentArray:array];
-    }
-    return self;
-}
-
-- (NSArray<HyBidVASTIcon *> *)icons
-{
-    NSString *query = @"//Icons";
-    NSArray *result = [self.parserHelper getArrayResultsForQuery:query];
-    NSMutableArray<HyBidVASTIcon *> *array = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < [result count]; i++) {
-        HyBidVASTIcon *icon = [[HyBidVASTIcon alloc] initWithDocumentArray:self.vastDocumentArray atIndex:i];
-        [array addObject:icon];
-    }
-    
-    return array;
-}
+/**
+ A URI for the tracking resource file to be called when the icon creative is displayed.
+ */
+- (NSString *)content;
 
 @end

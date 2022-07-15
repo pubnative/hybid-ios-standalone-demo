@@ -21,16 +21,22 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HyBidVASTAdTrackingEventType.h"
+#import "HyBidXMLElementEx.h"
 
-@interface HyBidVASTTrackingEvent: NSObject
+@interface HyBidVASTCustomClick : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithDocumentArray:(NSArray *)array atIndex: (int)index;
+- (instancetype)initWithCustomClickXMLElement:(HyBidXMLElementEx *)customClickXMLElement;
 
-- (NSString *)url;
+/**
+ A unique ID for the custom click to be tracked.
+ */
+- (NSString *)id;
 
-- (NSString *)event;
+/**
+ A URI for tracking custom interactions.
+ */
+- (NSString *)content;
 
 @end

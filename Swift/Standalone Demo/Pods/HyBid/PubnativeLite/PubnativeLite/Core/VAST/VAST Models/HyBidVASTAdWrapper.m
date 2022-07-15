@@ -20,41 +20,8 @@
 //  THE SOFTWARE.
 //
 
-#import "HyBidVASTImpressions.h"
-#import "HyBidVASTXMLParserHelper.h"
+#import "HyBidVASTAdWrapper.h"
 
-@interface HyBidVASTImpressions ()
-
-@property (nonatomic, strong)NSMutableArray *vastDocumentArray;
-
-@property (nonatomic, strong)HyBidVASTXMLParserHelper *parserHelper;
-
-@end
-
-@implementation HyBidVASTImpressions
-
-- (instancetype)initWithDocumentArray:(NSArray *)array
-{
-    self = [super init];
-    if (self) {
-        self.vastDocumentArray = [array mutableCopy];
-        self.parserHelper = [[HyBidVASTXMLParserHelper alloc] initWithDocumentArray:array];
-    }
-    return self;
-}
-
-- (NSArray<HyBidVASTImpression *> *)impressions
-{
-    NSString *query = @"/VAST/Ad/InLine/Impression";
-    NSArray *result = [self.parserHelper getArrayResultsForQuery:query];
-    NSMutableArray<HyBidVASTImpression *> *array = [[NSMutableArray alloc] init];
-    
-    for (int i = 0; i < [result count]; i++) {
-        HyBidVASTImpression *impression = [[HyBidVASTImpression alloc] initWithDocumentArray:self.vastDocumentArray atIndex:i];
-        [array addObject:impression];
-    }
-    
-    return array;
-}
+@implementation HyBidVASTAdWrapper
 
 @end

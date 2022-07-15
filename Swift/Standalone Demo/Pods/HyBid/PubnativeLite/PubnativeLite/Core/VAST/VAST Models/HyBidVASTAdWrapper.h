@@ -21,17 +21,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HyBidXMLElementEx.h"
 
-@interface HyBidVASTVideoClick : NSObject
+@interface HyBidVASTAdWrapper : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithNode:(NSDictionary *)node andWithType:(NSString *)type;
-
-- (NSString *)id;
-
-- (NSString *)type;
-
-- (NSString *)url;
+- (instancetype)initWithXMLElement:(HyBidXMLElementEx *)xmlElement;
 
 @end

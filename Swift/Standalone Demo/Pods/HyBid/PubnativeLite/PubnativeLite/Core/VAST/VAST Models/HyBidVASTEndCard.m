@@ -20,15 +20,17 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-#import "HyBidVASTIcon.h"
+#import "HyBidVASTEndCard.h"
 
-@interface HyBidVASTIcons : NSObject
+@implementation HyBidVASTEndCard
 
-- (instancetype)init NS_UNAVAILABLE;
-
-- (instancetype)initWithDocumentArray:(NSArray *)array;
-
-- (NSArray<HyBidVASTIcon *> *)icons;
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.clickTrackings = [NSArray new];
+    }
+    return self;
+}
 
 @end

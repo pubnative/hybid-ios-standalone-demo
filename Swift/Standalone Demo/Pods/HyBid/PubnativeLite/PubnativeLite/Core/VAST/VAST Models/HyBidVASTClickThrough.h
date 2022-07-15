@@ -21,17 +21,22 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "HyBidXMLElementEx.h"
 
-@interface HyBidVASTXMLParserHelper : NSObject
+@interface HyBidVASTClickThrough : NSObject
 
-- (instancetype)initWithDocumentArray:(NSArray *)array;
+- (instancetype)init NS_UNAVAILABLE;
 
-- (NSString *)getContentForAttribute:(NSString *)attr inNode:(NSDictionary *)node;
+- (instancetype)initWithClickThroughXMLElement:(HyBidXMLElementEx *)clickThroughXMLElement;
 
-- (NSString *)getContentForQuery:(NSString *)query;
+/**
+ A unique ID for the clickthrough.
+ */
+- (NSString *)id;
 
-- (NSArray *)getArrayResultsForQuery:(NSString *)query;
-
-- (NSString *)getContentForNode:(NSDictionary *)node;
+/**
+ a URI to the advertiser’s site that the media player opens when a viewer clicks the ad.
+ */
+- (NSString *)content;
 
 @end

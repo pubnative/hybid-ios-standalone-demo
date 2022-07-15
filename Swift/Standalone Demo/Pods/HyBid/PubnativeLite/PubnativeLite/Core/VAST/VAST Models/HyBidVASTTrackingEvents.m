@@ -21,47 +21,40 @@
 //
 
 #import "HyBidVASTTrackingEvents.h"
-#import "HyBidVASTTrackingEvent.h"
-#import "HyBidVASTXMLParserHelper.h"
 
 @interface HyBidVASTTrackingEvents ()
 
-@property (nonatomic, strong)NSMutableArray *vastDocumentArray;
-
-@property (nonatomic, strong)HyBidVASTXMLParserHelper *parserHelper;
+@property (nonatomic, strong)HyBidXMLElementEx *trackingEventsXMLElement;
 
 @end
 
 @implementation HyBidVASTTrackingEvents
 
-
-- (instancetype)initWithDocumentArray:(NSArray *)array {
+- (instancetype)initWithTrackingEventsXMLElement:(HyBidXMLElementEx *)trackingEventsXMLElement
+{
+    if (trackingEventsXMLElement == nil) {
+        return nil;
+    }
+    
     self = [super init];
     if (self) {
-        self.vastDocumentArray = [array mutableCopy];
-        self.parserHelper = [[HyBidVASTXMLParserHelper alloc] initWithDocumentArray:array];
+        self.trackingEventsXMLElement = trackingEventsXMLElement;
     }
     return self;
 }
 
-- (NSArray<HyBidVASTTrackingEvent *> *)trackingEvents {
-    NSString *query = @"//Linear//Tracking";
-    
-    NSArray *result = [self.parserHelper getArrayResultsForQuery:query];
-    NSMutableArray<HyBidVASTTrackingEvent *> *array = [[NSMutableArray alloc] init];
+- (NSArray<HyBidVASTTracking *> *)events
+{
+    NSString *query = @"/Tracking";
+    NSArray<HyBidXMLElementEx *> *result = [self.trackingEventsXMLElement query:query];
+    NSMutableArray<HyBidVASTTracking *> *array = [[NSMutableArray alloc] init];
     
     for (int i = 0; i < [result count]; i++) {
-        HyBidVASTTrackingEvent *event = [[HyBidVASTTrackingEvent alloc] initWithDocumentArray:self.vastDocumentArray atIndex:i];
+        HyBidVASTTracking *event = [[HyBidVASTTracking alloc] initWithTrackingXMLElement:result[i]];
         [array addObject:event];
     }
     
     return array;
-}
-
-- (NSURL*)urlWithCleanString:(NSString *)string {
-    NSString *cleanUrlString = [string stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];  // remove leading, trailing \n or space
-    cleanUrlString = [cleanUrlString stringByReplacingOccurrencesOfString:@"|" withString:@"%7c"];
-    return [NSURL URLWithString:cleanUrlString];                                                                            // return the resulting URL
 }
 
 @end

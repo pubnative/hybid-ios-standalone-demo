@@ -20,15 +20,32 @@
 //  THE SOFTWARE.
 //
 
-#import <Foundation/Foundation.h>
-#import "HyBidVASTTrackingEvent.h"
+#import "HyBidVASTIFrameResource.h"
 
-@interface HyBidVASTTrackingEvents : NSObject
+@interface HyBidVASTIFrameResource ()
 
-- (instancetype)init NS_UNAVAILABLE;
+@property (nonatomic, strong)HyBidXMLElementEx *iFrameResourceXMLElement;
 
-- (instancetype)initWithDocumentArray:(NSArray *)array;
+@end
 
-- (NSArray<HyBidVASTTrackingEvent *> *)trackingEvents;
+@implementation HyBidVASTIFrameResource
+
+- (instancetype)initWithIFrameResourceXMLElement:(HyBidXMLElementEx *)iFrameResourceXMLElement
+{
+    if (iFrameResourceXMLElement == nil) {
+        return nil;
+    }
+    
+    self = [super init];
+    if (self) {
+        self.iFrameResourceXMLElement = iFrameResourceXMLElement;
+    }
+    return self;
+}
+
+- (NSString *)content
+{
+    return [self.iFrameResourceXMLElement value];
+}
 
 @end

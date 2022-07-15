@@ -21,14 +21,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "HyBidVASTCreative.h"
+#import "HyBidXMLElementEx.h"
 
-@interface HyBidVASTCreatives : NSObject
+@interface HyBidVASTHTMLResource : NSObject
 
 - (instancetype)init NS_UNAVAILABLE;
 
-- (instancetype)initWithDocumentArray:(NSArray *)array;
+- (instancetype)initWithHTMLResourceXMLElement:(HyBidXMLElementEx *)htmlResourceXMLElement;
 
-- (NSArray<HyBidVASTCreative *> *)creatives;
+/**
+ A HTML code snippet (within a CDATA element)
+ */
+- (NSString *)content;
 
 @end

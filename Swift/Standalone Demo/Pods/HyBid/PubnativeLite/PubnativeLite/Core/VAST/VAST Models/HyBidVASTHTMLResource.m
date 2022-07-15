@@ -20,41 +20,39 @@
 //  THE SOFTWARE.
 //
 
-#import "HyBidVASTCreatives.h"
-#import "HyBidVASTXMLParserHelper.h"
+#import "HyBidVASTHTMLResource.h"
+#import "UIKit/UIKit.h"
 
-@interface HyBidVASTCreatives ()
+@interface HyBidVASTHTMLResource ()
 
-@property (nonatomic, strong)NSMutableArray *vastDocumentArray;
-
-@property (nonatomic, strong)HyBidVASTXMLParserHelper *parserHelper;
+@property (nonatomic, strong)HyBidXMLElementEx *htmlResourceXMLElement;
 
 @end
 
-@implementation HyBidVASTCreatives
+@implementation HyBidVASTHTMLResource
 
-- (instancetype)initWithDocumentArray:(NSArray *)array
+- (instancetype)initWithHTMLResourceXMLElement:(HyBidXMLElementEx *)htmlResourceXMLElement
 {
+    if (htmlResourceXMLElement == nil) {
+        return nil;
+    }
+    
     self = [super init];
     if (self) {
-        self.vastDocumentArray = [array mutableCopy];
-        self.parserHelper = [[HyBidVASTXMLParserHelper alloc] initWithDocumentArray:array];
+        self.htmlResourceXMLElement = htmlResourceXMLElement;
     }
     return self;
 }
 
-- (NSArray<HyBidVASTCreative *> *)creatives
+- (NSString *)content
 {
-    NSString *query = @"/VAST/Ad/InLine/Creatives";
-    NSArray *result = [self.parserHelper getArrayResultsForQuery: query];
-    NSMutableArray<HyBidVASTCreative *> *array = [[NSMutableArray alloc] init];
+    NSString *html = [[NSAttributedString alloc] initWithData:[[self.htmlResourceXMLElement value] dataUsingEncoding:NSUnicodeStringEncoding] options:@{NSDocumentTypeDocumentOption: NSHTMLTextDocumentType} documentAttributes:nil error:nil].string;
     
-    for (int i = 0; i < [result.firstObject[@"nodeChildArray"] count]; i++) {
-        HyBidVASTCreative *creative = [[HyBidVASTCreative alloc] initWithDocumentArray:self.vastDocumentArray atIndex:i];
-        [array addObject:creative];
+    if ([html length] > 0 && ![html isEqualToString:@"\n"]) {
+        return html;
+    } else {
+        return [self.htmlResourceXMLElement value];
     }
-    
-    return array;
 }
 
 @end

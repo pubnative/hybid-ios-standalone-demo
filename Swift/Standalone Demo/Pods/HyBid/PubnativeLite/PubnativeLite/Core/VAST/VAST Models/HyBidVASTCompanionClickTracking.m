@@ -20,42 +20,32 @@
 //  THE SOFTWARE.
 //
 
-#import "HyBidVASTTrackingEvent.h"
-#import "HyBidVASTXMLParserHelper.h"
+#import "HyBidVASTCompanionClickTracking.h"
 
-@interface HyBidVASTTrackingEvent ()
+@interface HyBidVASTCompanionClickTracking ()
 
-@property (nonatomic, strong)NSMutableArray *vastDocumentArray;
-
-@property (nonatomic) int index;
-
-@property (nonatomic, strong)HyBidVASTXMLParserHelper *parserHelper;
+@property (nonatomic, strong)HyBidXMLElementEx *companionClickTrackingXMLElement;
 
 @end
 
-@implementation HyBidVASTTrackingEvent
+@implementation HyBidVASTCompanionClickTracking
 
-- (instancetype)initWithDocumentArray:(NSArray *)array atIndex: (int)index
+- (instancetype)initWithCompanionClickTrackingXMLElement:(HyBidXMLElementEx *)companionClickTrackingXMLElement
 {
+    if (companionClickTrackingXMLElement == nil) {
+        return nil;
+    }
+    
     self = [super init];
     if (self) {
-        self.vastDocumentArray = [array mutableCopy];
-        self.index = index;
-        self.parserHelper = [[HyBidVASTXMLParserHelper alloc] initWithDocumentArray:array];
+        self.companionClickTrackingXMLElement = companionClickTrackingXMLElement;
     }
     return self;
 }
 
-- (NSString *)url
+- (NSString *)content
 {
-    NSArray *array = [self.parserHelper getArrayResultsForQuery:@"//Tracking"];
-    return [self.parserHelper getContentForNode:array[self.index]];
-}
-
-- (NSString *)event
-{
-    NSArray *array = [self.parserHelper getArrayResultsForQuery:@"//Tracking"];
-    return [self.parserHelper getContentForAttribute:@"event" inNode:array[self.index]];
+    return [self.companionClickTrackingXMLElement value];
 }
 
 @end

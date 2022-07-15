@@ -20,8 +20,13 @@
 //  THE SOFTWARE.
 //
 
-#import "HyBidVASTResource.h"
+#import "HyBidVASTCompanion.h"
+#import "HyBidVASTEndCard.h"
 
-@implementation HyBidVASTResource
+@interface HyBidVASTEndCardManager : NSObject
+
+- (void)addCompanion:(HyBidVASTCompanion *)companion;
+
+- (NSArray<HyBidVASTEndCard *> *)endCards;
 
 @end

@@ -20,45 +20,32 @@
 //  THE SOFTWARE.
 //
 
-#import "HyBidVASTVideoClick.h"
-#import "HyBidVASTXMLParserHelper.h"
+#import "HyBidVASTIconViewTracking.h"
 
-@interface HyBidVASTVideoClick ()
+@interface HyBidVASTIconViewTracking ()
 
-@property (nonatomic, strong)NSDictionary *node;
-
-@property (nonatomic, strong)HyBidVASTXMLParserHelper *parserHelper;
-
-@property (nonatomic, strong)NSString *_type;
+@property (nonatomic, strong)HyBidXMLElementEx *iconViewTrackingXMLElement;
 
 @end
 
-@implementation HyBidVASTVideoClick
+@implementation HyBidVASTIconViewTracking
 
-- (instancetype)initWithNode:(NSDictionary *)node andWithType:(NSString *)type
+- (instancetype)initWithIconViewTrackingXMLElement:(HyBidXMLElementEx *)iconViewTrackingXMLElement
 {
+    if (iconViewTrackingXMLElement == nil) {
+        return nil;
+    }
+    
     self = [super init];
     if (self) {
-        self.node = node;
-        self._type = type;
-        self.parserHelper = [[HyBidVASTXMLParserHelper alloc] init];
+        self.iconViewTrackingXMLElement = iconViewTrackingXMLElement;
     }
     return self;
 }
 
-- (NSString *)id
+- (NSString *)content
 {
-    return [self.parserHelper getContentForAttribute:@"id" inNode:self.node];
-}
-
-- (NSString *)type
-{
-    return self._type;
-}
-
-- (NSString *)url
-{
-    return [self.parserHelper getContentForNode:self.node];
+    return [self.iconViewTrackingXMLElement value];
 }
 
 @end
