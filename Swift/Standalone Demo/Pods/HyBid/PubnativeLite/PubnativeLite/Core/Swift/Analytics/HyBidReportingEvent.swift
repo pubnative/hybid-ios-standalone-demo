@@ -31,7 +31,7 @@ public class HyBidReportingEvent: NSObject {
     @objc public var eventType: String
     
     @objc
-    public init(with eventType: String, adFormat: String, properties: [ReportingKey: String]? = nil) {
+    public init(with eventType: String, adFormat: String? = nil, properties: [ReportingKey: String]? = nil) {
         self.eventType = eventType
         self.properties = properties ?? [:]
         self.properties[Common.EVENT_TYPE] = eventType

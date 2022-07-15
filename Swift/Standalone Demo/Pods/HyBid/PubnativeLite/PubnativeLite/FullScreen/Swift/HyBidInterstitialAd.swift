@@ -25,7 +25,7 @@ import Foundation
 @objc
 public protocol HyBidInterstitialAdDelegate: AnyObject {
     func interstitialDidLoad()
-    func interstitialDidFailWithError(_ error: Error)
+    func interstitialDidFailWithError(_ error: Error!)
     func interstitialDidTrackImpression()
     func interstitialDidTrackClick()
     func interstitialDidDismiss()
@@ -39,7 +39,18 @@ public class HyBidInterstitialAd: NSObject {
     @objc public var ad: HyBidAd?
     @objc public var isReady = false
     @objc public var isMediation = false
-
+    @objc public var isAutoCacheOnLoad: Bool {
+        set {
+            self.interstitialAdRequest?.isAutoCacheOnLoad = newValue
+        }
+        get {
+            if let isAutoCacheOnLoad = self.interstitialAdRequest?.isAutoCacheOnLoad {
+                return isAutoCacheOnLoad
+            }
+            return true
+        }
+    }
+    
     // MARK: - Private properties
     
     private var zoneID: String?
@@ -146,20 +157,7 @@ public class HyBidInterstitialAd: NSObject {
             self.interstitialAdRequest?.cacheAd(ad)
         }
     }
-    
-    @objc
-    public func isAutoCacheOnLoad() -> Bool {
-        if let isAutoCacheOnLoad = self.interstitialAdRequest?.isAutoCacheOnLoad {
-            return isAutoCacheOnLoad
-        }
-        return true
-    }
 
-    @objc(setIsAutoCacheOnLoad:)
-    public func setIsAutoCacheOnLoad(with isAutoCacheOnLoad: Bool) {
-        self.interstitialAdRequest?.isAutoCacheOnLoad = isAutoCacheOnLoad
-    }
-   
     @objc(setMediationVendor:)
     public func setMediationVendor(with mediationVendor: String) {
         self.interstitialAdRequest?.setMediationVendor(mediationVendor)

@@ -35,7 +35,7 @@
 #else
     #import <UIKit/UIKit.h>
     #import "HyBid-Swift.h"
-#endif 
+#endif
 
 @interface PNLiteMRAIDInterstitialPresenter() <HyBidMRAIDViewDelegate, HyBidMRAIDServiceDelegate, HyBidURLDrillerDelegate, SKStoreProductViewControllerDelegate>
 

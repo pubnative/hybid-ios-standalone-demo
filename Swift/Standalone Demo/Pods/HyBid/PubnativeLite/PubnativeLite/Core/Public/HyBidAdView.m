@@ -85,8 +85,8 @@
     self.autoShowOnLoad = true;
 }
 
-- (instancetype)initWithSize:(HyBidAdSize *)adSize {
-    self = [super initWithFrame:CGRectMake(0, 0, adSize.width, adSize.height)];
+- (instancetype)initWithFrame:(CGRect)frame {
+    self = [super initWithFrame:frame];
     if (self) {
         if (![HyBid isInitialized]) {
             [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"HyBid SDK was not initialized. Please initialize it before creating a HyBidAdView. Check out https://github.com/pubnative/pubnative-hybid-ios-sdk/wiki/Setup-HyBid for the setup process."];
@@ -94,10 +94,18 @@
         self.adRequest = [[HyBidAdRequest alloc] init];
         self.adRequest.openRTBAdType = HyBidOpenRTBAdBanner;
         self.auctionResponses = [[NSMutableArray alloc]init];
-        self.adSize = adSize;
+        self.adSize = HyBidAdSize.SIZE_320x50;
         self.autoShowOnLoad = true;
         self.loadReportingProperties = [NSMutableDictionary new];
         self.renderReportingProperties = [NSMutableDictionary new];
+    }
+    return self;
+}
+
+- (instancetype)initWithSize:(HyBidAdSize *)adSize {
+    self = [self initWithFrame:CGRectMake(0, 0, adSize.width, adSize.height)];
+    if (self) {
+        self.adSize = adSize;
     }
     return self;
 }
@@ -303,8 +311,9 @@
 - (void)setupAdView:(UIView *)adView {
     if (self.bannerPosition == BANNER_POSITION_UNKNOWN) {
         [self addSubview:adView];
-        adView.center = CGPointMake(self.frame.size.width  / 2,
-                                    self.frame.size.height / 2);
+        adView.translatesAutoresizingMaskIntoConstraints = false;
+        [self centerView:adView inContainerView:self withSuperView:self];
+        [self sizeView:adView withSuperView:self withAdSize:self.adSize];
     } else {
         [self show:adView withPosition:self.bannerPosition];
     }
@@ -355,6 +364,7 @@
 - (void)renderAdWithContent:(NSString *)adContent withDelegate:(NSObject<HyBidAdViewDelegate> *)delegate {
     [self cleanUp];
     self.delegate = delegate;
+    self.initialLoadTimestamp = [[NSDate date] timeIntervalSince1970];
     
     if (adContent && [adContent length] != 0) {
         [self processAdContent:adContent];
@@ -365,6 +375,7 @@
 }
 
 - (void)processAdContent:(NSString *)adContent {
+    [self cleanUp];
     HyBidSignalDataProcessor *signalDataProcessor = [[HyBidSignalDataProcessor alloc] init];
     signalDataProcessor.delegate = self;
     [signalDataProcessor processSignalData:adContent];
@@ -377,10 +388,6 @@
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 140500
         [[HyBidAdImpression sharedInstance] startImpressionForAd:self.ad];
 #endif
-        
-        if (self.ad.adType != kHyBidAdTypeVideo) {
-            [self.delegate adViewDidTrackImpression:self];
-        }
     }
 }
 
@@ -554,4 +561,44 @@
     [self.delegate adView:self didFailWithError:error];
 }
 
+#pragma mark - Utils
+
+- (void)centerView:(UIView *)view inContainerView:(UIView *)containerView withSuperView:(UIView *)superView
+{
+    [superView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                          attribute:NSLayoutAttributeCenterY
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:containerView
+                                                          attribute:NSLayoutAttributeCenterY
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+    
+    [superView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                          attribute:NSLayoutAttributeCenterX
+                                                          relatedBy:NSLayoutRelationEqual
+                                                             toItem:containerView
+                                                          attribute:NSLayoutAttributeCenterX
+                                                         multiplier:1.0
+                                                           constant:0.0]];
+}
+
+- (void)sizeView:(UIView *)view withSuperView:(UIView *)superView withAdSize:(HyBidAdSize *)adSize
+{
+    [superView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                       attribute:NSLayoutAttributeHeight
+                                                       relatedBy:NSLayoutRelationEqual
+                                                          toItem:nil
+                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                      multiplier:1.0
+                                                        constant:adSize.height]];
+    [superView addConstraint:[NSLayoutConstraint constraintWithItem:view
+                                                       attribute:NSLayoutAttributeWidth
+                                                       relatedBy:NSLayoutRelationEqual
+                                                          toItem:nil
+                                                       attribute:NSLayoutAttributeNotAnAttribute
+                                                      multiplier:1.0
+                                                        constant:adSize.width]];
+}
+
 @end
+

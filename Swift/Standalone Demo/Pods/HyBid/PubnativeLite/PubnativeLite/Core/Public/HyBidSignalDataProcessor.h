@@ -29,7 +29,7 @@
 - (void)signalDataDidFailWithError:(NSError *)error;
 
 @end
-
+                                                                            
 @interface HyBidSignalDataProcessor : NSObject
 
 @property (nonatomic) NSObject <HyBidSignalDataProcessorDelegate> *delegate;

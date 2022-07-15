@@ -22,8 +22,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 extern NSString * const kHyBidErrorDomain;
 
 typedef enum {
@@ -50,7 +48,12 @@ typedef enum {
     HyBidErrorCodeUnknown = 21,
     HyBidErrorCodeDisabledFormat = 22,
     HyBidErrorCodeDisabledRenderingEngine = 23,
-    HyBidExpiredAd = 24
+    HyBidExpiredAd = 24,
+    HyBidErrorVASTParserSchemaValidation = 25,
+    HyBidErrorVASTParserTooManyWrappers = 26,
+    HyBidErrorVASTParserNoCompatibleMediaFile = 27,
+    HyBidErrorVASTParserNoInternetConnection = 28,
+    HyBidErrorVASTParserMovieTooShort = 29
 } HyBidErrorCode;
 
 @interface NSError (HyBid)
@@ -82,7 +85,10 @@ typedef enum {
 + (instancetype)hyBidDisabledFormatError;
 + (instancetype)hyBidDisabledRenderingEngineError;
 + (instancetype)hyBidExpiredAd;
++ (instancetype)hyBidVASTParserSchemaValidationError;
++ (instancetype)hyBidVASTParserTooManyWrappersError;
++ (instancetype)hyBidVASTParserNoCompatibleMediaFileError;
++ (instancetype)hyBidVASTParserNoInternetConnectionError;
++ (instancetype)hyBidVASTParserMovieTooShortError;
 
 @end
-
-NS_ASSUME_NONNULL_END

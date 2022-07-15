@@ -134,6 +134,7 @@ FOUNDATION_EXPORT const unsigned char HyBidVersionString[];
 #import "HyBidAdSourceConfig.h"
 #import "HyBidRemoteConfigEndpoints.h"
 #import "HyBidRemoteConfigParameter.h"
+#import "HyBidRemoteConfigRequest.h"
 #import "HyBidAdImpression.h"
 
 @class HyBidTargetingModel;
@@ -144,6 +145,14 @@ typedef enum {
     HyBidAudioStatusON,
     HyBidAudioStatusDefault
 } HyBidAudioStatus;
+
+typedef enum {
+    HyBidLogLevelNone,
+    HyBidLogLevelError,
+    HyBidLogLevelWarning,
+    HyBidLogLevelInfo,
+    HyBidLogLevelDebug,
+} HyBidLogLevel;
 
 typedef enum {
     HB_CREATIVE,
@@ -183,12 +192,15 @@ typedef void (^HyBidCompletionBlock)(BOOL);
 + (void)setInterstitialSkipOffset:(NSInteger)seconds DEPRECATED_MSG_ATTRIBUTE("Use either setVideoInterstitialSkipOffset: or setHTMLInterstitialSkipOffset: based on your ad format instead.");
 + (void)setVideoInterstitialSkipOffset:(NSInteger)seconds;
 + (void)setHTMLInterstitialSkipOffset:(NSInteger)seconds;
++ (void)setEndCardCloseOffset:(NSNumber *)seconds;
++ (void)setShowEndCard:(BOOL)showEndCard;
 + (void)setInterstitialCloseOnFinish:(BOOL)closeOnFinish;
 + (void)setInterstitialActionBehaviour:(HyBidInterstitialActionBehaviour)actionBehaviour;
 + (HyBidReportingManager *)reportingManager;
 + (void)setVideoAudioStatus:(HyBidAudioStatus)audioStatus;
 + (NSString*)getSDKVersionInfo;
 + (NSString*)getCustomRequestSignalData;
++ (NSString*)getCustomRequestSignalData:(NSString*) mediationVendorName;
 + (void)setMRAIDExpand:(BOOL)enabled;
 + (void)setInterstitialSKOverlay:(BOOL)enabled;
 + (void)setRewardedSKOverlay:(BOOL)enabled;

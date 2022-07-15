@@ -585,6 +585,21 @@ typedef enum {
 }
 
 - (void)expandCreative:(NSString *)urlString supportVerve:(BOOL)supportVerve {
+    UIInterfaceOrientation currentOrientation = [[UIApplication sharedApplication] statusBarOrientation];
+    
+    BOOL isLandscape = (currentOrientation == UIInterfaceOrientationLandscapeLeft) || (currentOrientation == UIInterfaceOrientationLandscapeRight);
+    BOOL isPortrait = (currentOrientation == UIInterfaceOrientationPortrait) || (currentOrientation == UIInterfaceOrientationPortraitUpsideDown);
+    
+    // Checking here if the orientation was changed after requesting ad
+    // and if the aspect ration is not matching
+    if ((isPortrait && adWidth > adHeight) ||
+        (isLandscape && adHeight > adWidth)) {
+        CGFloat tmpHeight = adHeight;
+        
+        adHeight = adWidth;
+        adWidth = tmpHeight;
+    }
+    
     if(!bonafideTapObserved && PNLite_SUPPRESS_BANNER_AUTO_REDIRECT) {
         [HyBidLogger infoLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"Suppressing an attempt to programmatically call mraid.expand() when no UI touch event exists."];
         return;  // ignore programmatic touches (taps)
@@ -686,7 +701,7 @@ typedef enum {
     }
     
     if (isInterstitial) {
-        [self addContentInfoViewToView:webView];
+        [self addContentInfoViewToView:modalVC.view ];
     }
     
     [self fireSizeChangeEvent];
@@ -843,8 +858,7 @@ typedef enum {
 - (void)addContentInfoViewToView:(UIView *)view {
     if (!contentInfoViewContainer) {
         contentInfoViewContainer = [[UIView alloc] init];
-        [contentInfoViewContainer setAccessibilityLabel:@"Content Info Container View"];
-        [contentInfoViewContainer setAccessibilityIdentifier:@"contentInfoContainerView"];
+        [contentInfoViewContainer setIsAccessibilityElement:NO];
         contentInfoView.delegate = self;
     }
     [view addSubview:contentInfoViewContainer];

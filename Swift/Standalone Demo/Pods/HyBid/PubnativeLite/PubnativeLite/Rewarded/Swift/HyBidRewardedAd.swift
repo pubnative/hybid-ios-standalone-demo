@@ -26,7 +26,7 @@ import UIKit
 @objc
 public protocol HyBidRewardedAdDelegate: AnyObject {
     func rewardedDidLoad()
-    func rewardedDidFailWithError(_ error: Error)
+    func rewardedDidFailWithError(_ error: Error!)
     func rewardedDidTrackImpression()
     func rewardedDidTrackClick()
     func rewardedDidDismiss()
@@ -41,7 +41,18 @@ public class HyBidRewardedAd: NSObject {
     @objc public var ad: HyBidAd?
     @objc public var isReady = false
     @objc public var isMediation = false
-
+    @objc public var isAutoCacheOnLoad: Bool {
+        set {
+            self.rewardedAdRequest?.isAutoCacheOnLoad = newValue
+        }
+        get {
+            if let isAutoCacheOnLoad = self.rewardedAdRequest?.isAutoCacheOnLoad {
+                return isAutoCacheOnLoad
+            }
+            return true
+        }
+    }
+    
     // MARK: - Private properties
     
     private var zoneID: String?
@@ -109,19 +120,6 @@ public class HyBidRewardedAd: NSObject {
         }
     }
 
-    @objc
-    public func isAutoCacheOnLoad() -> Bool {
-        if let isAutoCacheOnLoad = self.rewardedAdRequest?.isAutoCacheOnLoad {
-            return isAutoCacheOnLoad
-        }
-        return true
-    }
-
-    @objc(setIsAutoCacheOnLoad:)
-    public func setIsAutoCacheOnLoad(with isAutoCacheOnLoad: Bool) {
-        self.rewardedAdRequest?.isAutoCacheOnLoad = isAutoCacheOnLoad
-    }
-   
     @objc(setMediationVendor:)
     public func setMediationVendor(with mediationVendor: String) {
         if self.rewardedAdRequest != nil {

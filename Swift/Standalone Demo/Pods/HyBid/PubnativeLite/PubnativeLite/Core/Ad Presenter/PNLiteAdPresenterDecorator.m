@@ -26,6 +26,7 @@
 #import <StoreKit/SKOverlay.h>
 #import <StoreKit/SKOverlayConfiguration.h>
 #import "UIApplication+PNLiteTopViewController.h"
+#import "PNLiteImpressionTracker.h"
 
 #if __has_include(<HyBid/HyBid-Swift.h>)
     #import <UIKit/UIKit.h>
@@ -35,7 +36,7 @@
     #import "HyBid-Swift.h"
 #endif
 
-@interface PNLiteAdPresenterDecorator () <SKOverlayDelegate>
+@interface PNLiteAdPresenterDecorator () <SKOverlayDelegate, PNLiteImpressionTrackerDelegate>
 
 @property (nonatomic, strong) HyBidAdPresenter *adPresenter;
 @property (nonatomic, strong) HyBidAdTracker *adTracker;
@@ -43,6 +44,11 @@
 @property (nonatomic, strong) NSMutableDictionary *errorReportingProperties;
 @property (nonatomic, strong) SKOverlay *overlay API_AVAILABLE(ios(14.0));
 @property (nonatomic, assign) BOOL isOverlayShown;
+@property (nonatomic, strong) PNLiteImpressionTracker *impressionTracker;
+@property (nonatomic, strong) UIView *trackedView;
+@property (nonatomic, assign) BOOL videoStarted;
+@property (nonatomic, assign) BOOL impressionConfirmed;
+
 
 @end
 
@@ -56,6 +62,13 @@ NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserD
     self.adTracker = nil;
     self.adPresenterDelegate = nil;
     self.errorReportingProperties = nil;
+    if (self.impressionTracker) {
+        [self.impressionTracker clear];
+    }
+    self.impressionTracker = nil;
+    self.trackedView = nil;
+    self.videoStarted = NO;
+    self.impressionConfirmed = NO;
     if (@available(iOS 14.0, *)) {
         if (self.overlay) {
             self.overlay = nil;
@@ -74,13 +87,18 @@ NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserD
 }
 
 - (void)stopTracking {
+    if (self.impressionTracker) {
+        [self.impressionTracker clear];
+    }
+    self.impressionTracker = nil;
+    
     [self.adPresenter stopTracking];
     [self dismissSKOverlay];
 }
 
 - (instancetype)initWithAdPresenter:(HyBidAdPresenter *)adPresenter
                       withAdTracker:(HyBidAdTracker *)adTracker
-                       withDelegate:(NSObject<HyBidAdPresenterDelegate> *)delegate {
+                       withDelegate:(NSObject<HyBidAdPresenterDelegate> *)delegate{
     self = [super init];
     if (self) {
         self.adPresenter = adPresenter;
@@ -88,6 +106,8 @@ NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserD
         self.adTracker = adTracker;
         self.adPresenterDelegate = delegate;
         self.errorReportingProperties = [NSMutableDictionary new];
+        self.videoStarted = NO;
+        self.impressionConfirmed = NO;
     }
     return self;
 }
@@ -147,10 +167,17 @@ NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserD
 #pragma mark HyBidAdPresenterDelegate
 
 - (void)adPresenter:(HyBidAdPresenter *)adPresenter didLoadWithAd:(UIView *)adView {
+    self.trackedView = adView;
+    if(!self.impressionTracker) {
+        self.impressionTracker = [[PNLiteImpressionTracker alloc] init];
+        self.impressionTracker.delegate = self;
+    }
+    if (self.trackedView) {
+        [self.impressionTracker addView:self.trackedView];
+    } else {
+        [HyBidLogger warningLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:@"Impression could not be fired - Tracked view not available"];
+    }
     if (self.adPresenterDelegate && [self.adPresenterDelegate respondsToSelector:@selector(adPresenter:didLoadWithAd:)]) {
-        if (self.adPresenter.ad.adType != kHyBidAdTypeVideo) {
-            [self.adTracker trackImpressionWithAdFormat:HyBidReportingAdFormat.BANNER];
-        }
         [self.adPresenterDelegate adPresenter:adPresenter didLoadWithAd:adView];
         if ([HyBidSettings sharedInstance].bannerSKOverlay) {
             if (@available(iOS 14.0, *)) {
@@ -191,20 +218,22 @@ NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserD
 }
 
 - (void)adPresenterDidStartPlaying:(HyBidAdPresenter *)adPresenter {
+    self.videoStarted = YES;
+    if (!self.videoStarted || !self.impressionConfirmed) {return;}
     if (self.adPresenterDelegate && [self.adPresenterDelegate respondsToSelector:@selector(adPresenterDidStartPlaying:)]) {
         HyBidReportingEvent* reportingVideoStartedEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.VIDEO_STARTED adFormat:HyBidReportingAdFormat.BANNER properties:nil];
         [[HyBid reportingManager] reportEventFor:reportingVideoStartedEvent];
         [self.adTracker trackImpressionWithAdFormat:HyBidReportingAdFormat.BANNER];
-        [self.adPresenterDelegate adPresenterDidStartPlaying:adPresenter];
+        [self.adPresenterDelegate adPresenterDidStartPlaying:self.adPresenter];
     }
 }
 
 - (void)adPresenterDidAppear:(HyBidAdPresenter *)adPresenter {
-    [self presentSKOverlay];
+    
 }
 
 - (void)adPresenterDidDisappear:(HyBidAdPresenter *)adPresenter {
-    [self dismissSKOverlay];
+    
 }
 
 #pragma mark SKOverlayDelegate
@@ -222,5 +251,23 @@ NSString * const kUserDefaultsHyBidCurrentBannerPresenterDecoratorKey = @"kUserD
     }
 }
 - (void)storeOverlay:(SKOverlay *)overlay didFailToLoadWithError:(NSError *)error  API_AVAILABLE(ios(14.0)){}
+
+#pragma mark PNLiteImpressionTrackerDelegate
+
+- (void)impressionDetectedWithView:(UIView *)view {
+    if (self.adPresenter.ad.adType != kHyBidAdTypeVideo) {
+        [self.adTracker trackImpressionWithAdFormat:HyBidReportingAdFormat.BANNER];
+        [self.adPresenterDelegate adPresenterDidStartPlaying:self.adPresenter];
+    } else {
+        self.impressionConfirmed = YES;
+        if (!self.videoStarted || !self.impressionConfirmed) {return;}
+        if (self.adPresenterDelegate && [self.adPresenterDelegate respondsToSelector:@selector(adPresenterDidStartPlaying:)]) {
+            HyBidReportingEvent* reportingVideoStartedEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.VIDEO_STARTED adFormat:HyBidReportingAdFormat.BANNER properties:nil];
+            [[HyBid reportingManager] reportEventFor:reportingVideoStartedEvent];
+            [self.adTracker trackImpressionWithAdFormat:HyBidReportingAdFormat.BANNER];
+            [self.adPresenterDelegate adPresenterDidStartPlaying:self.adPresenter];
+        }
+    }
+}
 
 @end

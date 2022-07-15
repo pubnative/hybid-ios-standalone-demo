@@ -26,6 +26,8 @@ import AppTrackingTransparency
 import AdSupport
 import CoreLocation
 
+let DEFAULT_END_CARD_CLOSE_OFFSET = 5
+
 @objc
 public class HyBidSettings: NSObject {
     
@@ -41,14 +43,25 @@ public class HyBidSettings: NSObject {
     @objc public var appID: String?
     @objc public var videoSkipOffset: NSNumber?
     @objc public var htmlSkipOffset: NSNumber?
+    @objc public var endCardCloseOffset: NSNumber? {
+        didSet {
+            if let _ = oldValue {
+                endCardCloseOffset = oldValue
+            } else {
+                endCardCloseOffset = NSNumber(value: DEFAULT_END_CARD_CLOSE_OFFSET)
+            }
+        }
+    }
+    @objc public var showEndCard: Bool = false
+    @objc public var interstitialActionBehaviour: HyBidInterstitialActionBehaviour = HB_CREATIVE
+    
     @objc public var closeOnFinish: Bool = false
     @objc public var isCloseOnFinishSet: Bool = false
     @objc public var audioStatus: HyBidAudioStatus = HyBidAudioStatusMuted
     @objc public var mraidExpand: Bool = false
     @objc public var interstitialSKOverlay: Bool = false
     @objc public var rewardedSKOverlay: Bool = false
-    @objc public var interstitialActionBehaviour: HyBidInterstitialActionBehaviour = HB_CREATIVE
-
+    
     // COMMON PARAMETERS
     @objc public var advertisingId: String? {
         var result: String?

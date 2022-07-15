@@ -135,4 +135,29 @@ NSString * const kHyBidErrorDomain = @"net.pubnative.PubnativeLite";
     return [NSError errorWithCode:HyBidExpiredAd localizedDescription:@"The ad has expired"];
 }
 
++ (instancetype)hyBidVASTParserMovieTooShortError
+{
+    return [NSError errorWithCode:HyBidErrorVASTParserMovieTooShort localizedDescription:@"HyBid VAST Parser - Movie is too short"];
+}
+
++ (instancetype)hyBidVASTParserNoInternetConnectionError
+{
+    return [NSError errorWithCode:HyBidErrorVASTParserNoInternetConnection localizedDescription:@"HyBid VAST Parser - No internet connection"];
+}
+
++ (instancetype)hyBidVASTParserNoCompatibleMediaFileError
+{
+    return [NSError errorWithCode:HyBidErrorVASTParserNoCompatibleMediaFile localizedDescription:@"HyBid VAST Parser - No compatible media file"];
+}
+
++ (instancetype)hyBidVASTParserTooManyWrappersError
+{
+    return [NSError errorWithCode:HyBidErrorVASTParserTooManyWrappers localizedDescription:@"Too many wrappers"];
+}
+
++ (instancetype)hyBidVASTParserSchemaValidationError
+{
+    return [NSError errorWithCode:HyBidErrorVASTParserSchemaValidation localizedDescription:@"HyBid VAST Parser - Schema validation error"];
+}
+
 @end
