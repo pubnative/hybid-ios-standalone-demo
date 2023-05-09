@@ -1,30 +1,30 @@
 PODS:
-  - HyBid (2.18.0):
-    - HyBid/Banner (= 2.18.0)
-    - HyBid/Core (= 2.18.0)
-    - HyBid/FullScreen (= 2.18.0)
-    - HyBid/Native (= 2.18.0)
-    - HyBid/RewardedVideo (= 2.18.0)
-  - HyBid/Banner (2.18.0):
+  - HyBid (2.18.1):
+    - HyBid/Banner (= 2.18.1)
+    - HyBid/Core (= 2.18.1)
+    - HyBid/FullScreen (= 2.18.1)
+    - HyBid/Native (= 2.18.1)
+    - HyBid/RewardedVideo (= 2.18.1)
+  - HyBid/Banner (2.18.1):
     - HyBid/Core
-  - HyBid/Core (2.18.0)
-  - HyBid/FullScreen (2.18.0):
+  - HyBid/Core (2.18.1)
+  - HyBid/FullScreen (2.18.1):
     - HyBid/Core
-  - HyBid/Native (2.18.0):
+  - HyBid/Native (2.18.1):
     - HyBid/Core
-  - HyBid/RewardedVideo (2.18.0):
+  - HyBid/RewardedVideo (2.18.1):
     - HyBid/Core
 
 DEPENDENCIES:
-  - HyBid (= 2.18.0)
+  - HyBid (= 2.18.1)
 
 SPEC REPOS:
   trunk:
     - HyBid
 
 SPEC CHECKSUMS:
-  HyBid: 641f75cfabb4d01c5a859693ba1de2baa70418b4
+  HyBid: e8b689da5259f1f887561e481390fe3e6be650e2
 
-PODFILE CHECKSUM: 0711d9c6340a0b21cca9c809be0d5e7d17638c3f
+PODFILE CHECKSUM: e04c936cd2d6a294f233ba55b8ef2c9e84fb3e01
 
 COCOAPODS: 1.11.3
