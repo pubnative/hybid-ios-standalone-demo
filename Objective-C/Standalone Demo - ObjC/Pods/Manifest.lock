@@ -1,30 +1,30 @@
 PODS:
-  - HyBid (2.19.0-beta):
-    - HyBid/Banner (= 2.19.0-beta)
-    - HyBid/Core (= 2.19.0-beta)
-    - HyBid/FullScreen (= 2.19.0-beta)
-    - HyBid/Native (= 2.19.0-beta)
-    - HyBid/RewardedVideo (= 2.19.0-beta)
-  - HyBid/Banner (2.19.0-beta):
+  - HyBid (2.19.0-beta3):
+    - HyBid/Banner (= 2.19.0-beta3)
+    - HyBid/Core (= 2.19.0-beta3)
+    - HyBid/FullScreen (= 2.19.0-beta3)
+    - HyBid/Native (= 2.19.0-beta3)
+    - HyBid/RewardedVideo (= 2.19.0-beta3)
+  - HyBid/Banner (2.19.0-beta3):
     - HyBid/Core
-  - HyBid/Core (2.19.0-beta)
-  - HyBid/FullScreen (2.19.0-beta):
+  - HyBid/Core (2.19.0-beta3)
+  - HyBid/FullScreen (2.19.0-beta3):
     - HyBid/Core
-  - HyBid/Native (2.19.0-beta):
+  - HyBid/Native (2.19.0-beta3):
     - HyBid/Core
-  - HyBid/RewardedVideo (2.19.0-beta):
+  - HyBid/RewardedVideo (2.19.0-beta3):
     - HyBid/Core
 
 DEPENDENCIES:
-  - HyBid (= 2.19.0-beta)
+  - HyBid (= 2.19.0-beta3)
 
 SPEC REPOS:
   trunk:
     - HyBid
 
 SPEC CHECKSUMS:
-  HyBid: 49642f84127a7a0408ba86974869ca98c488e848
+  HyBid: ddae1704f34076be7b42e25d064d12768321f73e
 
-PODFILE CHECKSUM: 563a4dfef6b376606299e40a867affce7b12f5d8
+PODFILE CHECKSUM: 646c4e6df288a4cf8867323a081284aad1152e94
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1

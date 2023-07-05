@@ -39,11 +39,7 @@
         targeting.interests = @[@"music"];
         targeting.gender = @"f";     // "f" for female, "m" for male
         [HyBid setTargeting:targeting];
-// Step 10: Set SKOverlay for Interstitial (Optional)
-        [HyBid setInterstitialSKOverlay:YES];
-// Step 11: Set SKOverlay for Rewarded (Optional)
-        [HyBid setRewardedSKOverlay:YES];
-// Step 12: Set HyBid log level (Optional)
+// Step 10: Set HyBid log level (Optional)
         [HyBidLogger setLogLevel:HyBidLogLevelDebug];
     return YES;
 }
