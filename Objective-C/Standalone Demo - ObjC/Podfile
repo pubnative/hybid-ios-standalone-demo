@@ -6,5 +6,5 @@ target 'Standalone Demo - ObjC' do
   use_frameworks!
 
   # Pods for Standalone Demo - ObjC
-pod 'HyBid', '2.18.1'
+pod 'HyBid', '2.19.0'
 end
