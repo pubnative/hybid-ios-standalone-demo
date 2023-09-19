@@ -14,17 +14,21 @@ PODS:
     - HyBid/Core
   - HyBid/RewardedVideo (2.19.0):
     - HyBid/Core
+  - OneTrust-CMP-XCFramework (202308.2.0.0)
 
 DEPENDENCIES:
   - HyBid (= 2.19.0)
+  - OneTrust-CMP-XCFramework (~> 202308.2.0.0)
 
 SPEC REPOS:
   trunk:
     - HyBid
+    - OneTrust-CMP-XCFramework
 
 SPEC CHECKSUMS:
   HyBid: 3863d3b20f480153029994da69b9591bf4693aa2
+  OneTrust-CMP-XCFramework: 8fcf87feabd2a92076bc5d9d396fea182178f1bf
 
-PODFILE CHECKSUM: 74c675d81c8993b8262a373ea6e8afbe922bb306
+PODFILE CHECKSUM: 8154dde491b6aeb5eb1499bc8fe66f4bc35863da
 
 COCOAPODS: 1.12.1

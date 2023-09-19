@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="18122" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XTN-AI-RjM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="XTN-AI-RjM">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="18093"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -11,13 +12,13 @@
         <!--Integration Demo-->
         <scene sceneID="JSg-Ph-Fgx">
             <objects>
-                <viewController id="n2q-i7-E46" customClass="ViewController" customModule="Standalone_Demo" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="n2q-i7-E46" customClass="HomeViewController" customModule="Standalone_Demo" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="m4o-9b-hc3">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rD6-Le-c8R" userLabel="Standalone Button">
-                                <rect key="frame" x="16" y="125" width="382" height="33"/>
+                                <rect key="frame" x="16" y="129" width="382" height="33"/>
                                 <color key="backgroundColor" red="0.85098618270000004" green="0.85097014900000001" blue="0.85098105670000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <accessibility key="accessibilityConfiguration">
                                     <bool key="isElement" value="NO"/>
@@ -43,7 +44,7 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Integration" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OBp-hf-9GX" userLabel="Format">
-                                <rect key="frame" x="16" y="96" width="67" height="21"/>
+                                <rect key="frame" x="16" y="100" width="67" height="21"/>
                                 <accessibility key="accessibilityConfiguration" identifier="formatLabel" label="Format Label"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="sXp-IE-NIA"/>
@@ -57,22 +58,60 @@
                                     </mask>
                                 </variation>
                             </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OneTrust integration" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xqq-AJ-qXp" userLabel="Format">
+                                <rect key="frame" x="16" y="170" width="125" height="21"/>
+                                <accessibility key="accessibilityConfiguration" identifier="formatLabel" label="Format Label"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="wHP-eo-6j0"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="13"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EE7-TT-Dxp" userLabel="Standalone Button">
+                                <rect key="frame" x="16" y="199" width="382" height="33"/>
+                                <color key="backgroundColor" red="0.85098618270000004" green="0.85097014900000001" blue="0.85098105670000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                <accessibility key="accessibilityConfiguration">
+                                    <bool key="isElement" value="NO"/>
+                                </accessibility>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="33" id="5Ws-nB-eJ6"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="15"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Show OneTrust banner">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <state key="selected">
+                                    <color key="titleColor" red="0.44761112330000002" green="0.097065538169999993" blue="0.48637124900000001" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+                                </state>
+                                <connections>
+                                    <action selector="showOneTrustBanner:" destination="n2q-i7-E46" eventType="touchUpInside" id="wbw-0x-4ui"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="Geo-h6-W9r"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="rD6-Le-c8R" firstAttribute="leading" secondItem="Geo-h6-W9r" secondAttribute="leading" constant="16" id="22w-LD-G8H"/>
+                            <constraint firstItem="Geo-h6-W9r" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="xqq-AJ-qXp" secondAttribute="trailing" constant="273" id="9zl-1e-InF"/>
+                            <constraint firstItem="EE7-TT-Dxp" firstAttribute="top" secondItem="xqq-AJ-qXp" secondAttribute="bottom" constant="8" symbolic="YES" id="AC5-P9-5gf"/>
                             <constraint firstItem="rD6-Le-c8R" firstAttribute="top" secondItem="OBp-hf-9GX" secondAttribute="bottom" constant="8" id="Add-kQ-IsW"/>
                             <constraint firstItem="OBp-hf-9GX" firstAttribute="leading" secondItem="Geo-h6-W9r" secondAttribute="leading" constant="16" id="I1n-09-XyV"/>
                             <constraint firstItem="Geo-h6-W9r" firstAttribute="trailing" secondItem="rD6-Le-c8R" secondAttribute="trailing" constant="16" id="IpX-e8-LUF"/>
+                            <constraint firstItem="xqq-AJ-qXp" firstAttribute="top" secondItem="rD6-Le-c8R" secondAttribute="bottom" constant="8" symbolic="YES" id="PKU-0d-1wm"/>
+                            <constraint firstItem="Geo-h6-W9r" firstAttribute="trailing" relation="lessThanOrEqual" secondItem="OBp-hf-9GX" secondAttribute="trailing" constant="331" id="Uph-Te-CSv"/>
+                            <constraint firstItem="xqq-AJ-qXp" firstAttribute="leading" secondItem="Geo-h6-W9r" secondAttribute="leading" constant="16" id="YAE-ce-lAd"/>
                             <constraint firstItem="OBp-hf-9GX" firstAttribute="top" secondItem="Geo-h6-W9r" secondAttribute="top" constant="8" id="eli-BM-kzu"/>
+                            <constraint firstItem="Geo-h6-W9r" firstAttribute="trailing" secondItem="EE7-TT-Dxp" secondAttribute="trailing" constant="16" id="m2r-JD-JpC"/>
+                            <constraint firstItem="EE7-TT-Dxp" firstAttribute="leading" secondItem="Geo-h6-W9r" secondAttribute="leading" constant="16" id="pVH-WX-4Sj"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Integration Demo" id="yDW-K5-0OT"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="MK6-sw-E3X" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="850.76923076923072" y="78.909952606635073"/>
+            <point key="canvasLocation" x="850.72463768115949" y="78.348214285714278"/>
         </scene>
         <!--Standalone-->
         <scene sceneID="pp1-nh-MRP">
@@ -90,7 +129,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="XTN-AI-RjM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Wz2-L2-knZ">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <rect key="frame" x="0.0" y="48" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

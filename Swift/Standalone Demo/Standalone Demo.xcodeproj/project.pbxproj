@@ -19,6 +19,7 @@
 		5ACC93392666956C00F40D52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5ACC93372666956C00F40D52 /* Main.storyboard */; };
 		5ACC933B2666956F00F40D52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5ACC933A2666956F00F40D52 /* Assets.xcassets */; };
 		5ACC933E2666956F00F40D52 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5ACC933C2666956F00F40D52 /* LaunchScreen.storyboard */; };
+		916663EE2AB9B10E00E2C7A3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 916663ED2AB9B10E00E2C7A3 /* HomeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		5ACC933D2666956F00F40D52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5ACC933F2666956F00F40D52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		5DC7B1580BAD902E9B151A72 /* Pods_Standalone_Demo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Standalone_Demo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		916663ED2AB9B10E00E2C7A3 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		9F150EF42AE6F60FE9DDA305 /* Pods-Standalone Demo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Standalone Demo.release.xcconfig"; path = "Target Support Files/Pods-Standalone Demo/Pods-Standalone Demo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -96,6 +98,7 @@
 			children = (
 				5ACC93312666956C00F40D52 /* AppDelegate.swift */,
 				5ACC93332666956C00F40D52 /* SceneDelegate.swift */,
+				916663ED2AB9B10E00E2C7A3 /* HomeViewController.swift */,
 				5A20D0142666A44400BBEB25 /* Examples */,
 				5A911FF426669D5800D655ED /* Storyboards */,
 				5ACC933A2666956F00F40D52 /* Assets.xcassets */,
@@ -240,6 +243,7 @@
 				5A9120062666A00500D655ED /* Native.swift in Sources */,
 				5ACC93322666956C00F40D52 /* AppDelegate.swift in Sources */,
 				5A20D01B2666A72E00BBEB25 /* MRect.swift in Sources */,
+				916663EE2AB9B10E00E2C7A3 /* HomeViewController.swift in Sources */,
 				5A911FFD26669F7200D655ED /* Interstitial.swift in Sources */,
 				5ACC93342666956C00F40D52 /* SceneDelegate.swift in Sources */,
 				5A91200326669FBF00D655ED /* Rewarded.swift in Sources */,

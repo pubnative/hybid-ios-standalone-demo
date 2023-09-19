@@ -7,4 +7,5 @@ target 'Standalone Demo' do
 
   # Pods for Standalone Demo
 pod 'HyBid', '2.19.0'
+pod 'OneTrust-CMP-XCFramework','~>202308.2.0.0'
 end
