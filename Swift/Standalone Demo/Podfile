@@ -6,5 +6,5 @@ target 'Standalone Demo' do
   use_frameworks!
 
   # Pods for Standalone Demo
-pod 'HyBid', '2.20.0-beta7'
+pod 'HyBid', '3.0.0-beta1'
 end

@@ -19,31 +19,27 @@ class Interstitial: UIViewController {
     @IBAction func loadAdTouchUpInside(_ sender: UIButton) {
         activityIndicator.startAnimating()
         showAdButton.isHidden = true
-// Step 4: Set HTML Interstitial skipOffet (Optional)
-        interstitialAd.setHTMLSkipOffset(2)
-// Step 5: Set Video Interstitial skipOffet (Optional)
-        interstitialAd.setVideoSkipOffset(5)
-// Step 6: Enable auto caching of ad on load (Optional)
+// Step 4: Enable auto caching of ad on load (Optional)
         interstitialAd.isAutoCacheOnLoad = true
-// Step 7: Request a HyBidAd
+// Step 5: Request a HyBidAd
         interstitialAd.load()
     }
     
     @IBAction func showAdTouchUpInside(_ sender: UIButton) {
-// Step 9: Check isReady property whether the ad has been loaded and is ready to be displayed
+// Step 7: Check isReady property whether the ad has been loaded and is ready to be displayed
         if interstitialAd.isReady {
             interstitialAd.show()
         }
     }
 }
 
-// Step 8: Implement the HyBidInterstitialAdDelegate methods
+// Step 6: Implement the HyBidInterstitialAdDelegate methods
 extension Interstitial : HyBidInterstitialAdDelegate {
     func interstitialDidLoad() {
         print("Interstitial did load:")
         activityIndicator.stopAnimating()
         showAdButton.isHidden = false
-// Step 6.1: Call `prepare` method if `interstitialAd.isAutoCacheOnLoad` set to `false`, to force a creative cache (Optional)
+// Step 4.1: Call `prepare` method if `interstitialAd.isAutoCacheOnLoad` set to `false`, to force a creative cache (Optional)
         // interstitialAd.prepare()
     }
     
