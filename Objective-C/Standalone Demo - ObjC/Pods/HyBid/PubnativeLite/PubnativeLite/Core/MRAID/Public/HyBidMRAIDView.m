@@ -172,6 +172,8 @@ typedef enum {
 @property (nonatomic, assign) BOOL willShowFeedbackScreen;
 @property (nonatomic, strong) HyBidSkipOffset *nativeCloseButtonDelay;
 @property (nonatomic, assign) BOOL creativeAutoStorekitEnabled;
+@property (nonatomic, strong) SKStoreProductViewController *storeViewController;
+@property (nonatomic, assign) BOOL productLoadSuccessful;
 
 @end
 
@@ -354,7 +356,7 @@ CGFloat secondsToWaitForCustomCloseValue = 0.5;
 }
 
 - (void)determineCreativeAutoStorekitEnabledForAd:(HyBidAd *)ad {
-    if ([ad.creativeAutoStorekitEnabled boolValue]) {
+    if ([ad.creativeAutoStorekitEnabled boolValue] && ![ad.sdkAutoStorekitEnabled boolValue]) {
         self.creativeAutoStorekitEnabled = YES;
     } else {
         self.creativeAutoStorekitEnabled = HyBidConstants.creativeAutoStorekitEnabled;
@@ -967,6 +969,7 @@ CGFloat secondsToWaitForCustomCloseValue = 0.5;
 
     if (!isEndcard) {
         [self openBrowserWithURLString:urlString];
+        return;
     }
     
     if (!self.creativeAutoStorekitEnabled && !startedFromTap) {
@@ -983,7 +986,11 @@ CGFloat secondsToWaitForCustomCloseValue = 0.5;
     if(tapObserved) {
         HyBidURLRedirector *redirector = [[HyBidURLRedirector alloc] init];
         redirector.delegate = self;
-        [redirector drillWithUrl:urlString];
+        HyBidSkAdNetworkModel* skanModel = nil;
+        if (self.ad && [self.ad getSkAdNetworkModel]) {
+            skanModel = [self.ad getSkAdNetworkModel];
+        }
+        [redirector drillWithUrl:urlString skanModel:skanModel];
         return;
     }
 
@@ -1237,12 +1244,13 @@ CGFloat secondsToWaitForCustomCloseValue = 0.5;
         if (modalVC != nil) {
             if (@available(iOS 11.0, *)) {
                 [constraints addObjectsFromArray: @[
-                    [NSLayoutConstraint constraintWithItem:closeButtonView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:modalVC.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f]
+                    [NSLayoutConstraint constraintWithItem:closeButtonView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:modalVC.view.safeAreaLayoutGuide attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f],
+                    [NSLayoutConstraint constraintWithItem:closeButtonView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:modalVC.view.safeAreaLayoutGuide attribute:NSLayoutAttributeLeading multiplier:1.f constant:0.f]
                 ]];
             } else {
                 [constraints addObjectsFromArray: @[
-                    [NSLayoutConstraint constraintWithItem:closeButtonView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:modalVC.view attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f]
-                ]];
+                    [NSLayoutConstraint constraintWithItem:closeButtonView attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:modalVC.view attribute:NSLayoutAttributeTop multiplier:1.f constant:0.f],
+                    [NSLayoutConstraint constraintWithItem:closeButtonView attribute:NSLayoutAttributeLeading relatedBy:NSLayoutRelationEqual toItem:modalVC.view attribute:NSLayoutAttributeLeading multiplier:1.f constant:0.f]]];
             }
         }
     }
@@ -1887,14 +1895,8 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
 
 #pragma mark Handling Auto/Manual taps
 
-- (void)openBrowserWithURLString:(NSString *)urlString {
-    if ([self.serviceDelegate respondsToSelector:@selector(mraidServiceOpenBrowserWithUrlString:)]) {
-        [self.serviceDelegate mraidServiceOpenBrowserWithUrlString:urlString];
-    }
-}
-
 - (void)doTrackingEndcardWithUrlString:(NSString *)urlString {
-    if ([self.serviceDelegate respondsToSelector:@selector(mraidServiceTrackingEndcardWithUrlString:)]) {
+    if (self.serviceDelegate != nil && [self.serviceDelegate respondsToSelector:@selector(mraidServiceTrackingEndcardWithUrlString:)]){
         [self.serviceDelegate mraidServiceTrackingEndcardWithUrlString:urlString];
     }
 }
@@ -1903,14 +1905,16 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
     if (isStoreViewControllerPresented || isStoreViewControllerBeingPresented) {
         return; // Return early if the Store VC is already being presented
     }
-    
+    if ([self.ad.sdkAutoStorekitEnabled boolValue]){
+        [self doTrackingEndcardWithUrlString:urlString];
+        return;
+    }
     isStoreViewControllerBeingPresented = YES;
     
     SKStoreProductViewController *storeViewController = [[SKStoreProductViewController alloc] init];
     storeViewController.delegate = self;
     
     NSString* appID = [self extractAppIDFromAppStoreURL:urlString];
-    
     if (appID) {
         NSDictionary *parameters = @{SKStoreProductParameterITunesItemIdentifier: appID};
         [storeViewController loadProductWithParameters:parameters completionBlock:^(BOOL result, NSError *error) {
@@ -1918,17 +1922,20 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
                 [self doTrackingEndcardWithUrlString:urlString];
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"SKStoreProductViewIsReadyToPresent" object:nil];
+                    [[NSNotificationCenter defaultCenter] addObserver:self
+                                                             selector:@selector(storeKitPageDismissed)
+                                                                 name:@"SKStoreProductViewIsDismissed"
+                                                               object:nil];
                     [[UIApplication sharedApplication].topViewController presentViewController:storeViewController animated:YES completion:nil];
                     isStoreViewControllerPresented = YES;
+                    [HyBidLogger debugLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:[NSString stringWithFormat: @"StoreKit from CREATIVE is presented"]];
                 });
-            } else {
-                [self openBrowserWithURLString:urlString];
             }
             isStoreViewControllerBeingPresented = NO;
         }];
     } else {
-        [self openBrowserWithURLString:urlString];
         isStoreViewControllerBeingPresented = NO;
+        [self openBrowserWithURLString:urlString];
     }
 }
 
@@ -1947,12 +1954,23 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
     
     return nil;
 }
+    
+- (void)openBrowserWithURLString:(NSString *)urlString {
+    if ([self.serviceDelegate respondsToSelector:@selector(mraidServiceOpenBrowserWithUrlString:)]) {
+        [self.serviceDelegate mraidServiceOpenBrowserWithUrlString:urlString];
+    }
+}
+
+- (void)storeKitPageDismissed {
+    isStoreViewControllerPresented = NO;
+}
 
 #pragma mark HyBidURLRedirectorDelegate
 
 - (void)onURLRedirectorFailWithUrl:(NSString * _Nonnull)url withError:(NSError * _Nonnull)error {
     tapObserved = NO;
     startedFromTap = NO;
+    [self openBrowserWithURLString:url];
 }
 
 - (void)onURLRedirectorFinishWithUrl:(NSString * _Nonnull)url {
@@ -1972,7 +1990,6 @@ createWebViewWithConfiguration:(WKWebViewConfiguration *)configuration
 
 // Delegate method when Store VC is dismissed
 - (void)productViewControllerDidFinish:(SKStoreProductViewController *)viewController {
-    isStoreViewControllerPresented = NO;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"SKStoreProductViewIsDismissed" object:self.ad];
 }
 
