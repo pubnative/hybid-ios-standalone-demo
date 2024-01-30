@@ -16,37 +16,28 @@
 
 @implementation AppDelegate
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
 // Step 2: Setup & Initialize HyBid SDK
-        [HyBid initWithAppToken:APP_TOKEN completion:nil];
+    [HyBid initWithAppToken:APP_TOKEN completion:nil];
 // Step 3: Set COPPA (Optional)
-        [HyBid setCoppa:NO];
+    [HyBid setCoppa:NO];
 // Step 4: Set Test Mode (Optional)
-        [HyBid setTestMode:YES];
+    [HyBid setTestMode:YES];
 // Step 5: Set Location Tracking (Optional)
-        [HyBid setLocationTracking:YES];
-// Step 6: Set HTML Interstitial skipOffset (Optional)
-        [HyBid setHTMLInterstitialSkipOffset:2];
-// Step 7: Set Video Interstitial skipOffset (Optional)
-        [HyBid setVideoInterstitialSkipOffset:5];
-// Step 8: Set Custom Click Behavior (Optional)
-        [HyBid setInterstitialActionBehaviour:HB_CREATIVE];
-// Step 9: Set Targeting (Optional)
-        HyBidTargetingModel *targeting = [[HyBidTargetingModel alloc] init];
-        targeting.age = [NSNumber numberWithInt:28];
-        targeting.interests = @[@"music"];
-        targeting.gender = @"f";     // "f" for female, "m" for male
-        [HyBid setTargeting:targeting];
-// Step 10: Set HyBid log level (Optional)
-        [HyBidLogger setLogLevel:HyBidLogLevelDebug];
+    [HyBid setLocationTracking:YES];
+// Step 6: Set Targeting (Optional)
+    HyBidTargetingModel *targeting = [[HyBidTargetingModel alloc] init];
+    targeting.age = [NSNumber numberWithInt:28];
+    targeting.interests = @[@"music"];
+    targeting.gender = @"f";     // "f" for female, "m" for male
+    [HyBid setTargeting:targeting];
+// Step 7: Set HyBid log level (Optional)
+    [HyBidLogger setLogLevel:HyBidLogLevelDebug];
     return YES;
 }
 
-
 #pragma mark - UISceneSession lifecycle
-
 
 - (UISceneConfiguration *)application:(UIApplication *)application configurationForConnectingSceneSession:(UISceneSession *)connectingSceneSession options:(UISceneConnectionOptions *)options {
     // Called when a new scene session is being created.
