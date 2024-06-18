@@ -1,39 +1,30 @@
 PODS:
-  - ATOM-Standalone (3.0.7)
-  - HyBid (3.0.0):
-    - ATOM-Standalone (~> 3.0.7)
-    - HyBid/Banner (= 3.0.0)
-    - HyBid/Core (= 3.0.0)
-    - HyBid/FullScreen (= 3.0.0)
-    - HyBid/Native (= 3.0.0)
-    - HyBid/RewardedVideo (= 3.0.0)
-  - HyBid/Banner (3.0.0):
-    - ATOM-Standalone (~> 3.0.7)
+  - HyBid (3.0.2):
+    - HyBid/Banner (= 3.0.2)
+    - HyBid/Core (= 3.0.2)
+    - HyBid/FullScreen (= 3.0.2)
+    - HyBid/Native (= 3.0.2)
+    - HyBid/RewardedVideo (= 3.0.2)
+  - HyBid/Banner (3.0.2):
     - HyBid/Core
-  - HyBid/Core (3.0.0):
-    - ATOM-Standalone (~> 3.0.7)
-  - HyBid/FullScreen (3.0.0):
-    - ATOM-Standalone (~> 3.0.7)
+  - HyBid/Core (3.0.2)
+  - HyBid/FullScreen (3.0.2):
     - HyBid/Core
-  - HyBid/Native (3.0.0):
-    - ATOM-Standalone (~> 3.0.7)
+  - HyBid/Native (3.0.2):
     - HyBid/Core
-  - HyBid/RewardedVideo (3.0.0):
-    - ATOM-Standalone (~> 3.0.7)
+  - HyBid/RewardedVideo (3.0.2):
     - HyBid/Core
 
 DEPENDENCIES:
-  - HyBid (= 3.0.0)
+  - HyBid (= 3.0.2)
 
 SPEC REPOS:
   trunk:
-    - ATOM-Standalone
     - HyBid
 
 SPEC CHECKSUMS:
-  ATOM-Standalone: 26549f5cffb457a7660b3cb2d5a5f1faf24da913
-  HyBid: e98ce54597d146a8fec024d3e7c83cb5d4f11be6
+  HyBid: 22bb91abe6aa7157c889b459310481d2d79f7598
 
-PODFILE CHECKSUM: f6f2635efb75e247ed8f9ce85e673c1876535808
+PODFILE CHECKSUM: 6db280d89f2a0b5dc34ae51ee85347b028bc3df8
 
 COCOAPODS: 1.15.2
