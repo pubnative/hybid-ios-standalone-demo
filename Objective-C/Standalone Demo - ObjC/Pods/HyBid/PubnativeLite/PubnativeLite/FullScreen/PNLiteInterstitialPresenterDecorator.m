@@ -55,6 +55,7 @@
     self.errorReportingProperties = nil;
     self.skoverlay = nil;
     self.customCTA = nil;
+    self.skoverlayDelegate = nil;
 }
 
 - (void)load {
@@ -87,36 +88,6 @@
     return self;
 }
 
-- (void)addCommonPropertiesToReportingDictionary:(NSMutableDictionary *)reportingDictionary withInterstitialPresenter:(HyBidInterstitialPresenter *)interstitialPresenter {
-    if ([HyBidSDKConfig sharedConfig].appToken != nil && [HyBidSDKConfig sharedConfig].appToken.length > 0) {
-        [reportingDictionary setObject:[HyBidSDKConfig sharedConfig].appToken forKey:HyBidReportingCommon.APPTOKEN];
-    }
-    if (interstitialPresenter.ad.zoneID != nil && interstitialPresenter.ad.zoneID.length > 0) {
-        [reportingDictionary setObject:interstitialPresenter.ad.zoneID forKey:HyBidReportingCommon.ZONE_ID];
-    }
-    if (interstitialPresenter.ad.assetGroupID) {
-        switch (interstitialPresenter.ad.assetGroupID.integerValue) {
-            case VAST_INTERSTITIAL: {
-                [reportingDictionary setObject:@"VAST" forKey:HyBidReportingCommon.AD_TYPE];
-                
-                NSString *vast = interstitialPresenter.ad.isUsingOpenRTB
-                ? interstitialPresenter.ad.openRtbVast
-                : interstitialPresenter.ad.vast;
-                if (vast) {
-                    [reportingDictionary setObject:vast forKey:HyBidReportingCommon.CREATIVE];
-                }
-                break;
-            }
-            default:
-                [reportingDictionary setObject:@"HTML" forKey:HyBidReportingCommon.AD_TYPE];
-                if (interstitialPresenter.ad.htmlData) {
-                    [reportingDictionary setObject:interstitialPresenter.ad.htmlData forKey:HyBidReportingCommon.CREATIVE];
-                }
-                break;
-        }
-    }
-}
-
 #pragma mark HyBidInterstitialPresenterDelegate
 
 - (void)interstitialPresenterDidLoad:(HyBidInterstitialPresenter *)interstitialPresenter {
@@ -132,7 +103,9 @@
     if (self.interstitialPresenterDelegate && [self.interstitialPresenterDelegate respondsToSelector:@selector(interstitialPresenterDidLoad:)]) {
         if (self.interstitialPresenter.ad.skoverlayEnabled) {
             if ([self.interstitialPresenter.ad.skoverlayEnabled boolValue]) {
-                self.skoverlay = [[HyBidSKOverlay alloc] initWithAd:interstitialPresenter.ad isRewarded:NO];
+                self.skoverlay = [[HyBidSKOverlay alloc] initWithAd:interstitialPresenter.ad
+                                                         isRewarded:NO
+                                                           delegate:interstitialPresenter.skoverlayDelegate];
             }
         }
         [self.interstitialPresenterDelegate interstitialPresenterDidLoad:interstitialPresenter];
@@ -158,15 +131,51 @@
 
 - (void)interstitialPresenterDidClick:(HyBidInterstitialPresenter *)interstitialPresenter {
     if (self.interstitialPresenterDelegate && [self.interstitialPresenterDelegate respondsToSelector:@selector(interstitialPresenterDidClick:)]) {
-        [self.adTracker trackClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+        if (self.interstitialPresenter.ad.shouldReportCustomEndcardImpression) {
+            [self.adTracker trackCustomEndCardClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+        } else {
+            [self.adTracker trackClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+        }
         [self.interstitialPresenterDelegate interstitialPresenterDidClick:interstitialPresenter];
+    }
+}
+
+- (void)interstitialPresenterDidSKOverlayAutomaticClick:(HyBidInterstitialPresenter *)interstitialPresenter clickType:(HyBidSKOverlayAutomaticCLickType)clickType {
+    
+    switch(clickType){
+        case HyBidSKOverlayAutomaticCLickVideo:
+            [self.adTracker trackSKOverlayAutomaticClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+            break;
+        case HyBidSKOverlayAutomaticCLickDefaultEndCard:
+            [self.adTracker trackSKOverlayAutomaticDefaultEndCardClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+            break;
+        case HyBidSKOverlayAutomaticCLickCustomEndCard:
+            [self.adTracker trackSKOverlayAutomaticCustomEndCardClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+            break;
+    }
+}
+
+- (void)interstitialPresenterDidStorekitAutomaticClick:(HyBidInterstitialPresenter *)interstitialPresenter clickType:(HyBidStorekitAutomaticClickType)clickType {
+    
+    switch(clickType){
+        case HyBidStorekitAutomaticClickVideo:
+            [self.adTracker trackStorekitAutomaticClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+            break;
+        case HyBidStorekitAutomaticClickDefaultEndCard:
+            [self.adTracker trackStorekitAutomaticDefaultEndCardClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+            break;
+        case HyBidStorekitAutomaticClickCustomEndCard:
+            [self.adTracker trackStorekitAutomaticCustomEndCardClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+            break;
     }
 }
 
 - (void)interstitialPresenterDidDismiss:(HyBidInterstitialPresenter *)interstitialPresenter {
     if (self.interstitialPresenterDelegate && [self.interstitialPresenterDelegate respondsToSelector:@selector(interstitialPresenterDidDismiss:)]) {
-        HyBidReportingEvent* reportingEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.INTERSTITIAL_CLOSED adFormat:HyBidReportingAdFormat.FULLSCREEN properties:nil];
-        [[HyBid reportingManager] reportEventFor:reportingEvent];
+        if ([HyBidSDKConfig sharedConfig].reporting) {
+            HyBidReportingEvent* reportingEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.INTERSTITIAL_CLOSED adFormat:HyBidReportingAdFormat.FULLSCREEN properties:nil];
+            [[HyBid reportingManager] reportEventFor:reportingEvent];
+        }
         [self.interstitialPresenterDelegate interstitialPresenterDidDismiss:interstitialPresenter];
         [self.skoverlay dismissEntirely:YES withAd:interstitialPresenter.ad causedByAutoCloseTimerCompletion:NO];
     }
@@ -178,21 +187,21 @@
 
 - (void)interstitialPresenterDidFinish:(HyBidInterstitialPresenter *)interstitialPresenter {
     if (self.interstitialPresenterDelegate && [self.interstitialPresenterDelegate respondsToSelector:@selector(interstitialPresenterDidFinish:)]) {
-        HyBidReportingEvent* reportingEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.VIDEO_FINISHED adFormat:HyBidReportingAdFormat.FULLSCREEN properties:nil];
-        [[HyBid reportingManager] reportEventFor:reportingEvent];
         [self.interstitialPresenterDelegate interstitialPresenterDidFinish:interstitialPresenter];
     }
 }
 
 - (void)interstitialPresenter:(HyBidInterstitialPresenter *)interstitialPresenter didFailWithError:(NSError *)error {
     if (self.interstitialPresenterDelegate && [self.interstitialPresenterDelegate respondsToSelector:@selector(interstitialPresenter:didFailWithError:)]) {
-        if (error != nil && error.localizedDescription != nil && error.localizedDescription.length > 0) {
-            [self.errorReportingProperties setObject:error.localizedDescription forKey:HyBidReportingCommon.ERROR_MESSAGE];
-        }
-        if(self.errorReportingProperties){
-            [self addCommonPropertiesToReportingDictionary:self.errorReportingProperties withInterstitialPresenter:interstitialPresenter];
-            HyBidReportingEvent* reportingEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.ERROR adFormat:HyBidReportingAdFormat.FULLSCREEN properties:self.errorReportingProperties];
-            [[HyBid reportingManager] reportEventFor:reportingEvent];
+        if ([HyBidSDKConfig sharedConfig].reporting) {
+            if (error != nil && error.localizedDescription != nil && error.localizedDescription.length > 0) {
+                [self.errorReportingProperties setObject:error.localizedDescription forKey:HyBidReportingCommon.ERROR_MESSAGE];
+            }
+            if(self.errorReportingProperties){
+                [self.errorReportingProperties addEntriesFromDictionary:[[HyBid reportingManager] addCommonPropertiesForAd:interstitialPresenter.ad withRequest:nil]];
+                HyBidReportingEvent* reportingEvent = [[HyBidReportingEvent alloc]initWith:HyBidReportingEventType.ERROR adFormat:HyBidReportingAdFormat.FULLSCREEN properties:self.errorReportingProperties];
+                [[HyBid reportingManager] reportEventFor:reportingEvent];
+            }
         }
         [self.interstitialPresenterDelegate interstitialPresenter:interstitialPresenter didFailWithError:error];
     }
@@ -218,6 +227,23 @@
     if (self.customCTA) {
         [self.customCTA removeCustomCTA];
     }
+}
+
+- (void)interstitialPresenterWillPresentEndCard:(HyBidInterstitialPresenter *)interstitialPresenter skoverlayDelegate:(id<HyBidSKOverlayDelegate>)skoverlayDelegate customCTADelegate:(id<HyBidCustomCTAViewDelegate>)customCTADelegate {
+        [self.skoverlay changeDelegateFor:skoverlayDelegate];
+        [self.customCTA changeDelegateFor:customCTADelegate];
+}
+
+- (void)interstitialPresenterDidPresentCustomEndCard:(HyBidInterstitialPresenter *)interstitialPresenter {
+    [self.adTracker trackCustomEndCardImpressionWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+}
+
+- (void)interstitialPresenterDidPresentCustomCTA {
+    [self.adTracker trackCustomCTAImpressionWithAdFormat:HyBidReportingAdFormat.FULLSCREEN];
+}
+
+- (void)interstitialPresenterDidClickCustomCTAOnEndCard:(BOOL)onEndCard {
+    [self.adTracker trackCustomCTAClickWithAdFormat:HyBidReportingAdFormat.FULLSCREEN onEndCard:onEndCard];
 }
 
 @end

@@ -34,8 +34,6 @@
     #import <ATOM/ATOM-Swift.h>
 #endif
 
-#define kATOM_API_KEY @"39a34d8d-dd1d-4fbf-aa96-fdc5f0329451"
-
 @implementation HyBidATOMFlow
 
 typedef NS_ENUM(NSInteger, HyBidATOMStatus) {
@@ -47,26 +45,8 @@ typedef NS_ENUM(NSInteger, HyBidATOMStatus) {
 static HyBidATOMStatus atomStatus = HyBidATOMStatusIdle;
 
 + (void)initFlow {
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(didChangeAtomEnabled:)
-                                                 name:@"didChangeAtomEnabledNotification"
-                                               object:nil];
-    
-    if (HyBidConstants.atomEnabled) {
+    if ([HyBidSDKConfig sharedConfig].atomEnabled) {
         [self startATOM];
-    }
-}
-
-+ (void)didChangeAtomEnabled:(NSNotification *)notification {
-    BOOL atomEnabled = [notification.userInfo[kStoredATOMState] boolValue];
-    if (atomEnabled) {
-        if (atomStatus != HyBidATOMStatusStarted) {
-            [self startATOM];
-        }
-    } else {
-        if (atomStatus != HyBidATOMStatusStopped) {
-            [self stopATOM];
-        }
     }
 }
 
@@ -75,7 +55,8 @@ static HyBidATOMStatus atomStatus = HyBidATOMStatusIdle;
 {
     #if __has_include(<ATOM/ATOM-Swift.h>)
     NSError *atomError = nil;
-    [Atom startWithApiKey:kATOM_API_KEY isTest:NO error:&atomError withCallback:^(BOOL isSuccess) {
+    NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+    [Atom startWithApiKey:bundleID isTest:NO error:&atomError withCallback:^(BOOL isSuccess) {
         if (isSuccess) {
             NSArray *atomCohorts = [Atom getCohorts];
             [HyBidLogger infoLogFromClass:NSStringFromClass([self class]) fromMethod:NSStringFromSelector(_cmd) withMessage:[NSString stringWithFormat: [[NSString alloc] initWithFormat: @"ATOM: Received ATOM cohorts: %@", atomCohorts], NSStringFromSelector(_cmd)]];
@@ -107,26 +88,6 @@ static HyBidATOMStatus atomStatus = HyBidATOMStatusIdle;
     #endif
 }
 
-// MARK: Triggering Notification based on atomEnabled value
-+ (void)setAtomEnabled:(NSNumber*)enabled {
-    if (enabled) {
-        BOOL savedATOMState = [[NSUserDefaults standardUserDefaults] boolForKey:kStoredATOMState];
-        BOOL remoteConfigATOMState = enabled.intValue >= 0 ? [enabled boolValue] : savedATOMState;
-        [self reportReceivedRemoteConfig: (remoteConfigATOMState ? HyBidReportingEventType.ATOM_ACTIVATED_RECEIVED : HyBidReportingEventType.ATOM_DEACTIVATED_RECEIVED)];
-        if (savedATOMState != remoteConfigATOMState) {
-            [[NSUserDefaults standardUserDefaults] setBool:remoteConfigATOMState forKey:kStoredATOMState];
-            [self postAtomEnabledDidChangeNotification:remoteConfigATOMState];
-        }
-    }
-}
-
-+ (void)postAtomEnabledDidChangeNotification:(BOOL)enabled {
-    NSDictionary *userInfo = @{kStoredATOMState: @(enabled)};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"didChangeAtomEnabledNotification"
-                                                        object:self
-                                                      userInfo:userInfo];
-}
-
 // MARK: Reporting events
 
 + (void)reportHyBidEventWithStatus:(HyBidATOMStatus)status {
@@ -135,13 +96,17 @@ static HyBidATOMStatus atomStatus = HyBidATOMStatusIdle;
     if (status == HyBidATOMStatusStarted) {
         reportingType = HyBidReportingEventType.ATOM_ACTIVATED;
     }
-    HyBidReportingEvent *reportingEvent = [[HyBidReportingEvent alloc] initWith:reportingType adFormat:nil properties:nil];
-    [[HyBid reportingManager] reportEventFor:reportingEvent];
+    if ([HyBidSDKConfig sharedConfig].reporting) {
+        HyBidReportingEvent *reportingEvent = [[HyBidReportingEvent alloc] initWith:reportingType adFormat:nil properties:nil];
+        [[HyBid reportingManager] reportEventFor:reportingEvent];
+    }
 }
 
 + (void)reportReceivedRemoteConfig:(NSString*)name{
-    HyBidReportingEvent *reportingEvent = [[HyBidReportingEvent alloc] initWith:name adFormat:nil properties:nil];
-    [[HyBid reportingManager] reportEventFor:reportingEvent];
+    if ([HyBidSDKConfig sharedConfig].reporting) {
+        HyBidReportingEvent *reportingEvent = [[HyBidReportingEvent alloc] initWith:name adFormat:nil properties:nil];
+        [[HyBid reportingManager] reportEventFor:reportingEvent];
+    }
 }
 
 @end

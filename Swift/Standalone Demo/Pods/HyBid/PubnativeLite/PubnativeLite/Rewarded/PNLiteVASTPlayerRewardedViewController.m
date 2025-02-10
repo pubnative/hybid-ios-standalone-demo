@@ -77,6 +77,7 @@
 - (void)loadFullScreenPlayerWithPresenter:(HyBidRewardedPresenter *)rewardedPresenter withAd:(HyBidAd *)ad {
     self.presenter = rewardedPresenter;
     self.presenter.customCTADelegate = self.player.customCTADelegate;
+    self.presenter.skoverlayDelegate = self.player.skoverlayDelegate;
     self.adModel = ad;
     self.player = [[PNLiteVASTPlayerViewController alloc] initPlayerWithAdModel:self.adModel withAdFormat:HyBidAdFormatRewarded];
     self.player.delegate = self;
@@ -103,6 +104,7 @@
     self.player.view.frame = self.playerContainer.bounds;
     [self.playerContainer addSubview:self.player.view];
     self.presenter.customCTADelegate = self.player.customCTADelegate;
+    self.presenter.skoverlayDelegate = self.player.skoverlayDelegate;
     [self.presenter.delegate rewardedPresenterDidLoad:self.presenter viewController:self];
 }
 
@@ -130,6 +132,18 @@
     [self.presenter.delegate rewardedPresenterDidDisappear:self.presenter];
 }
 
+- (void)vastPlayerDidShowSKOverlayWithClickType:(HyBidSKOverlayAutomaticCLickType)clickType {
+    [self.presenter.delegate rewardedPresenterDidSKOverlayAutomaticClick:self.presenter clickType:clickType];
+}
+
+- (void)vastPlayerDidShowStorekitWithClickType:(HyBidStorekitAutomaticClickType)clickType {
+    [self.presenter.delegate rewardedPresenterDidStorekitAutomaticClick:self.presenter clickType:clickType];
+}
+
+- (void)vastPlayerDidShowAutoStorekit {
+    [self.presenter.delegate rewardedPresenterDidClick:self.presenter];
+}
+
 - (void)vastPlayerDidClose:(PNLiteVASTPlayerViewController *)vastPlayer {
     [self.presenter hideFromViewController:self];
     [self.presenter.delegate rewardedPresenterDidDismiss:self.presenter];
@@ -139,20 +153,43 @@
     [self.presenter.delegate rewardedPresenterDidAppear:self.presenter];
 }
 
-- (void)vastPlayerWillShowEndCard:(PNLiteVASTPlayerViewController *)vastPlayer {
+- (void)vastPlayerWillShowEndCard:(PNLiteVASTPlayerViewController *)vastPlayer
+                  isCustomEndCard:(BOOL)isCustomEndCard
+                skoverlayDelegate:(id<HyBidSKOverlayDelegate>)skoverlayDelegate
+                customCTADelegate:(id<HyBidCustomCTAViewDelegate>)customCTADelegate {
+    if (self.presenter.delegate && [self.presenter.delegate respondsToSelector:@selector(rewardedPresenteWillPresentEndCard:skoverlayDelegate:customCTADelegate:)]) {
+        [self.presenter.delegate rewardedPresenteWillPresentEndCard:self.presenter skoverlayDelegate:skoverlayDelegate customCTADelegate:customCTADelegate];
+    }
+    
     self.skAdModel = self.adModel.isUsingOpenRTB ? self.adModel.getOpenRTBSkAdNetworkModel : self.adModel.getSkAdNetworkModel;
     if ([self.skAdModel.productParameters objectForKey:HyBidSKAdNetworkParameter.endcardDelay] != [NSNull null] && [self.skAdModel.productParameters objectForKey:HyBidSKAdNetworkParameter.endcardDelay] && [[self.skAdModel.productParameters objectForKey:HyBidSKAdNetworkParameter.endcardDelay] intValue] == -1) {
         if (self.presenter.delegate && [self.presenter.delegate respondsToSelector:@selector(rewardedPresenterDismissesSKOverlay:)]) {
             [self.presenter.delegate rewardedPresenterDismissesSKOverlay:self.presenter];
         }
     } else {        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"VASTEndCardWillShow" object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"VASTEndCardWillShow"
+                                                            object:[NSNumber numberWithBool:isCustomEndCard]];
     }
 }
 
 - (void)vastPlayerDidShowEndCard:(PNLiteVASTPlayerViewController *)vastPlayer endcard:(HyBidVASTEndCard *)endcard {
     if (self.presenter.delegate && [self.presenter.delegate respondsToSelector:@selector(rewardedPresenterDismissesCustomCTA:)] && endcard.isCustomEndCard) {
         [self.presenter.delegate rewardedPresenterDismissesCustomCTA:self.presenter];
+    }
+    if (self.presenter.delegate && [self.presenter.delegate respondsToSelector:@selector(rewardedPresenterDidPresentCustomEndCard:)] && endcard.isCustomEndCard) {
+        [self.presenter.delegate rewardedPresenterDidPresentCustomEndCard:self.presenter];
+    }
+}
+
+- (void)vastPlayerDidShowCustomCTA {
+    if (self.presenter.delegate && [self.presenter.delegate respondsToSelector:@selector(rewardedPresenterDidPresentsCustomCTA)]) {
+        [self.presenter.delegate rewardedPresenterDidPresentsCustomCTA];
+    }
+}
+
+- (void)vastPlayerDidClickCustomCTAOnEndCard:(BOOL)onEndCard {
+    if (self.presenter.delegate && [self.presenter.delegate respondsToSelector:@selector(rewardedPresenterDidClickCustomCTAOnEndCard:)]) {
+        [self.presenter.delegate rewardedPresenterDidClickCustomCTAOnEndCard:onEndCard];
     }
 }
 
