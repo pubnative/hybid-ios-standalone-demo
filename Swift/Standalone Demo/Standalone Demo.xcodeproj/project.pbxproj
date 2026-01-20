@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -18,6 +18,7 @@
 		5ACC93392666956C00F40D52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5ACC93372666956C00F40D52 /* Main.storyboard */; };
 		5ACC933B2666956F00F40D52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5ACC933A2666956F00F40D52 /* Assets.xcassets */; };
 		5ACC933E2666956F00F40D52 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5ACC933C2666956F00F40D52 /* LaunchScreen.storyboard */; };
+		7EAF3D312F1FB99E009DAF0B /* HyBid in Frameworks */ = {isa = PBXBuildFile; productRef = 7EAF3D302F1FB99E009DAF0B /* HyBid */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7EAF3D312F1FB99E009DAF0B /* HyBid in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +75,6 @@
 			children = (
 				5ACC93302666956C00F40D52 /* Standalone Demo */,
 				5ACC932F2666956C00F40D52 /* Products */,
-				CAD412610BBC54FFA15C89C6 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -97,13 +98,6 @@
 				5ACC933F2666956F00F40D52 /* Info.plist */,
 			);
 			path = "Standalone Demo";
-			sourceTree = "<group>";
-		};
-		CAD412610BBC54FFA15C89C6 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -149,6 +143,9 @@
 				Base,
 			);
 			mainGroup = 5ACC93252666956C00F40D52;
+			packageReferences = (
+				7EAF3D2F2F1FB99E009DAF0B /* XCRemoteSwiftPackageReference "hybid-ios-spm-sdk" */,
+			);
 			productRefGroup = 5ACC932F2666956C00F40D52 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -385,6 +382,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7EAF3D2F2F1FB99E009DAF0B /* XCRemoteSwiftPackageReference "hybid-ios-spm-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vervegroup/hybid-ios-spm-sdk";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7EAF3D302F1FB99E009DAF0B /* HyBid */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7EAF3D2F2F1FB99E009DAF0B /* XCRemoteSwiftPackageReference "hybid-ios-spm-sdk" */;
+			productName = HyBid;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5ACC93262666956C00F40D52 /* Project object */;
 }
