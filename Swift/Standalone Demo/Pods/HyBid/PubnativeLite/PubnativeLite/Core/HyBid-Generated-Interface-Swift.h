@@ -198,7 +198,6 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 
 #import <HyBid.h>
 
-#endif
 #pragma clang diagnostic ignored "-Wproperty-attribute-mismatch"
 #pragma clang diagnostic ignored "-Wduplicate-method-arg"
 #if __has_warning("-Wpragma-clang-attribute")
@@ -215,6 +214,10 @@ typedef unsigned int swift_uint4  __attribute__((__ext_vector_type__(4)));
 #endif
 
 #if defined(__OBJC__)
+
+// === AUTO-GENERATED SWIFT INTERFACE START ===
+// The code between these markers is automatically managed.
+// Do NOT manually edit inside this block.
 
 SWIFT_CLASS("_TtC5HyBid24HyBidReportingProperties")
 @interface HyBidReportingProperties : NSObject
@@ -235,7 +238,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-
 SWIFT_CLASS_NAMED("BeaconType")
 @interface HyBidReportingBeaconType : HyBidReportingProperties
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull CLICK;)
@@ -248,7 +250,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 + (NSString * _Nonnull)CUSTOM_ENDCARD_CLICK SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
-
 
 SWIFT_CLASS_NAMED("Common")
 @interface HyBidReportingCommon : HyBidReportingProperties
@@ -317,7 +318,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-
 SWIFT_CLASS_NAMED("CreativeType")
 @interface HyBidReportingCreativeType : HyBidReportingProperties
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull STANDARD;)
@@ -326,7 +326,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 + (NSString * _Nonnull)VIDEO SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
-
 
 SWIFT_CLASS_NAMED("EventType")
 @interface HyBidReportingEventType : HyBidReportingProperties
@@ -511,9 +510,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 @end
 
 @class SKOverlayAppConfiguration;
-SWIFT_CLASS("_TtC5HyBid34HyBidAdAttributionSKOverlayManager") SWIFT_AVAILABILITY(ios,introduced=17.4)
+SWIFT_CLASS("_TtC5HyBid34HyBidAdAttributionSKOverlayManager")
 @interface HyBidAdAttributionSKOverlayManager : NSObject
-- (void)getAppConfigurationWithAppIdentifier:(NSString * _Nullable)appIdentifier position:(enum SKOverlayPosition)position userDismissible:(BOOL)userDismissible ad:(HyBidAd * _Nonnull)ad adFormat:(NSString * _Nonnull)adFormat completionHandler:(void (^ _Nonnull)(SKOverlayAppConfiguration * _Nullable))completionHandler;
+- (void)getAppConfigurationWithAppIdentifier:(NSString * _Nullable)appIdentifier position:(enum SKOverlayPosition)position userDismissible:(BOOL)userDismissible ad:(HyBidAd * _Nonnull)ad adFormat:(NSString * _Nonnull)adFormat completionHandler:(void (^ _Nonnull)(SKOverlayAppConfiguration * _Nullable))completionHandler SWIFT_AVAILABILITY(ios,introduced=17.4);
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -715,7 +714,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, copy) NSString * _Nonnull ctaL
 @end
 
 @class HyBidDataModel;
-
 SWIFT_CLASS("_TtC5HyBid22HyBidCustomCTATracking")
 @interface HyBidCustomCTATracking : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
@@ -728,7 +726,6 @@ SWIFT_CLASS("_TtC5HyBid22HyBidCustomCTATracking")
 @class NSCoder;
 @class UIViewController;
 @protocol HyBidCustomCTAViewDelegate;
-
 SWIFT_CLASS("_TtC5HyBid18HyBidCustomCTAView")
 @interface HyBidCustomCTAView : UIView
 - (nullable instancetype)initWithCoder:(NSCoder * _Nonnull)coder SWIFT_UNAVAILABLE;
@@ -769,7 +766,6 @@ SWIFT_PROTOCOL("_TtP5HyBid25HyBidInterruptionDelegate_")
 @end
 
 enum HyBidGDPRk : NSInteger;
-
 SWIFT_CLASS("_TtC5HyBid9HyBidGDPR")
 @interface HyBidGDPR : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
@@ -789,7 +785,6 @@ typedef SWIFT_ENUM_NAMED(NSInteger, HyBidGDPRk, "HyBidGDPRKeys", open) {
   HyBidGDPRkGPPString = 8,
   HyBidGDPRkGPPID = 9,
 };
-
 
 SWIFT_CLASS("_TtC5HyBid24HyBidImpressionConstants")
 @interface HyBidImpressionConstants : NSObject
@@ -836,11 +831,9 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidInterru
 @property (nonatomic, weak) id <HyBidInterruptionDelegate> _Nullable overlappingElementDelegate;
 @property (nonatomic, weak) id <HyBidAdFeedbackViewDelegate> _Nullable feedbackViewDelegate;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
-/// Register a delegate for a specific context (call once per owner lifecycle).
-- (void)setDelegate:(id <HyBidInterruptionDelegate> _Nonnull)delegate for:(enum HyBidAdContext)context;
-/// Make this context the current receiver (push on stack).
-- (void)activateContext:(enum HyBidAdContext)context;
-/// Remove this context from the stack (usually on dismiss/deinit).
+/// Assigns the delegate for <code>context</code> and pushes it on the active stack.
+- (void)activateContext:(enum HyBidAdContext)context with:(id <HyBidInterruptionDelegate> _Nonnull)delegate;
+/// Removes the context from the stack.
 - (void)deactivateContext:(enum HyBidAdContext)context;
 - (id <HyBidInterruptionDelegate> _Nullable)activeDelegate SWIFT_WARN_UNUSED_RESULT;
 - (BOOL)hasOnlyAppLifeCycleInterruption SWIFT_WARN_UNUSED_RESULT;
@@ -864,7 +857,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidInterru
 @end
 
 @protocol HyBidInterstitialAdDelegate;
-
 SWIFT_CLASS("_TtC5HyBid19HyBidInterstitialAd")
 @interface HyBidInterstitialAd : NSObject
 @property (nonatomic, strong) HyBidAd * _Nullable ad;
@@ -900,7 +892,6 @@ SWIFT_PROTOCOL("_TtP5HyBid27HyBidInterstitialAdDelegate_")
 @end
 
 enum HyBidLandingBehaviourType : int32_t;
-
 SWIFT_CLASS("_TtC5HyBid21HyBidLandingBehaviour")
 @interface HyBidLandingBehaviour : NSObject
 - (enum HyBidLandingBehaviourType)convertStringWithValue:(NSString * _Nullable)value SWIFT_WARN_UNUSED_RESULT;
@@ -914,7 +905,6 @@ typedef SWIFT_ENUM(int32_t, HyBidLandingBehaviourType, open) {
   HyBidLandingBehaviourTypeUnknown = 3,
 };
 
-
 SWIFT_CLASS("_TtC5HyBid19HyBidLocationConfig")
 @interface HyBidLocationConfig : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidLocationConfig * _Nonnull sharedConfig;)
@@ -925,7 +915,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidLocatio
 @property (nonatomic) BOOL locationUpdatesEnabled;
 @end
 
-
 SWIFT_CLASS("_TtC5HyBid11HyBidLogger")
 @interface HyBidLogger : NSObject
 + (void)setLogLevel:(HyBidLogLevel)logLevel;
@@ -935,7 +924,6 @@ SWIFT_CLASS("_TtC5HyBid11HyBidLogger")
 + (void)debugLogFromClass:(NSString * _Nonnull)className fromMethod:(NSString * _Nonnull)fromMethod withMessage:(NSString * _Nonnull)withMessage;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
-
 
 SWIFT_CLASS("_TtC5HyBid23HyBidMRAIDCloseCardView")
 @interface HyBidMRAIDCloseCardView : UIView
@@ -950,7 +938,6 @@ SWIFT_CLASS("_TtC5HyBid23HyBidMRAIDCloseCardView")
 @end
 
 enum HyBidMRAIDCommandType : int32_t;
-
 SWIFT_CLASS("_TtC5HyBid17HyBidMRAIDCommand")
 @interface HyBidMRAIDCommand : NSObject
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER SWIFT_UNAVAILABLE;
@@ -972,7 +959,6 @@ typedef SWIFT_ENUM(NSInteger, HyBidOnTopOfType, open) {
 };
 
 @class PNLiteAdRequestModel;
-
 SWIFT_CLASS("_TtC5HyBid24HyBidOpenRTBRequestModel")
 @interface HyBidOpenRTBRequestModel : NSObject
 - (nonnull instancetype)initWithAdRequestModel:(PNLiteAdRequestModel * _Nonnull)adRequestModel openRTBAdType:(HyBidOpenRTBAdType)openRTBAdType OBJC_DESIGNATED_INITIALIZER;
@@ -980,7 +966,6 @@ SWIFT_CLASS("_TtC5HyBid24HyBidOpenRTBRequestModel")
 - (nonnull instancetype)init SWIFT_UNAVAILABLE;
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
-
 
 SWIFT_CLASS("_TtC5HyBid20HyBidReportingBeacon")
 @interface HyBidReportingBeacon : NSObject
@@ -993,14 +978,12 @@ SWIFT_CLASS("_TtC5HyBid20HyBidReportingBeacon")
 
 @class HyBidReportingEvent;
 @class HyBidReportingVASTTracker;
-
 SWIFT_PROTOCOL("_TtP5HyBid22HyBidReportingDelegate_")
 @protocol HyBidReportingDelegate
 - (void)onEventWith:(HyBidReportingEvent * _Nonnull)event;
 - (void)onBeaconWith:(HyBidReportingBeacon * _Nonnull)beacon;
 - (void)onVASTTrackerWith:(HyBidReportingVASTTracker * _Nonnull)tracker;
 @end
-
 
 SWIFT_CLASS("_TtC5HyBid19HyBidReportingEvent")
 @interface HyBidReportingEvent : NSObject
@@ -1043,7 +1026,6 @@ SWIFT_CLASS("_TtC5HyBid25HyBidReportingVASTTracker")
 @end
 
 @protocol HyBidRewardedAdDelegate;
-
 SWIFT_CLASS("_TtC5HyBid15HyBidRewardedAd")
 @interface HyBidRewardedAd : NSObject
 @property (nonatomic, strong) HyBidAd * _Nullable ad;
@@ -1079,7 +1061,6 @@ SWIFT_PROTOCOL("_TtP5HyBid23HyBidRewardedAdDelegate_")
 @end
 
 @class HyBidTargetingModel;
-
 SWIFT_CLASS("_TtC5HyBid14HyBidSDKConfig")
 @interface HyBidSDKConfig : NSObject
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidSDKConfig * _Nonnull sharedConfig;)
@@ -1137,7 +1118,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidSession
 
 @class CLLocationManager;
 @class CLLocation;
-
 SWIFT_CLASS("_TtC5HyBid13HyBidSettings")
 @interface HyBidSettings : NSObject <CLLocationManagerDelegate>
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidSettings * _Nonnull sharedInstance;)
@@ -1161,7 +1141,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidSetting
 @property (nonatomic, readonly, copy) NSString * _Nullable languageBCP47;
 @property (nonatomic, readonly, copy) NSString * _Nullable carrierName;
 @property (nonatomic, readonly, copy) NSString * _Nullable carrierMCCMNC;
-@property (nonatomic, readonly, copy) NSString * _Nonnull connectionType SWIFT_AVAILABILITY(ios,introduced=14.1);
+@property (nonatomic, readonly, copy) NSString * _Nonnull connectionType;
 @property (nonatomic, readonly, copy) NSString * _Nonnull deviceWidth;
 @property (nonatomic, readonly, copy) NSString * _Nonnull deviceHeight;
 @property (nonatomic, readonly, copy) NSString * _Nonnull orientation;
@@ -1182,7 +1162,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, strong) HyBidSetting
 @property (nonatomic, readonly, copy) NSString * _Nullable isAirplaneModeEnabled;
 @property (nonatomic, readonly) BOOL hasSIM;
 @end
-
 
 SWIFT_CLASS("_TtC5HyBid15HyBidSkipOffset")
 @interface HyBidSkipOffset : NSObject
@@ -1232,7 +1211,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly) NSInteger DEFAULT_BC
 + (nonnull instancetype)new SWIFT_UNAVAILABLE_MSG("-init is unavailable");
 @end
 
-
 SWIFT_CLASS("_TtC5HyBid19HyBidTargetingModel")
 @interface HyBidTargetingModel : NSObject
 @property (nonatomic, strong) NSNumber * _Nullable age;
@@ -1249,7 +1227,6 @@ SWIFT_CLASS("_TtC5HyBid19HyBidTargetingModel")
 @class NSURLRequest;
 @class NSURLSessionDataTask;
 @class NSURLResponse;
-
 SWIFT_CLASS("_TtC5HyBid18HyBidURLRedirector")
 @interface HyBidURLRedirector : NSObject <NSURLSessionDataDelegate>
 @property (nonatomic, weak) id <HyBidURLRedirectorDelegate> _Nullable delegate;
@@ -1261,7 +1238,6 @@ SWIFT_CLASS("_TtC5HyBid18HyBidURLRedirector")
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-
 SWIFT_PROTOCOL("_TtP5HyBid26HyBidURLRedirectorDelegate_")
 @protocol HyBidURLRedirectorDelegate
 - (void)onURLRedirectorStartWithUrl:(NSString * _Nonnull)url;
@@ -1269,7 +1245,6 @@ SWIFT_PROTOCOL("_TtP5HyBid26HyBidURLRedirectorDelegate_")
 - (void)onURLRedirectorFinishWithUrl:(NSString * _Nonnull)url;
 - (void)onURLRedirectorFailWithUrl:(NSString * _Nonnull)url withError:(NSError * _Nonnull)error;
 @end
-
 
 SWIFT_CLASS("_TtC5HyBid28HyBidVASTEventBeaconsManager")
 @interface HyBidVASTEventBeaconsManager : NSObject
@@ -1326,7 +1301,6 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
-
 SWIFT_CLASS_NAMED("VASTTrackerType")
 @interface HyBidReportingVASTTrackerType : HyBidReportingProperties
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull IMPRESSION;)
@@ -1339,6 +1313,7 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 + (NSString * _Nonnull)PROGRESS SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
+// === AUTO-GENERATED SWIFT INTERFACE END ===
 
 #endif
 #if __has_attribute(external_source_symbol)
