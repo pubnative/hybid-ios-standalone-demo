@@ -19,11 +19,10 @@
 		34E9448B27FC82D70080C2B5 /* InterstitialViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9448A27FC82D70080C2B5 /* InterstitialViewController.m */; };
 		34E9448E27FC86E30080C2B5 /* RewardedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9448D27FC86E30080C2B5 /* RewardedViewController.m */; };
 		34E9449127FC8AB30080C2B5 /* NativeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9449027FC8AB30080C2B5 /* NativeViewController.m */; };
-		3977846CC8AE859CBF015E07 /* Pods_Standalone_Demo___ObjC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8A9D90B92254FD51B6C29E05 /* Pods_Standalone_Demo___ObjC.framework */; };
+		7EAF3D2E2F1FB8BA009DAF0B /* HyBid in Frameworks */ = {isa = PBXBuildFile; productRef = 7EAF3D2D2F1FB8BA009DAF0B /* HyBid */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		0FE1BFF645C35F9370A030FF /* Pods-Standalone Demo - ObjC.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Standalone Demo - ObjC.debug.xcconfig"; path = "Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC.debug.xcconfig"; sourceTree = "<group>"; };
 		34E9446327FC79C40080C2B5 /* Standalone Demo - ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Standalone Demo - ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34E9446627FC79C40080C2B5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34E9446727FC79C40080C2B5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -45,8 +44,6 @@
 		34E9448D27FC86E30080C2B5 /* RewardedViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RewardedViewController.m; sourceTree = "<group>"; };
 		34E9448F27FC8AB30080C2B5 /* NativeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NativeViewController.h; sourceTree = "<group>"; };
 		34E9449027FC8AB30080C2B5 /* NativeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NativeViewController.m; sourceTree = "<group>"; };
-		839A153682FC4C961702ACCD /* Pods-Standalone Demo - ObjC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Standalone Demo - ObjC.release.xcconfig"; path = "Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC.release.xcconfig"; sourceTree = "<group>"; };
-		8A9D90B92254FD51B6C29E05 /* Pods_Standalone_Demo___ObjC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "Pods_Standalone_Demo___ObjC.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3977846CC8AE859CBF015E07 /* Pods_Standalone_Demo___ObjC.framework in Frameworks */,
+				7EAF3D2E2F1FB8BA009DAF0B /* HyBid in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,8 +63,6 @@
 			children = (
 				34E9446527FC79C40080C2B5 /* Standalone Demo - ObjC */,
 				34E9446427FC79C40080C2B5 /* Products */,
-				F65AB4A6C6719F8C54FC4D17 /* Pods */,
-				B1FB44D2BF3071DD52C7F07D /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -122,23 +117,6 @@
 			path = Examples;
 			sourceTree = "<group>";
 		};
-		B1FB44D2BF3071DD52C7F07D /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				8A9D90B92254FD51B6C29E05 /* Pods_Standalone_Demo___ObjC.framework */,
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		F65AB4A6C6719F8C54FC4D17 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				0FE1BFF645C35F9370A030FF /* Pods-Standalone Demo - ObjC.debug.xcconfig */,
-				839A153682FC4C961702ACCD /* Pods-Standalone Demo - ObjC.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -146,11 +124,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 34E9447C27FC79C50080C2B5 /* Build configuration list for PBXNativeTarget "Standalone Demo - ObjC" */;
 			buildPhases = (
-				D434F188E8E74B519B3AAB21 /* [CP] Check Pods Manifest.lock */,
 				34E9445F27FC79C40080C2B5 /* Sources */,
 				34E9446027FC79C40080C2B5 /* Frameworks */,
 				34E9446127FC79C40080C2B5 /* Resources */,
-				C1F30A44B7F4373E6C7E6F50 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -184,6 +160,9 @@
 				Base,
 			);
 			mainGroup = 34E9445A27FC79C40080C2B5;
+			packageReferences = (
+				7EAF3D2C2F1FB8BA009DAF0B /* XCRemoteSwiftPackageReference "hybid-ios-spm-sdk" */,
+			);
 			productRefGroup = 34E9446427FC79C40080C2B5 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -206,48 +185,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		C1F30A44B7F4373E6C7E6F50 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Standalone Demo - ObjC/Pods-Standalone Demo - ObjC-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D434F188E8E74B519B3AAB21 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-Standalone Demo - ObjC-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		34E9445F27FC79C40080C2B5 /* Sources */ = {
@@ -401,7 +338,6 @@
 		};
 		34E9447D27FC79C50080C2B5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0FE1BFF645C35F9370A030FF /* Pods-Standalone Demo - ObjC.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -429,7 +365,6 @@
 		};
 		34E9447E27FC79C50080C2B5 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 839A153682FC4C961702ACCD /* Pods-Standalone Demo - ObjC.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -477,6 +412,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		7EAF3D2C2F1FB8BA009DAF0B /* XCRemoteSwiftPackageReference "hybid-ios-spm-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/vervegroup/hybid-ios-spm-sdk";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7EAF3D2D2F1FB8BA009DAF0B /* HyBid */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7EAF3D2C2F1FB8BA009DAF0B /* XCRemoteSwiftPackageReference "hybid-ios-spm-sdk" */;
+			productName = HyBid;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 34E9445B27FC79C40080C2B5 /* Project object */;
 }
