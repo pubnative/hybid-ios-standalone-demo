@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		348AD3D52F5082D2003BE54D /* music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 348AD3D42F5082D2003BE54D /* music.mp3 */; };
 		34E9446827FC79C40080C2B5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9446727FC79C40080C2B5 /* AppDelegate.m */; };
 		34E9446B27FC79C40080C2B5 /* SceneDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E9446A27FC79C40080C2B5 /* SceneDelegate.m */; };
 		34E9447127FC79C40080C2B5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 34E9446F27FC79C40080C2B5 /* Main.storyboard */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		348AD3D42F5082D2003BE54D /* music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = music.mp3; sourceTree = "<group>"; };
 		34E9446327FC79C40080C2B5 /* Standalone Demo - ObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Standalone Demo - ObjC.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		34E9446627FC79C40080C2B5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		34E9446727FC79C40080C2B5 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		34E9447F27FC7A880080C2B5 /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
+				348AD3D42F5082D2003BE54D /* music.mp3 */,
 				34E9446F27FC79C40080C2B5 /* Main.storyboard */,
 				34E9448027FC7AA30080C2B5 /* Standalone.storyboard */,
 			);
@@ -177,6 +180,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				348AD3D52F5082D2003BE54D /* music.mp3 in Resources */,
 				34E9447627FC79C50080C2B5 /* LaunchScreen.storyboard in Resources */,
 				34E9448127FC7AA30080C2B5 /* Standalone.storyboard in Resources */,
 				34E9447327FC79C50080C2B5 /* Assets.xcassets in Resources */,

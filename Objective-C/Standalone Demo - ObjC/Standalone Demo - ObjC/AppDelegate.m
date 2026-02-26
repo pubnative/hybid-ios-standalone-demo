@@ -1,6 +1,7 @@
 #import "AppDelegate.h"
 // Step 1: Import HyBid into your class
 #import <HyBid/HyBid.h>
+#import <AVFoundation/AVFoundation.h>
 #if __has_include(<HyBid/HyBid-Swift.h>)
     #import <HyBid/HyBid-Swift.h>
 #else
@@ -17,7 +18,16 @@
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+
+    // Publisher-like default: Ambient + MixWithOthers if app doesn't play its own audio yet
+    NSError *err = nil;
+    [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryAmbient
+                                     withOptions:AVAudioSessionCategoryOptionMixWithOthers
+                                           error:&err];
+    if (err) {
+        NSLog(@"[Audio] Launch setCategory failed: %@", err.localizedDescription);
+    }
+
 // Step 2: Setup & Initialize HyBid SDK
     [HyBid initWithAppToken:APP_TOKEN completion:nil];
 // Step 3: Set COPPA (Optional)

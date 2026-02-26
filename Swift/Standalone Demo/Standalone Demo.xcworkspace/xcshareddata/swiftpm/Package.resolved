@@ -1,0 +1,24 @@
+{
+  "originHash" : "257b8c2ef12bbda41cdcff25b889aa3563ea03a3c777bde38f4ab54e3809dc7c",
+  "pins" : [
+    {
+      "identity" : "atom",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/pubnative/ATOM.git",
+      "state" : {
+        "revision" : "cd095527246c063c7ffdebe627fb0d3fe31932da",
+        "version" : "3.8.0-spm.2"
+      }
+    },
+    {
+      "identity" : "hybid-ios-spm-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vervegroup/hybid-ios-spm-sdk",
+      "state" : {
+        "branch" : "main",
+        "revision" : "40020b2288195920b050108f805b3fdba1699d42"
+      }
+    }
+  ],
+  "version" : 3
+}
