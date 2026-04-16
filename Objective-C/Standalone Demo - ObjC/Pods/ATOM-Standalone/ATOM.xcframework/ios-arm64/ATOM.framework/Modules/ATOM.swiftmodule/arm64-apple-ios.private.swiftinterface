@@ -11,7 +11,7 @@ import CoreMotion
 import CoreTelephony
 import Dispatch
 import Foundation
-import Network
+import JavaScriptCore
 import SQLite3
 import Swift
 import SystemConfiguration
@@ -332,6 +332,418 @@ extension UIKit.UIWindow {
 public struct ATOMPinchTick : Swift.Equatable {
   public static func == (lhs: ATOMPinchTick, rhs: ATOMPinchTick) -> Swift.Bool
 }
+public struct ATOMLuminositySignal : Swift.Codable {
+  public var veryBright: ATOMSignalBody? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMAppsBasedClassificationMatcherModel : Swift.Codable {
+  public var identifier: Swift.String {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+final public class ATOMEventResponse : Swift.Codable {
+  required public init(from decoder: any Swift.Decoder) throws
+  final public func encode(to encoder: any Swift.Encoder) throws
+  @objc deinit
+}
+extension ATOMEventResponse {
+  final public func name() -> Swift.String
+  final public func value() -> Any?
+}
+public struct ATOMSignalsData : Swift.Codable {
+  public let battery: ATOMBatterySignal?
+  public let reachability: ATOMReachabilitySignal?
+  public let luminosity: ATOMLuminositySignal?
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public class ATOMRemoteConfiguration {
+  public init(configurationManager: any ATOMConfigurationManagerProtocol)
+  convenience public init(networkClient: any ATOMNetworkClient, baseURL: Swift.String, apiVersion: Swift.String)
+  public func loadConfiguration(apiKey: Swift.String, ssid: Swift.String, completion: @escaping (Swift.Result<ATOMConfiguration?, ATOMConfigurationError>) -> Swift.Void)
+  public func getCurrentConfiguration() -> ATOMConfiguration?
+  public func addObserver(_ observer: any ATOMConfigurationObserver)
+  public func removeObserver(_ observer: any ATOMConfigurationObserver)
+  @objc deinit
+}
+public class ATOMConfigurationNetworkProvider : ATOMConfigurationNetworkProviderProtocol {
+  public init(networkClient: any ATOMNetworkClient, baseURL: Swift.String, apiVersion: Swift.String, userDefaults: Foundation.UserDefaults = .standard)
+  public func fetchConfiguration(from url: Foundation.URL, completion: @escaping (Swift.Result<Foundation.Data, any Swift.Error>) -> Swift.Void)
+  public func buildConfigurationURL(apiKey: Swift.String, date: Swift.Int = 0, ssid: Swift.String, completion: @escaping (Foundation.URL?) -> Swift.Void)
+  @objc deinit
+}
+public struct ATOMRangeMatcherModel : Swift.Codable {
+  public var sessionModel: ATOMAbstractSessionModel {
+    get
+  }
+  public var slots: [Swift.Int]? {
+    get
+  }
+  public var any: Box<ATOMRangeMatcherModel>? {
+    get
+  }
+  public var all: Box<ATOMRangeMatcherModel>? {
+    get
+  }
+  public var parts: Box<ATOMRangeMatcherModel>? {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+@_hasMissingDesignatedInitializers final public class Box<T> : Swift.Codable where T : Swift.Decodable, T : Swift.Encodable {
+  final public let value: T
+  required public init(from decoder: any Swift.Decoder) throws
+  final public func encode(to encoder: any Swift.Encoder) throws
+  @objc deinit
+}
+public struct ATOMBatterySignal : Swift.Codable {
+  public var isCharging: ATOMSignalBody? {
+    get
+  }
+  public var veryLow: ATOMSignalBody? {
+    get
+  }
+  public var low: ATOMSignalBody? {
+    get
+  }
+  public var batterySaver: ATOMSignalBody? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMEventRuleMatcherModel : Swift.Codable {
+  public var id: Swift.Int? {
+    get
+  }
+  public var ordered: Swift.Int {
+    get
+  }
+  public var lookupRangeMs: Swift.Int {
+    get
+  }
+  public var totalCount: Swift.Int {
+    get
+  }
+  public var matchCount: Swift.Int {
+    get
+  }
+  public var events: [ATOMEventResponse]? {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public enum ATOMConfigurationError : Swift.Error, Swift.Equatable {
+  case networkError
+  case parsingError
+  case invalidResponse
+  case configurationNotFound
+  public static func == (a: ATOMConfigurationError, b: ATOMConfigurationError) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+}
+public protocol ATOMConfigurationNetworkProviderProtocol {
+  func fetchConfiguration(from url: Foundation.URL, completion: @escaping (Swift.Result<Foundation.Data, any Swift.Error>) -> Swift.Void)
+  func buildConfigurationURL(apiKey: Swift.String, date: Swift.Int, ssid: Swift.String, completion: @escaping (Foundation.URL?) -> Swift.Void)
+}
+public protocol ATOMConfigurationManagerProtocol {
+  func loadConfiguration(apiKey: Swift.String, ssid: Swift.String, completion: @escaping (Swift.Result<ATOMConfiguration?, ATOMConfigurationError>) -> Swift.Void)
+  func getCurrentConfiguration() -> ATOMConfiguration?
+}
+public protocol ATOMConfigurationObserver : AnyObject {
+  func configurationDidUpdate(_ configuration: ATOMConfiguration?)
+  func configurationDidFail(with error: ATOMConfigurationError)
+}
+public struct ATOMMLModelMatcherModel : Swift.Codable {
+  public var name: Swift.String {
+    get
+  }
+  public var version: Swift.String {
+    get
+  }
+  public var useSigmoid: Swift.Bool? {
+    get
+  }
+  public var url: Swift.String {
+    get
+  }
+  public var featureValueKey: Swift.String {
+    get
+  }
+  public var calculationIntervalInSeconds: Swift.Int? {
+    get
+  }
+  public var query: Swift.String? {
+    get
+  }
+  public var outputIndex: Swift.Int? {
+    get
+  }
+  public var featureDependencies: [Swift.Int]? {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct ATOMSignalBody : Swift.Codable {
+  public var weight: Swift.Int {
+    get
+  }
+  public var rule: Swift.String? {
+    get
+  }
+  public var value: Swift.Int {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMReachabilitySignal : Swift.Codable {
+  public var wifiOn: ATOMSignalBody? {
+    get
+  }
+  public var offline: ATOMSignalBody? {
+    get
+  }
+  public var g5: ATOMSignalBody? {
+    get
+  }
+  public var g4: ATOMSignalBody? {
+    get
+  }
+  public var g3: ATOMSignalBody? {
+    get
+  }
+  public var g2: ATOMSignalBody? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMConfiguration : Swift.Codable {
+  public var shouldStart: Swift.Bool {
+    get
+  }
+  public var cohorts: [ATOMCohortConfigurationModel]? {
+    get
+  }
+  public var features: [ATOMFeature]? {
+    get
+  }
+  public var flush: [ATOMFlush]? {
+    get
+  }
+  public var appClassification: [Swift.Int]? {
+    get
+  }
+  public var version: Swift.String? {
+    get
+  }
+  public var enableGestureCollection: Swift.Bool? {
+    get
+  }
+  public var enableTapGestureCollection: Swift.Bool? {
+    get
+  }
+  public var sendHistoryOnStart: Swift.Bool? {
+    get
+  }
+  public var mlCohortsCalculationDelayInMilliseconds: Swift.Int? {
+    get
+  }
+  public var gesturesLoadBalancerIntervalInSeconds: Swift.Int? {
+    get
+  }
+  public var date: Swift.String? {
+    get
+  }
+  public var archiveLocalDbs: ATOMArchiveSettings? {
+    get
+  }
+  public var archiveSeparateTables: ATOMArchiveSettings? {
+    get
+  }
+  public var enableAccelerometerDataCollection: Swift.Bool? {
+    get
+  }
+  public var enableGyroscopeDataCollection: Swift.Bool? {
+    get
+  }
+  public var initialRefreshRateInSeconds: Swift.Int? {
+    get
+  }
+  public var cyclicRefreshRateInSeconds: Swift.Int? {
+    get
+  }
+  public var initialJSRefreshRateInSeconds: Swift.Int? {
+    get
+  }
+  public var cyclicJSRefreshRateInSeconds: Swift.Int? {
+    get
+  }
+  public var initialSignalsStorageRateInSeconds: Swift.Int? {
+    get
+  }
+  public var cyclicSignalsStorageRateInSeconds: Swift.Int? {
+    get
+  }
+  public var initialDbFlushIntervalInSeconds: Swift.Int? {
+    get
+  }
+  public var cyclicDbFlushIntervalInSeconds: Swift.Int? {
+    get
+  }
+  public var updateVectorsCheckIntervalInSeconds: Swift.Int? {
+    get
+  }
+  public var shouldTracePerformance: Swift.Bool? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMArchiveSettings : Swift.Codable {
+  public var shouldArchive: Swift.Bool? {
+    get
+  }
+  public var samplingRate: Swift.Double? {
+    get
+  }
+  public var uploadFrequency: ATOMArchiveUploadFrequency? {
+    get
+  }
+  public var tableNamesToExport: [Swift.String]? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMArchiveUploadFrequency : Swift.Codable {
+  public var days: Swift.String? {
+    get
+  }
+  public var startupCount: Swift.String? {
+    get
+  }
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public enum ATOMFeatureState : Swift.Codable {
+  case pending
+  case inProgress
+  case ready
+  case error
+  public static func == (a: ATOMFeatureState, b: ATOMFeatureState) -> Swift.Bool
+  public func encode(to encoder: any Swift.Encoder) throws
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMFeature : Swift.Codable {
+  public let id: Swift.Int
+  public let tableName: Swift.String
+  public let query: Swift.String
+  public let initialCalculationRateInSeconds: Swift.Int
+  public let cyclicCalculationRateInSeconds: Swift.Int
+  public var state: ATOMFeatureState {
+    get
+  }
+  public mutating func calculationStarted()
+  public mutating func calculationFinished()
+  public mutating func calculationFailed()
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+@objc final public class ATOMFlush : ObjectiveC.NSObject, Swift.Codable {
+  final public var name: Swift.String {
+    get
+  }
+  final public var query: Swift.String {
+    get
+  }
+  final public var initialCleanupInSeconds: Swift.Int {
+    get
+  }
+  final public var cyclicCleanupInSeconds: Swift.Int {
+    get
+  }
+  @objc deinit
+  final public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMAbstractSessionModel : Swift.Codable {
+  public var totalTimeMatcher: ATOMIntRuleMatcher? {
+    get
+  }
+  public var totalCountMatcher: ATOMIntRuleMatcher? {
+    get
+  }
+  public var avgTimeMatcher: ATOMIntRuleMatcher? {
+    get
+  }
+  public var avgCountMatcher: ATOMIntRuleMatcher? {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct ATOMCohortConfigurationModel : Swift.Codable {
+  public let appClassification: [Swift.Int]?
+  public let id: Swift.Int
+  public let name: Swift.String
+  public let cohortTTL: Swift.Int?
+  public let threshold: Swift.Double?
+  public let description: Swift.String?
+  public let timezone: Swift.String?
+  public let model: Swift.String?
+  public let locale: Swift.String?
+  public let history: ATOMHistoryRuleMatcherModel?
+  public let appsBasedClassification: ATOMAppsBasedClassificationMatcherModel?
+  public let mlModel: ATOMMLModelMatcherModel?
+  public let custom: ATOMEventRuleMatcherModel?
+  public let signals: ATOMSignalsData?
+  public let js: ATOMJSCohortModel?
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMHistoryRuleMatcherModel : Swift.Codable {
+  public var sessionModel: ATOMAbstractSessionModel {
+    get
+  }
+  public var dors: [ATOMRangeMatcherModel]? {
+    get
+  }
+  public var dands: [ATOMRangeMatcherModel]? {
+    get
+  }
+  public init(from decoder: any Swift.Decoder) throws
+  public func encode(to encoder: any Swift.Encoder) throws
+}
+public struct ATOMJSCohortModel : Swift.Codable {
+  public let context: Swift.String
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
+public struct ATOMJSMLModel : Swift.Codable {
+  public let name: Swift.String
+  public let version: Swift.String
+  public let url: Swift.String
+  public let outputIndex: Swift.Int?
+  public let featureValueKey: Swift.String
+  public func encode(to encoder: any Swift.Encoder) throws
+  public init(from decoder: any Swift.Decoder) throws
+}
 extension SQLExpression {
   @available(*, deprecated, message: "Use SQLLiteral initializer instead")
   public var sqlLiteral: SQLLiteral {
@@ -622,20 +1034,9 @@ public class ATOMServiceContainer {
 extension ATOMServiceContainer {
   public static func createDefaultContainer() -> ATOMServiceContainer
 }
-public protocol ATOMSignalsDbManagerProtocol {
-  func saveDeviceSignal(_ signalDBO: ATOMDeviceSignalDBO) throws
-  func saveAccelerometerSignal(_ accelerometerDBO: ATOMAccelerometerSignalDBO) throws
-  func saveGyroscopeSignal(_ gyroscopeDBO: ATOMGyroscopeSignalDBO) throws
-  func flushAccelerometerSignalData() throws
-}
 public struct ATOMNetworkConstants {
   public static let configurationBaseURL: Swift.String
   public static let apiVersion: Swift.String
-}
-public protocol ATOMBatteryManagerProtocol : AnyObject {
-  var isDeviceCharging: Swift.Bool { get }
-  var batteryLevel: Swift.Int { get }
-  var batterySaver: Swift.Bool { get }
 }
 public protocol DatabaseValueConvertible : SQLExpressible {
   var databaseValue: DatabaseValue { get }
@@ -820,9 +1221,9 @@ public protocol AtomGesturesDelegate : AnyObject {
   public static var cohortsUpdatedCallback: ((Foundation.Date) -> Swift.Void)?
   public static var signalsSavedInLocalDatabaseCallback: ((Foundation.Date) -> Swift.Void)?
   @objc public static func start(withApiKey apiKey: Swift.String, isTest: Swift.Bool) throws
-  public static func getCurrentNetworkConnection() -> ATOMReachability.Connection
   public static func refreshConsent() throws
   @objc public static func start(withApiKey apiKey: Swift.String, isTest: Swift.Bool, withCallback callback: ((Swift.Bool) -> ())?) throws
+  @objc public static func uploadLocalDatabasesIfNeeded()
   @objc public static func setAtomLoggerLevels(_ logLevels: [Swift.String])
   @objc public static func start(isTest: Swift.Bool) throws
   @objc public static func start(isTest: Swift.Bool, withCallback callback: ((Swift.Bool) -> ())?) throws
@@ -830,13 +1231,20 @@ public protocol AtomGesturesDelegate : AnyObject {
   @available(*, deprecated, message: "Use cohorts(completion:) instead")
   @objc(getCohorts) public static func cohorts() -> [ATOMCohort]
   @objc(getCohortsWithCompletion:) public static func cohorts(completion: @escaping ([ATOMCohort]) -> Swift.Void)
+  @objc public static func setJSData(_ value: Any, forKey key: Swift.String) -> Swift.Bool
+  @objc public static func getJSData(forKey key: Swift.String) -> Any?
+  @objc public static func deleteValue(forKey key: Swift.String)
   public static func updateCalculatedCohorts(onStartup isStartup: Swift.Bool = false, eventWasFired eventFired: Swift.Bool = false)
+  public static func updateJSCohorts()
   public static func updateCalculatedVectors() throws
   @objc public static func vgParameterBase64String() -> Swift.String?
   @available(*, deprecated, message: "This method has been deprecated and no longer performs any operations")
   @objc(impressionFiredWithAdParameters:) public static func impressionFired(withAdParameters parameters: ATOMAdParameters)
   @objc public static func fire(eventWithName name: Swift.String, eventWithValue value: Any? = nil, withDelegate delegate: (any ATOMEventMatchDelegate)? = nil)
   @objc public static func fire(eventWithName name: Swift.String, eventWithValue value: Any? = nil, withDelegate delegate: (any ATOMEventMatchDelegate)? = nil, completion: @escaping (Swift.Bool, (any Swift.Error)?) -> Swift.Void)
+  public static var connectionType: Swift.String {
+    get
+  }
   @objc deinit
 }
 extension Atom {
@@ -877,9 +1285,6 @@ extension Atom {
     get
   }
   public static var luminosityLevel: Swift.Int {
-    get
-  }
-  public static var reachabilityLevel: Swift.String {
     get
   }
 }
@@ -1193,6 +1598,7 @@ public protocol ATOMLoggerDelegate : AnyObject {
   public static func gestureLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
   public static func signalLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
   public static func mlLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
+  public static func jsLog(fromClass className: Swift.String, fromMethod: Swift.String, withMessage: Swift.String)
   @objc override dynamic public init()
   @objc deinit
 }
@@ -1241,30 +1647,6 @@ extension Database {
   final public func create(virtualTable name: Swift.String, ifNotExists: Swift.Bool = false, using module: Swift.String) throws
   final public func create<Module>(virtualTable tableName: Swift.String, ifNotExists: Swift.Bool = false, using module: Module, _ body: ((Module.TableDefinition) -> Swift.Void)? = nil) throws where Module : VirtualTableModule
 }
-public class ATOMSignalsProviderImpl : ATOMSignalsProviderProtocol {
-  public var batteryManager: any ATOMBatteryManagerProtocol {
-    get
-  }
-  public var reachabilityManager: any ATOMReachabilityManagerProtocol {
-    get
-  }
-  public var luminosityManager: any ATOMLuminosityManagerProtocol {
-    get
-  }
-  public var signalTrackManager: any ATOMSignalTrackManagerProtocol {
-    get
-  }
-  public var deviceTrackManager: any ATOMDeviceTrackManagerProtocol {
-    get
-  }
-  public var signalsDbManager: any ATOMSignalsDbManagerProtocol {
-    get
-  }
-  public init()
-  @objc deinit
-}
-public struct ATOMAccelerometerSignalDBO {
-}
 public struct SQLCollatedExpression {
   public let expression: any SQLExpression
   public let collationName: Database.CollationName
@@ -1309,17 +1691,6 @@ public struct ATOMTouchConfiguration {
   public var showsTouchRadius: Swift.Bool
   public var showsLog: Swift.Bool
   public init()
-}
-public struct ATOMDeviceSignalDBO {
-}
-public protocol ATOMLuminosityManagerProtocol : AnyObject {
-  var getScreenBrightness: Swift.Int { get }
-}
-@_hasMissingDesignatedInitializers final public class ATOMLuminosityManagerImpl : ATOMLuminosityManagerProtocol {
-  final public var getScreenBrightness: Swift.Int {
-    get
-  }
-  @objc deinit
 }
 @_hasMissingDesignatedInitializers public class DatabaseSnapshot : DatabaseReader {
   public var configuration: Configuration {
@@ -1567,95 +1938,27 @@ extension AtomGestures {
   public static func deleteAllPinchTicks() throws
   public static func deleteAllTapGestures() throws
 }
-public enum ATOMConfigurationError : Swift.Error, Swift.Equatable {
-  case networkError
-  case parsingError
-  case invalidResponse
-  case configurationNotFound
-  public static func == (a: ATOMConfigurationError, b: ATOMConfigurationError) -> Swift.Bool
-  public func hash(into hasher: inout Swift.Hasher)
-  public var hashValue: Swift.Int {
+public class ATOMSignalsProviderImpl : ATOMSignalsProviderProtocol {
+  public init(batteryManager: any ATOMBatteryManagerProtocol = ATOMBatteryManagerImpl(), luminosityManager: any ATOMLuminosityManagerProtocol = ATOMLuminosityManagerImpl(), deviceTrackManager: any ATOMDeviceTrackManagerProtocol, signalsDbManager: any ATOMSignalsDbManagerProtocol, configurationProvider: ATOMSignalsConfiguration)
+  public func createSignalsMatcher(signals: ATOMSignalsData) -> ATOMSignalsMatcher
+  public func startSignalTrackManager()
+  public func stopSignalTrackManager()
+  public var batteryLevel: Swift.Int {
     get
   }
-}
-public protocol ATOMConfigurationNetworkProviderProtocol {
-  func fetchConfiguration(from url: Foundation.URL, completion: @escaping (Swift.Result<Foundation.Data, any Swift.Error>) -> Swift.Void)
-  func buildConfigurationURL(apiKey: Swift.String, date: Swift.Int, ssid: Swift.String) -> Foundation.URL?
-}
-public enum ATOMNetworkError : Swift.Error {
-  case invalidURL
-  case invalidResponse
-  case httpError(statusCode: Swift.Int)
-  case decodingError(any Swift.Error)
-  case networkError(any Swift.Error)
-  case noData
-}
-public struct ATOMRequest {
-  public let url: Foundation.URL
-  public let method: HTTPMethod
-  public let headers: [Swift.String : Swift.String]
-  public let body: Foundation.Data?
-  public let timeout: Foundation.TimeInterval
-  public init(url: Foundation.URL, method: HTTPMethod = .GET, headers: [Swift.String : Swift.String] = [:], body: Foundation.Data? = nil, timeout: Foundation.TimeInterval = 30)
-}
-public struct ATOMResponse {
-  public let data: Foundation.Data?
-  public let statusCode: Swift.Int
-  public let headers: [Swift.String : Swift.String]
-  public init(data: Foundation.Data?, statusCode: Swift.Int, headers: [Swift.String : Swift.String])
-}
-public enum HTTPMethod : Swift.String {
-  case GET
-  case POST
-  case PUT
-  case DELETE
-  case PATCH
-  public init?(rawValue: Swift.String)
-  public typealias RawValue = Swift.String
-  public var rawValue: Swift.String {
+  public var isDeviceCharging: Swift.Bool {
     get
   }
-}
-public protocol ATOMNetworkClient : AnyObject {
-  func request(_ request: ATOMRequest, completion: @escaping (Swift.Result<ATOMResponse, ATOMNetworkError>) -> Swift.Void)
-  func request<T>(_ request: ATOMRequest, responseType: T.Type, completion: @escaping (Swift.Result<T, ATOMNetworkError>) -> Swift.Void) where T : Swift.Decodable, T : Swift.Encodable
-}
-public protocol ATOMReachabilityProvider {
-  var isConnected: Swift.Bool { get }
-  func startMonitoring()
-  func stopMonitoring()
-}
-public class ATOMNetworkReachabilityWrapper : ATOMReachabilityProvider {
-  public var isConnected: Swift.Bool {
+  public var isBatterySaveModeOn: Swift.Bool {
     get
   }
-  public init()
-  public func startMonitoring()
-  public func stopMonitoring()
+  public var screenBrightness: Swift.Int {
+    get
+  }
   @objc deinit
 }
-public class ATOMURLSessionClient : ATOMNetworkClient {
-  public init(session: Foundation.URLSession = URLSession.shared, queue: Dispatch.DispatchQueue = DispatchQueue(label: "atom.network"))
-  public func request(_ request: ATOMRequest, completion: @escaping (Swift.Result<ATOMResponse, ATOMNetworkError>) -> Swift.Void)
-  public func request<T>(_ request: ATOMRequest, responseType: T.Type, completion: @escaping (Swift.Result<T, ATOMNetworkError>) -> Swift.Void) where T : Swift.Decodable, T : Swift.Encodable
-  @objc deinit
-}
-public class ATOMNetwork {
-  public init(client: any ATOMNetworkClient = ATOMURLSessionClient(), reachability: any ATOMReachabilityProvider = ATOMNetworkReachabilityWrapper())
-  public var networkClient: any ATOMNetworkClient {
-    get
-  }
-  public var isNetworkAvailable: Swift.Bool {
-    get
-  }
-  public func startReachabilityMonitoring()
-  public func stopReachabilityMonitoring()
-  @objc deinit
-}
-public class ATOMConfigurationNetworkProvider : ATOMConfigurationNetworkProviderProtocol {
-  public init(networkClient: any ATOMNetworkClient, baseURL: Swift.String, apiVersion: Swift.String, userDefaults: Foundation.UserDefaults = .standard)
-  public func fetchConfiguration(from url: Foundation.URL, completion: @escaping (Swift.Result<Foundation.Data, any Swift.Error>) -> Swift.Void)
-  public func buildConfigurationURL(apiKey: Swift.String, date: Swift.Int = 0, ssid: Swift.String) -> Foundation.URL?
+@_hasMissingDesignatedInitializers final public class ATOMSignalsMatcher {
+  final public func match(withThreshold threshold: Swift.Double) -> Swift.Bool
   @objc deinit
 }
 @objc @_hasMissingDesignatedInitializers public class ATOMCohort : ObjectiveC.NSObject, Swift.Codable {
@@ -1675,23 +1978,6 @@ extension ATOMCohort {
   @objc override dynamic public var hash: Swift.Int {
     @objc get
   }
-}
-@objc final public class ATOMFlush : ObjectiveC.NSObject, Swift.Codable {
-  final public var name: Swift.String {
-    get
-  }
-  final public var query: Swift.String {
-    get
-  }
-  final public var initialCleanupInSeconds: Swift.Int {
-    get
-  }
-  final public var cyclicCleanupInSeconds: Swift.Int {
-    get
-  }
-  @objc deinit
-  final public func encode(to encoder: any Swift.Encoder) throws
-  public init(from decoder: any Swift.Decoder) throws
 }
 public func splittingRowAdapters(columnCounts: [Swift.Int]) -> [any RowAdapter]
 public struct LayoutedColumnMapping {
@@ -1758,12 +2044,9 @@ public struct ScopeAdapter : RowAdapter {
   @objc public static let gesture: Swift.String
   @objc public static let signal: Swift.String
   @objc public static let ml: Swift.String
+  @objc public static let js: Swift.String
   @objc override dynamic public init()
   @objc deinit
-}
-public protocol ATOMSignalTrackManagerProtocol {
-  func start()
-  func stop()
 }
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers final public class ATOMVisualizer : ObjectiveC.NSObject {
   public static let sharedInstance: ATOMVisualizer
@@ -1779,9 +2062,6 @@ extension ATOMVisualizer {
 }
 extension ATOMVisualizer {
   final public func log(_ touch: UIKit.UITouch)
-}
-public protocol ATOMDeviceTrackManagerProtocol {
-  func saveDeviceData()
 }
 @_hasMissingDesignatedInitializers public class ATOMRefreshData {
   public static let shared: ATOMRefreshData
@@ -2019,12 +2299,6 @@ extension Foundation.NSString : DatabaseValueConvertible {
     get
   }
   public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> Self?
-}
-public protocol ATOMSignalsProviderProtocol {
-  var batteryManager: any ATOMBatteryManagerProtocol { get }
-  var reachabilityManager: any ATOMReachabilityManagerProtocol { get }
-  var luminosityManager: any ATOMLuminosityManagerProtocol { get }
-  var signalTrackManager: any ATOMSignalTrackManagerProtocol { get }
 }
 @_hasMissingDesignatedInitializers final public class Row : Swift.Equatable, Swift.Hashable, Swift.RandomAccessCollection, Swift.ExpressibleByDictionaryLiteral, Swift.CustomStringConvertible, Swift.CustomDebugStringConvertible {
   @usableFromInline
@@ -2328,6 +2602,45 @@ extension Row {
     public static func == (a: Row.PrefetchedRowsView, b: Row.PrefetchedRowsView) -> Swift.Bool
   }
 }
+public protocol ATOMBatteryManagerProtocol : AnyObject {
+  var isDeviceCharging: Swift.Bool { get }
+  var batteryLevel: Swift.Int { get }
+  var batterySaver: Swift.Bool { get }
+}
+final public class ATOMBatteryManagerImpl : ATOMBatteryManagerProtocol {
+  public init()
+  final public var isDeviceCharging: Swift.Bool {
+    get
+  }
+  final public var batteryLevel: Swift.Int {
+    get
+  }
+  final public var batterySaver: Swift.Bool {
+    get
+  }
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers public class ATOMSignalManager {
+  @objc deinit
+}
+public protocol ATOMLuminosityManagerProtocol : AnyObject {
+  var screenBrightness: Swift.Int { get }
+}
+final public class ATOMLuminosityManagerImpl : ATOMLuminosityManagerProtocol {
+  public init()
+  final public var screenBrightness: Swift.Int {
+    get
+  }
+  @objc deinit
+}
+final public class ATOMDeviceTrackManagerImpl : ATOMDeviceTrackManagerProtocol {
+  public init(deviceDataDbManager: any ATOMDeviceDataDbManagerProtocol)
+  final public func saveDeviceData() throws
+  @objc deinit
+}
+extension UIKit.UIDevice {
+  @_Concurrency.MainActor @preconcurrency public static let modelName: Swift.String
+}
 public struct Configuration {
   public var foreignKeysEnabled: Swift.Bool
   public var readonly: Swift.Bool
@@ -2372,87 +2685,6 @@ extension SQLExpression {
 }
 extension SQLExpression {
   public func count(distinct: Swift.Bool) -> SQLCount?
-}
-public enum ATOMReachabilityError : Swift.Error {
-  case failedToCreateWithAddress(Darwin.sockaddr, Swift.Int32)
-  case failedToCreateWithHostname(Swift.String, Swift.Int32)
-  case unableToSetCallback(Swift.Int32)
-  case unableToSetDispatchQueue(Swift.Int32)
-  case unableToGetFlags(Swift.Int32)
-}
-@available(*, unavailable, renamed: "Notification.Name.reachabilityChanged")
-public let ReachabilityChangedNotification: Foundation.NSNotification.Name
-extension Foundation.NSNotification.Name {
-  public static let reachabilityChanged: Foundation.Notification.Name
-}
-public class ATOMReachability {
-  public typealias NetworkReachable = (ATOMReachability) -> ()
-  public typealias NetworkUnreachable = (ATOMReachability) -> ()
-  @available(*, unavailable, renamed: "Connection")
-  public enum NetworkStatus : Swift.CustomStringConvertible {
-    case notReachable, reachableViaWiFi, reachableViaWWAN
-    public var description: Swift.String {
-      get
-    }
-    public static func == (a: ATOMReachability.NetworkStatus, b: ATOMReachability.NetworkStatus) -> Swift.Bool
-    public func hash(into hasher: inout Swift.Hasher)
-    public var hashValue: Swift.Int {
-      get
-    }
-  }
-  public enum Connection : Swift.CustomStringConvertible {
-    case unavailable, wifi, cellular
-    public var description: Swift.String {
-      get
-    }
-    @available(*, deprecated, renamed: "unavailable")
-    public static let none: ATOMReachability.Connection
-    public static func == (a: ATOMReachability.Connection, b: ATOMReachability.Connection) -> Swift.Bool
-    public func hash(into hasher: inout Swift.Hasher)
-    public var hashValue: Swift.Int {
-      get
-    }
-  }
-  public var whenReachable: ATOMReachability.NetworkReachable?
-  public var whenUnreachable: ATOMReachability.NetworkUnreachable?
-  @available(*, deprecated, renamed: "allowsCellularConnection")
-  final public let reachableOnWWAN: Swift.Bool
-  public var allowsCellularConnection: Swift.Bool
-  public var notificationCenter: Foundation.NotificationCenter
-  @available(*, deprecated, renamed: "connection.description")
-  public var currentReachabilityString: Swift.String {
-    get
-  }
-  @available(*, unavailable, renamed: "connection")
-  public var currentReachabilityStatus: ATOMReachability.Connection {
-    get
-  }
-  public var connection: ATOMReachability.Connection {
-    get
-  }
-  required public init(reachabilityRef: SystemConfiguration.SCNetworkReachability, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main)
-  convenience public init(hostname: Swift.String, queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main) throws
-  convenience public init(queueQoS: Dispatch.DispatchQoS = .default, targetQueue: Dispatch.DispatchQueue? = nil, notificationQueue: Dispatch.DispatchQueue? = .main) throws
-  @objc deinit
-}
-extension ATOMReachability {
-  public func startNotifier() throws
-  public func stopNotifier()
-  @available(*, deprecated, message: "Please use `connection != .none`")
-  public var isReachable: Swift.Bool {
-    get
-  }
-  @available(*, deprecated, message: "Please use `connection == .cellular`")
-  public var isReachableViaWWAN: Swift.Bool {
-    get
-  }
-  @available(*, deprecated, message: "Please use `connection == .wifi`")
-  public var isReachableViaWiFi: Swift.Bool {
-    get
-  }
-  public var description: Swift.String {
-    get
-  }
 }
 public struct Inflections {
   public init()
@@ -2502,41 +2734,11 @@ extension Foundation.UUID : StatementColumnConvertible {
         }
     }
 }
-public struct ATOMGyroscopeSignalDBO {
-}
 extension Foundation.NSData : DatabaseValueConvertible {
   public var databaseValue: DatabaseValue {
     get
   }
   public static func fromDatabaseValue(_ dbValue: DatabaseValue) -> Self?
-}
-public enum ATOMFeatureState : Swift.Codable {
-  case pending
-  case inProgress
-  case ready
-  case error
-  public static func == (a: ATOMFeatureState, b: ATOMFeatureState) -> Swift.Bool
-  public func encode(to encoder: any Swift.Encoder) throws
-  public func hash(into hasher: inout Swift.Hasher)
-  public var hashValue: Swift.Int {
-    get
-  }
-  public init(from decoder: any Swift.Decoder) throws
-}
-public struct ATOMFeature : Swift.Codable {
-  public let id: Swift.Int
-  public let tableName: Swift.String
-  public let query: Swift.String
-  public let initialCalculationRateInSeconds: Swift.Int
-  public let cyclicCalculationRateInSeconds: Swift.Int
-  public var state: ATOMFeatureState {
-    get
-  }
-  public mutating func calculationStarted()
-  public mutating func calculationFinished()
-  public mutating func calculationFailed()
-  public func encode(to encoder: any Swift.Encoder) throws
-  public init(from decoder: any Swift.Decoder) throws
 }
 public struct DatabaseDateComponents : DatabaseValueConvertible, StatementColumnConvertible, Swift.Codable {
   public enum Format : Swift.String {
@@ -2567,6 +2769,15 @@ public struct DatabaseDateComponents : DatabaseValueConvertible, StatementColumn
 public struct ForeignKey {
   public init(_ originColumns: [Swift.String], to destinationColumns: [Swift.String]? = nil)
   public init(_ originColumns: [any ColumnExpression], to destinationColumns: [any ColumnExpression]? = nil)
+}
+public protocol ATOMRuleMatcher {
+  func matches(withValue value: Any) -> Swift.Bool
+}
+public class ATOMIntRuleMatcher : ATOMRuleMatcher {
+  public init(withRawValue raw: Swift.String) throws
+  public func raw() -> Swift.String
+  public func matches(withValue value: Any) -> Swift.Bool
+  @objc deinit
 }
 extension Swift.Bool : DatabaseValueConvertible, StatementColumnConvertible {
   @inlinable public init(sqliteStatement: SQLiteStatement, index: Swift.Int32) {
@@ -2893,10 +3104,50 @@ extension SQLSpecificExpressible {
 extension SQLAssociativeBinaryOperator {
   public static let concat: SQLAssociativeBinaryOperator
 }
-extension UIKit.UIDevice {
-  @_Concurrency.MainActor @preconcurrency public static let modelName: Swift.String
-}
 public struct ATOMSwipeDataPoint {
+}
+public enum ATOMJSError : Swift.Error, Foundation.LocalizedError {
+  case executionFailed(Swift.String)
+  case jsException(Swift.String)
+  case engineDeallocated
+  case invalidArguments(Swift.String)
+  case bridgeNotRegistered
+  public var errorDescription: Swift.String? {
+    get
+  }
+}
+public enum ATOMJSResult {
+  case success(Any?)
+  case failure(ATOMJSError)
+  public var value: Any? {
+    get
+  }
+  public var error: ATOMJSError? {
+    get
+  }
+  public var isSuccess: Swift.Bool {
+    get
+  }
+}
+public protocol ATOMJSEngineProtocol {
+  func execute(code: Swift.String, completion: @escaping (ATOMJSResult) -> Swift.Void)
+  func registerFunction(name: Swift.String, handler: @escaping ([Any]) -> Any?)
+  func registerBridge(_ bridge: any ATOMJSBridgeProtocol)
+}
+public class ATOMJSEngine : ATOMJSEngineProtocol {
+  public init()
+  public func execute(code: Swift.String, completion: @escaping (ATOMJSResult) -> Swift.Void)
+  public func registerFunction(name: Swift.String, handler: @escaping ([Any]) -> Any?)
+  public func registerBridge(_ bridge: any ATOMJSBridgeProtocol)
+  @objc deinit
+}
+public protocol ATOMJSBridgeProtocol {
+  func registerMethods(in context: JavaScriptCore.JSContext)
+}
+public class ATOMJSBridge : ATOMJSBridgeProtocol {
+  public init()
+  public func registerMethods(in context: JavaScriptCore.JSContext)
+  @objc deinit
 }
 extension Foundation.NSNull : DatabaseValueConvertible {
   public var databaseValue: DatabaseValue {
@@ -3102,55 +3353,136 @@ extension DatabaseValueConvertible where Self : Swift.Decodable, Self : Swift.Ra
 }
 public struct ATOMPinchDataPoint {
 }
-@_hasMissingDesignatedInitializers public class ATOMSignalManager {
-  @objc deinit
-}
-public enum ATOMCellularConnectionType {
-  case noConnection
-  case unknown
-  case g2
-  case g3
-  case g4
-  case g5
-  public static func == (a: ATOMCellularConnectionType, b: ATOMCellularConnectionType) -> Swift.Bool
-  public func hash(into hasher: inout Swift.Hasher)
-  public var hashValue: Swift.Int {
-    get
-  }
-}
-public protocol ATOMReachabilityManagerProtocol : AnyObject {
-  var currentCellularConnectionType: ATOMCellularConnectionType { get }
-  var connectionStatus: ATOMReachability.Connection { get }
-}
-public struct ATOMArchiveSettings : Swift.Codable {
-  public var shouldArchive: Swift.Bool? {
-    get
-  }
-  public var samplingRate: Swift.Double? {
-    get
-  }
-  public var uploadFrequency: ATOMArchiveUploadFrequency? {
-    get
-  }
-  public var tableNamesToExport: [Swift.String]? {
-    get
-  }
-  public func encode(to encoder: any Swift.Encoder) throws
-  public init(from decoder: any Swift.Decoder) throws
-}
-public struct ATOMArchiveUploadFrequency : Swift.Codable {
-  public var days: Swift.String? {
-    get
-  }
-  public var startupCount: Swift.String? {
-    get
-  }
-  public func encode(to encoder: any Swift.Encoder) throws
-  public init(from decoder: any Swift.Decoder) throws
-}
 extension ATOMZip {
   public class func quickZipFiles(_ paths: [Foundation.URL], fileName: Swift.String) throws -> Foundation.URL
   public class func quickZipFiles(_ paths: [Foundation.URL], fileName: Swift.String, progress: ((_ progress: Swift.Double) -> ())?) throws -> Foundation.URL
+}
+public enum ATOMReachabilityError : Swift.Error {
+  case failedToCreateWithAddress(Darwin.sockaddr, Swift.Int32)
+  case failedToCreateWithHostname(Swift.String, Swift.Int32)
+  case unableToSetCallback(Swift.Int32)
+  case unableToSetDispatchQueue(Swift.Int32)
+  case unableToGetFlags(Swift.Int32)
+}
+@available(*, unavailable, renamed: "Notification.Name.reachabilityChanged")
+public let ReachabilityChangedNotification: Foundation.NSNotification.Name
+extension Foundation.NSNotification.Name {
+  public static let reachabilityChanged: Foundation.Notification.Name
+}
+public protocol ATOMSignalsFacadeProtocol {
+  var batteryLevel: Swift.Int { get }
+  var batterySaver: Swift.Bool { get }
+  var isDeviceCharging: Swift.Bool { get }
+  var luminosityLevel: Swift.Int { get }
+  var connectionType: Swift.String { get }
+  func startSignalTracking()
+  func stopSignalTracking()
+  func startReachabilityNotifier() throws
+  func stopReachabilityNotifier()
+  func getSignalsProvider() -> any ATOMSignalsProviderProtocol
+}
+final public class ATOMSignalsFacade : ATOMSignalsFacadeProtocol {
+  public init(signalsProvider: any ATOMSignalsProviderProtocol)
+  final public var batteryLevel: Swift.Int {
+    get
+  }
+  final public var batterySaver: Swift.Bool {
+    get
+  }
+  final public var isDeviceCharging: Swift.Bool {
+    get
+  }
+  final public var luminosityLevel: Swift.Int {
+    get
+  }
+  final public var connectionType: Swift.String {
+    get
+  }
+  final public func startSignalTracking()
+  final public func stopSignalTracking()
+  final public func startReachabilityNotifier() throws
+  final public func stopReachabilityNotifier()
+  final public func getSignalsProvider() -> any ATOMSignalsProviderProtocol
+  @objc deinit
+}
+public protocol ATOMSignalsDbManagerProtocol {
+  func saveDeviceSignal(_ signalDBO: ATOMDeviceSignalDBO) throws
+  func saveAccelerometerSignal(_ accelerometerDBO: ATOMAccelerometerSignalDBO) throws
+  func saveGyroscopeSignal(_ gyroscopeDBO: ATOMGyroscopeSignalDBO) throws
+  func flushAccelerometerSignalData() throws
+  func isRecoverableError(_ error: any Swift.Error) -> Swift.Bool
+}
+public protocol ATOMDeviceDataDbManagerProtocol {
+  func saveDeviceData(_ deviceData: ATOMDeviceDataDBO) throws
+  func readDeviceData() throws -> [ATOMDeviceDataDBO]
+}
+public protocol ATOMSignalTrackManagerProtocol {
+  func start()
+  func stop()
+}
+public protocol ATOMSignalsProviderProtocol {
+  var batteryLevel: Swift.Int { get }
+  var isDeviceCharging: Swift.Bool { get }
+  var isBatterySaveModeOn: Swift.Bool { get }
+  var screenBrightness: Swift.Int { get }
+  func startSignalTrackManager()
+  func stopSignalTrackManager()
+  func createSignalsMatcher(signals: ATOMSignalsData) -> ATOMSignalsMatcher
+}
+public protocol ATOMDeviceTrackManagerProtocol {
+  func saveDeviceData() throws
+}
+public struct ATOMAppClassificationDBO {
+  public let appClassification: Swift.Int
+  public init(appClassification: Swift.Int)
+}
+public struct ATOMDeviceSignalDBO {
+  public let batteryLevel: Swift.Int
+  public let isCharging: Swift.Bool
+  public let isSaverModeON: Swift.Bool
+  public let connectionType: Swift.String
+  public let airplaneMode: Swift.Int
+  public let brightness: Swift.Int
+  public let timeIndex: Swift.Int
+  public let slotIndex: Swift.Int
+  public let timestamp: Swift.Int
+  public init(batteryLevel: Swift.Int, isCharging: Swift.Bool, isSaverModeON: Swift.Bool, connectionType: Swift.String, airplaneMode: Swift.Int, brightness: Swift.Int, timeIndex: Swift.Int, slotIndex: Swift.Int, timestamp: Swift.Int)
+}
+public struct ATOMAccelerometerSignalDBO {
+  public let x: Swift.Double
+  public let y: Swift.Double
+  public let z: Swift.Double
+  public let timeIndex: Swift.Int
+  public let slotIndex: Swift.Int
+  public let timestamp: Swift.Int
+  public init(x: Swift.Double, y: Swift.Double, z: Swift.Double, timeIndex: Swift.Int, slotIndex: Swift.Int, timestamp: Swift.Int)
+}
+public struct ATOMDeviceDataDBO {
+  public var idfv: Swift.String
+  public var bundleId: Swift.String
+  public var screenWidth: CoreFoundation.CGFloat
+  public var screenHeight: CoreFoundation.CGFloat
+  public var model: Swift.String
+  public var make: Swift.String
+  public var osv: Swift.String
+  public var hwv: Swift.String
+  public var h: Swift.Int
+  public var w: Swift.Int
+  public var pxratio: Swift.Float
+  public var fontSize: Swift.Int
+  public var idfa: Swift.String
+  public var tcf: Swift.String
+  public var ccpa: Swift.String
+  public init(idfv: Swift.String, bundleId: Swift.String, screenWidth: CoreFoundation.CGFloat, screenHeight: CoreFoundation.CGFloat, model: Swift.String, make: Swift.String, osv: Swift.String, hwv: Swift.String, h: Swift.Int, w: Swift.Int, pxratio: Swift.Float, fontSize: Swift.Int, idfa: Swift.String, tcf: Swift.String, ccpa: Swift.String)
+}
+public struct ATOMGyroscopeSignalDBO {
+  public let x: Swift.Double
+  public let y: Swift.Double
+  public let z: Swift.Double
+  public let timeIndex: Swift.Int
+  public let slotIndex: Swift.Int
+  public let timestamp: Swift.Int
+  public init(x: Swift.Double, y: Swift.Double, z: Swift.Double, timeIndex: Swift.Int, slotIndex: Swift.Int, timestamp: Swift.Int)
 }
 public enum ZipError : Swift.Error {
   case fileNotFound
@@ -3500,6 +3832,26 @@ extension DatabaseValueConvertible where Self : Foundation.ReferenceConvertible,
     get
   }
 }
+public struct ATOMConstants {
+  public static let millisecondsPerSecond: Swift.Int64
+  public static let verveATOMFolder: Swift.String
+  public static let dateOfLastDbUpload: Swift.String
+  public static let dateOfLastCsvUpload: Swift.String
+  public static let startupCountSinceLastDbUpload: Swift.String
+  public static let startupCountSinceLastCsvUpload: Swift.String
+  public static let gesturesDbFlushIntervalInSeconds: Swift.Double
+  public static let dbVersion: Swift.String
+  public static let sdkVersion: Swift.String
+  public static let verveVendorID: Swift.Int32
+  public static let tcfPurposeFlag1: Swift.Int32
+  public static let tcfPurposeFlag3: Swift.Int32
+  public static let tcfPurposeFlag4: Swift.Int32
+  public static let tcfPurposeFlag7: Swift.Int32
+  public static let tcfPurposeFlag9: Swift.Int32
+  public static let tcfPurposeFlag10: Swift.Int32
+  public static let deviceIdentifierKey: Swift.String
+  public static let abTestConfigurationURLKey: Swift.String
+}
 extension Swift.String {
   @inlinable public var quotedDatabaseIdentifier: Swift.String {
     get {
@@ -3618,6 +3970,25 @@ public protocol SQLOrderingTerm {
   var reversed: any SQLOrderingTerm { get }
   func orderingTermSQL(_ context: inout SQLGenerationContext) -> Swift.String
   func qualifiedOrdering(with alias: TableAlias) -> any SQLOrderingTerm
+}
+public struct ATOMSignalsConfiguration {
+  public let enableAccelerometerDataCollection: Swift.Bool
+  public let enableGyroscopeDataCollection: Swift.Bool
+  public let initialDelay: Swift.Int
+  public let repeatingInterval: Swift.Int
+  public init(enableAccelerometerDataCollection: Swift.Bool, enableGyroscopeDataCollection: Swift.Bool, initialDelay: Swift.Int, repeatingInterval: Swift.Int)
+}
+public enum ATOMCellularConnectionType : Swift.Equatable {
+  case unknown
+  case g2
+  case g3
+  case g4
+  case g5
+  public static func == (a: ATOMCellularConnectionType, b: ATOMCellularConnectionType) -> Swift.Bool
+  public func hash(into hasher: inout Swift.Hasher)
+  public var hashValue: Swift.Int {
+    get
+  }
 }
 @objc public class ATOMAdParameters : ObjectiveC.NSObject, Swift.Encodable {
   @objc public init(creativeID: Swift.String, cohorts: [Swift.String], impressionURLs: [Swift.String], clickURL: [Swift.String])
@@ -3859,6 +4230,62 @@ extension FetchableRecord where Self : Swift.Decodable {
 extension EncodableRecord where Self : Swift.Encodable {
   public func encode(to container: inout PersistenceContainer)
 }
+public class ATOMURLSessionClient : ATOMNetworkClient {
+  public init(session: Foundation.URLSession = URLSession.shared, queue: Dispatch.DispatchQueue = DispatchQueue(label: "atom.network"))
+  public func request(_ request: ATOMRequest, completion: @escaping (Swift.Result<ATOMResponse, ATOMNetworkError>) -> Swift.Void)
+  public func request<T>(_ request: ATOMRequest, responseType: T.Type, completion: @escaping (Swift.Result<T, ATOMNetworkError>) -> Swift.Void) where T : Swift.Decodable, T : Swift.Encodable
+  @objc deinit
+}
+public class ATOMNetwork {
+  public init(client: any ATOMNetworkClient = ATOMURLSessionClient())
+  public var networkClient: any ATOMNetworkClient {
+    get
+  }
+  @objc deinit
+}
+public enum ATOMNetworkError : Swift.Error {
+  case invalidURL
+  case invalidResponse
+  case httpError(statusCode: Swift.Int)
+  case decodingError(any Swift.Error)
+  case networkError(any Swift.Error)
+  case noData
+}
+public struct ATOMRequest {
+  public let url: Foundation.URL
+  public let method: HTTPMethod
+  public let headers: [Swift.String : Swift.String]
+  public let body: Foundation.Data?
+  public let timeout: Foundation.TimeInterval
+  public init(url: Foundation.URL, method: HTTPMethod = .GET, headers: [Swift.String : Swift.String] = [:], body: Foundation.Data? = nil, timeout: Foundation.TimeInterval = 30)
+}
+public struct ATOMResponse {
+  public let data: Foundation.Data?
+  public let statusCode: Swift.Int
+  public let headers: [Swift.String : Swift.String]
+  public init(data: Foundation.Data?, statusCode: Swift.Int, headers: [Swift.String : Swift.String])
+}
+public enum HTTPMethod : Swift.String {
+  case GET
+  case POST
+  case PUT
+  case DELETE
+  case PATCH
+  public init?(rawValue: Swift.String)
+  public typealias RawValue = Swift.String
+  public var rawValue: Swift.String {
+    get
+  }
+}
+public protocol ATOMNetworkClient : AnyObject {
+  func request(_ request: ATOMRequest, completion: @escaping (Swift.Result<ATOMResponse, ATOMNetworkError>) -> Swift.Void)
+  func request<T>(_ request: ATOMRequest, responseType: T.Type, completion: @escaping (Swift.Result<T, ATOMNetworkError>) -> Swift.Void) where T : Swift.Decodable, T : Swift.Encodable
+}
+public protocol ATOMReachabilityProvider {
+  var isConnected: Swift.Bool { get }
+  func startMonitoring()
+  func stopMonitoring()
+}
 @usableFromInline
 internal struct OrderedDictionary<Key, Value> where Key : Swift.Hashable {
   @usableFromInline
@@ -3995,35 +4422,28 @@ extension Database.TransactionKind : Swift.Hashable {}
 extension Database.TransactionKind : Swift.RawRepresentable {}
 extension ATOMConsentError : Swift.Equatable {}
 extension ATOMConsentError : Swift.Hashable {}
+extension ATOMConfigurationError : Swift.Hashable {}
+extension ATOMFeatureState : Swift.Equatable {}
+extension ATOMFeatureState : Swift.Hashable {}
 extension DatabaseUUIDEncodingStrategy : Swift.Equatable {}
 extension DatabaseUUIDEncodingStrategy : Swift.Hashable {}
 extension ATOMGesturesList : Swift.Equatable {}
 extension ATOMGesturesList : Swift.Hashable {}
 extension ATOMGesturesList : Swift.RawRepresentable {}
-extension ATOMConfigurationError : Swift.Hashable {}
-extension HTTPMethod : Swift.Equatable {}
-extension HTTPMethod : Swift.Hashable {}
-extension HTTPMethod : Swift.RawRepresentable {}
 extension Database.TransactionObservationExtent : Swift.Equatable {}
 extension Database.TransactionObservationExtent : Swift.Hashable {}
 extension DatabaseEvent.Kind : Swift.Equatable {}
 extension DatabaseEvent.Kind : Swift.Hashable {}
 extension DatabaseEvent.Kind : Swift.RawRepresentable {}
-@available(*, unavailable, renamed: "Connection")
-extension ATOMReachability.NetworkStatus : Swift.Equatable {}
-@available(*, unavailable, renamed: "Connection")
-extension ATOMReachability.NetworkStatus : Swift.Hashable {}
-extension ATOMReachability.Connection : Swift.Equatable {}
-extension ATOMReachability.Connection : Swift.Hashable {}
-extension ATOMFeatureState : Swift.Equatable {}
-extension ATOMFeatureState : Swift.Hashable {}
 extension DatabaseDateComponents.Format : Swift.Equatable {}
 extension DatabaseDateComponents.Format : Swift.Hashable {}
 extension DatabaseDateComponents.Format : Swift.RawRepresentable {}
-extension ATOMCellularConnectionType : Swift.Equatable {}
-extension ATOMCellularConnectionType : Swift.Hashable {}
 extension ZipError : Swift.Equatable {}
 extension ZipError : Swift.Hashable {}
 extension ZipCompression : Swift.Equatable {}
 extension ZipCompression : Swift.Hashable {}
 extension ZipCompression : Swift.RawRepresentable {}
+extension ATOMCellularConnectionType : Swift.Hashable {}
+extension HTTPMethod : Swift.Equatable {}
+extension HTTPMethod : Swift.Hashable {}
+extension HTTPMethod : Swift.RawRepresentable {}
