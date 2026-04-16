@@ -20,7 +20,6 @@
 @interface HyBidViewabilityNativeVideoAdSession : HyBidViewabilityAdSession
 
 - (OMIDAdSessionWrapper*)createOMIDAdSessionforNativeVideo:(UIView *)view withScript:(NSMutableArray *)scripts;
-- (void)fireOMIDAdLoadEventWithSkipOffset:(CGFloat)skipOffset;
 - (void)fireOMIDStartEventWithDuration:(CGFloat)duration withVolume:(CGFloat)volume;
 - (void)fireOMIDFirstQuartileEvent;
 - (void)fireOMIDMidpointEvent;

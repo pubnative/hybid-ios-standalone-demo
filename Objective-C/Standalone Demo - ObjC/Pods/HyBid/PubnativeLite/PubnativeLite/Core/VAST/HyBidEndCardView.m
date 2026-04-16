@@ -133,7 +133,8 @@ NSString * const replayURLFlag = @"https://customendcard.verve.com/replay";
             }
         }];
 
-        [[HyBidInterruptionHandler shared] activateContext:HyBidAdContextEndcard with:self];
+        [[HyBidInterruptionHandler shared] setDelegate:self for:HyBidAdContextEndcard];
+        [[HyBidInterruptionHandler shared] activateContext:HyBidAdContextEndcard];
         self.aakCustomClickAd = [[HyBidAdAttributionCustomClickAdsWrapper alloc] initWithAd:self.ad adFormat:nil];
     }
     return self;
@@ -150,6 +151,7 @@ NSString * const replayURLFlag = @"https://customendcard.verve.com/replay";
 
 - (void)removingReferences {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[HyBidInterruptionHandler shared] deactivateContext:HyBidAdContextEndcard];
     self.endCardImageView = nil;
     self.mraidView = nil;
     self.serviceProvider = nil;
@@ -853,8 +855,7 @@ NSString * const replayURLFlag = @"https://customendcard.verve.com/replay";
             }
 
         } else if (deeplinkHandler.isCapable) {
-            NSString *clickthrough = (endCardType == HyBidEndCardType_STATIC) ? throughClickURL : url;
-            [deeplinkHandler openWithNavigationType:self.ad.navigationMode clickthroughURL:clickthrough];
+            [deeplinkHandler openWithNavigationType:self.ad.navigationMode];
         } else {
             if(endCardType == HyBidEndCardType_STATIC) {
                 if (throughClickURL != nil) {

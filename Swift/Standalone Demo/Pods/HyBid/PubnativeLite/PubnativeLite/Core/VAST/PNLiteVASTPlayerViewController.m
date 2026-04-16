@@ -679,10 +679,7 @@ typedef enum {
 
         self.isAdSessionCreated = YES;
 
-        // Set skippable flag to true for video ads by passing skipOffset
-        // Use -1 as default to indicate no skip offset (non-skippable)
-        CGFloat skipOffsetValue = self.skipOffset && self.skipOffset.offset ? [self.skipOffset.offset floatValue] : -1.0;
-        [[HyBidViewabilityNativeVideoAdSession sharedInstance] fireOMIDAdLoadEventWithSkipOffset:skipOffsetValue];
+        [[HyBidViewabilityNativeVideoAdSession sharedInstance] fireOMIDAdLoadEvent:self.adSession];
     }
 }
 
@@ -1323,7 +1320,7 @@ typedef enum {
                                           isAutoStoreKitView:self.isAutoStoreKit
                                                           ad:self.ad];
         } else if (deeplinkHandler.isCapable) {
-            [deeplinkHandler openWithNavigationType:self.ad.navigationMode clickthroughURL:throughClickURL];
+            [deeplinkHandler openWithNavigationType:self.ad.navigationMode];
         } else {
             if (throughClickURL != nil) {
                 [self openUrlInBrowser:throughClickURL navigationType:self.ad.navigationMode];
@@ -1633,6 +1630,7 @@ typedef enum {
 #pragma mark - AVPlayer notifications
 
 - (void)addObservers {
+    [[HyBidInterruptionHandler shared] setDelegate:self for:HyBidAdContextVastPlayer];
 }
 
 - (void)removeObservers {
@@ -1983,7 +1981,7 @@ typedef enum {
 
 - (void)setPlayState {
     if (!self.interruptionHandlerActivated) {
-        [[HyBidInterruptionHandler shared] activateContext:HyBidAdContextVastPlayer with:self];
+        [[HyBidInterruptionHandler shared] activateContext:HyBidAdContextVastPlayer];
         self.interruptionHandlerActivated = YES;
     }
     [self activateAudioSession:YES];
