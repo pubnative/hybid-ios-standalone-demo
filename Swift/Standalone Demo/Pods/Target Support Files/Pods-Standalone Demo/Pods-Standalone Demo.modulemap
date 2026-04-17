@@ -1,6 +1,0 @@
-framework module Pods_Standalone_Demo {
-  umbrella header "Pods-Standalone Demo-umbrella.h"
-
-  export *
-  module * { export * }
-}
