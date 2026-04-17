@@ -3,6 +3,10 @@ name: Update HyBid
 # Triggered by the "Release HyBid SDK" workflow in pubnative-hybid-ios-sdk-private
 # via repository_dispatch. Bumps pod 'HyBid' in all Podfiles, runs pod update,
 # and opens a PR to master.
+#
+# Secrets required:
+#   SLACK_BOT_TOKEN — Slack bot token (xoxb-...)
+#   SLACK_IOS_RELEASES_CHANNEL   — #hybid-ios-releases channel ID
 
 on:
   repository_dispatch:
@@ -76,3 +80,30 @@ jobs:
               --base  master \
               --head  "$BRANCH"
           fi
+
+          # Capture PR URL for Slack notification
+          PR_URL=$(gh pr view "$BRANCH" --repo "$GITHUB_REPOSITORY" --json url --jq .url 2>/dev/null || echo "")
+          echo "PR_URL=$PR_URL"     >> "$GITHUB_ENV"
+          echo "PR_OPENED=true"    >> "$GITHUB_ENV"
+
+      # ────────────────────────────────────────────────────────────────────────
+      # Slack notifications
+      # ────────────────────────────────────────────────────────────────────────
+
+      - name: Slack success notification
+        if: success() && env.PR_OPENED == 'true'
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_IOS_RELEASES_CHANNEL: ${{ secrets.SLACK_IOS_RELEASES_CHANNEL }}
+          STATUS: success
+          DEMO_TITLE: "HyBid Standalone Demo"
+        run: bash .github/scripts/notify-slack.sh
+
+      - name: Slack failure notification
+        if: failure()
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_IOS_RELEASES_CHANNEL: ${{ secrets.SLACK_IOS_RELEASES_CHANNEL }}
+          STATUS: failure
+          DEMO_TITLE: "HyBid Standalone Demo"
+        run: bash .github/scripts/notify-slack.sh
