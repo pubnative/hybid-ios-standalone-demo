@@ -14,7 +14,7 @@
 		</data>
 		<key>Headers/ATOM-Swift.h</key>
 		<data>
-		+59asBsrgvJH4SsLftHkwTEdBa8=
+		Ao9O9xzB8hcJ8oCuTA9B1LVIJgg=
 		</data>
 		<key>Headers/ATOM.h</key>
 		<data>
@@ -34,47 +34,47 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		UGMsD414nVldujjcIijcgg71gd8=
+		YF3jT42PWCpCq9oGbnTpC3XHD38=
 		</data>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
-		PuVs6PqOuCeMYSdHLSRTlGnD8jQ=
+		Edqf5FcldJgthJ2RuRmL1JdU2Ho=
 		</data>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		HHTJuhVAty3PrvVkioVdVWRdSKI=
+		T0pvJODVKi7rPWqgNR6M6uJ3S8g=
 		</data>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		9Xq8jt0UE934FQShzwZyMlD183s=
+		/aKcsfz/pu3n29xcXP+A5IrCFyQ=
 		</data>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		HHTJuhVAty3PrvVkioVdVWRdSKI=
+		T0pvJODVKi7rPWqgNR6M6uJ3S8g=
 		</data>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		kR+M9w5wTbo91VeTEKPSh6Il/so=
+		TRCjSYvDDrgJ1cUlphdYFRL3A7Q=
 		</data>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<data>
-		PuVs6PqOuCeMYSdHLSRTlGnD8jQ=
+		Edqf5FcldJgthJ2RuRmL1JdU2Ho=
 		</data>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<data>
-		JUZjovrppYR/Ee3tCOhSfanXVzA=
+		HGtO8fsHtYougN+PDdKnF0n1Zrk=
 		</data>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<data>
-		U0mF3nPrIKUxBiuwSfw40uaOg4E=
+		LINnscRLUpSv5+LAu0CUGXMY1zk=
 		</data>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<data>
-		JUZjovrppYR/Ee3tCOhSfanXVzA=
+		HGtO8fsHtYougN+PDdKnF0n1Zrk=
 		</data>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<data>
-		8ca7KToa1qnrrjcLFb2vS3b73qg=
+		SM3+MTmSy0KeMYyQca2IaNGkm6Q=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -109,7 +109,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			iDsy+0TK4rUBdEMSOnueOpaL9wPpR2TxHDf07CE0QRM=
+			oUU/2Mg36N8UfGP65FCOQPABQIy8PDIXKA4MnYVO44s=
 			</data>
 		</dict>
 		<key>Headers/ATOM.h</key>
@@ -144,70 +144,70 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			L30Tj13qPhHKVez2U5pnF9CgaYlQ1Bns6q11K7KbpoU=
+			821LADhpVbcUQ1emvbOG+3NXNOgrUNIFHBp/vyK6/9E=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dJl14rcIupID7cbYND1lP8R4Y0E3aEZ26s77eQjdL0k=
+			gY6YCvzWKQV/ymMhnUD3KenzL9ora4goj6FNF6TUoXg=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			EReIh8DEmoF1kRKuu8ypirEcCsk1//+5LEXoPlnRc3I=
+			4UZ/yO5fHm8DXkx8HbjwWxU/wJEJN7MP6KvmqRuEa6A=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			dJl14rcIupID7cbYND1lP8R4Y0E3aEZ26s77eQjdL0k=
+			gY6YCvzWKQV/ymMhnUD3KenzL9ora4goj6FNF6TUoXg=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/arm64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			SUzXeo3deT3w7LF7Kip40krXe1OhWQfQlpQIHNkaLOk=
+			23diJr2NPLR2rtaZElBV7+iPM9YrG3wUIca3bchxbqg=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.abi.json</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			L30Tj13qPhHKVez2U5pnF9CgaYlQ1Bns6q11K7KbpoU=
+			821LADhpVbcUQ1emvbOG+3NXNOgrUNIFHBp/vyK6/9E=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.private.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Tyn44Muei3XirkSSaL4VCn9JIlaJMzQAK41DZ8X80eM=
+			mnaq1ODnF0NsungyiKt3fF4wvZRl9BWd3/qlT4bw5nU=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.swiftdoc</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			HBLan3aFdyzMSjSHQuT4iGsn0nbvQiftlnFHY5149FM=
+			g/W3YVJw2oXfJyhX7vh2t12hRLybopeZ5XR7o9SOKh4=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.swiftinterface</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Tyn44Muei3XirkSSaL4VCn9JIlaJMzQAK41DZ8X80eM=
+			mnaq1ODnF0NsungyiKt3fF4wvZRl9BWd3/qlT4bw5nU=
 			</data>
 		</dict>
 		<key>Modules/ATOM.swiftmodule/x86_64-apple-ios-simulator.swiftmodule</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			2pzSquBYu0n23tCe1ZXwhlCbIx12SFnLqVj0CLB5fvQ=
+			KAibDdjknPcEKIBNwIGyljJzsKyeOjgzpcT1ltN2Ipk=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
