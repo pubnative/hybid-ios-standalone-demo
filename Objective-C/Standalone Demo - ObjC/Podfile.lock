@@ -1,5 +1,5 @@
 PODS:
-  - ATOM-Standalone (3.8.0)
+  - ATOM-Standalone (3.9.0)
   - HyBid (3.7.1):
     - HyBid/ATOM (= 3.7.1)
     - HyBid/Banner (= 3.7.1)
@@ -29,7 +29,7 @@ SPEC REPOS:
     - HyBid
 
 SPEC CHECKSUMS:
-  ATOM-Standalone: ad17f0d0e60b22f67ed99e5a336425d68d324f3e
+  ATOM-Standalone: cd8bed8eb43e48d0f2e778aa0db893cb7f8ceb93
   HyBid: c75fa40e2d209aaed25b60f7bcd0e408d294c19e
 
 PODFILE CHECKSUM: db230dc19a2fc71d459d0f1303aaf3e689040594
