@@ -369,6 +369,8 @@ SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _No
 + (NSString * _Nonnull)signal SWIFT_WARN_UNUSED_RESULT;
 SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull ml;)
 + (NSString * _Nonnull)ml SWIFT_WARN_UNUSED_RESULT;
+SWIFT_CLASS_PROPERTY(@property (nonatomic, class, readonly, copy) NSString * _Nonnull js;)
++ (NSString * _Nonnull)js SWIFT_WARN_UNUSED_RESULT;
 - (nonnull instancetype)init OBJC_DESIGNATED_INITIALIZER;
 @end
 
@@ -403,6 +405,7 @@ SWIFT_CLASS("_TtC4ATOM4Atom")
 + (BOOL)startWithApiKey:(NSString * _Nonnull)apiKey isTest:(BOOL)isTest error:(NSError * _Nullable * _Nullable)error;
 /// Starts the library using the given api key. If the library is already running or initialising, nothing happens. The given callback is used when this is started.
 + (BOOL)startWithApiKey:(NSString * _Nonnull)apiKey isTest:(BOOL)isTest error:(NSError * _Nullable * _Nullable)error withCallback:(void (^ _Nullable)(BOOL))callback;
++ (void)uploadLocalDatabasesIfNeeded;
 + (void)setAtomLoggerLevels:(NSArray<NSString *> * _Nonnull)logLevels;
 /// Starts the library using the bundle identifier as an api key. If the library is already running, nothing happens.
 + (BOOL)startWithIsTest:(BOOL)isTest error:(NSError * _Nullable * _Nullable)error;
@@ -413,6 +416,13 @@ SWIFT_CLASS("_TtC4ATOM4Atom")
 + (NSArray<ATOMCohort *> * _Nonnull)getCohorts SWIFT_WARN_UNUSED_RESULT SWIFT_DEPRECATED_MSG("Use cohorts(completion:) instead");
 /// Returns an array which contains current cohort identifiers or an empty array, if valid cohorts do not exist. The returned data must not be cached by the host application.
 + (void)getCohortsWithCompletion:(void (^ _Nonnull)(NSArray<ATOMCohort *> * _Nonnull))completion;
+/// Stores a value in UserDefaults with automatic type detection
+/// Supports: String, Int, Double, Float, Bool
++ (BOOL)setJSData:(id _Nonnull)value forKey:(NSString * _Nonnull)key SWIFT_WARN_UNUSED_RESULT;
+/// Retrieves a value from UserDefaults, returning it in its original type
++ (id _Nullable)getJSDataForKey:(NSString * _Nonnull)key SWIFT_WARN_UNUSED_RESULT;
+/// Removes a value from UserDefaults for the given key
++ (void)deleteValueForKey:(NSString * _Nonnull)key;
 + (NSString * _Nullable)vgParameterBase64String SWIFT_WARN_UNUSED_RESULT;
 + (void)impressionFiredWithAdParameters:(ATOMAdParameters * _Nonnull)parameters SWIFT_DEPRECATED_MSG("This method has been deprecated and no longer performs any operations");
 /// The method is used to fire an event by publishers.
